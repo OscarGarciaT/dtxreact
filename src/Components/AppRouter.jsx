@@ -6,7 +6,7 @@ import Login from "../Pages/Login";
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/login2" element={<Login />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
