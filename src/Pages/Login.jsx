@@ -1,13 +1,30 @@
-import { Box, Button, Icon, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
-const Login = (props) => {
+const testLogin = {
+  email: "test@dentelx.com",
+  password: "123",
+};
+
+const Login = () => {
+  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm({ mode: "onSubmit" });
+  } = useForm({ mode: "onSubmit", defaultValues: testLogin });
 
   const emailValidation = {
     required: "Email is required",
@@ -23,19 +40,27 @@ const Login = (props) => {
 
   const handleLogin = async (data) => {
     try {
-      // Login async request to API
-      // TODO: Services
-      throw new Error("foobar");
+      // TODO: Login backend logic
+      setLoading(true);
+      console.log({ data });
+      await new Promise((resolve) => setTimeout(() => resolve(), 2000));
+      navigate("/pacientes");
     } catch (err) {
       setError("email", {
         type: "custom",
         message: "Couldn't verify information",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Box className="w-screen h-screen flex justify-center items-center bg-white select-none">
+    <Box
+      className={`w-screen h-screen flex justify-center items-center bg-white select-none ${
+        loading ? "opacity-70 pointer-events-none" : ""
+      }`}
+    >
       <Box className="w-2/5 max-sm:w-full flex flex-col items-center">
         <img
           src={"/assets/img/Logo.png"}
@@ -73,9 +98,12 @@ const Login = (props) => {
               marginTop: "1rem",
             }}
             onClick={handleSubmit(handleLogin)}
-            endIcon={<Icon>navigate_next</Icon>}
           >
-            Login in
+            {!loading ? (
+              <Typography variant="body2">Login in</Typography>
+            ) : (
+              <CircularProgress size="1.25rem" sx={{ color: "white" }} />
+            )}
           </Button>
         </Box>
       </Box>
