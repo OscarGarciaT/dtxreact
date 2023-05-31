@@ -20,7 +20,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { useState } from "react";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -270,8 +269,8 @@ const PatientInfo = () => {
                                     <TableHead>
                                     <TableRow>
                                         <TableCell>#</TableCell>
-                                        <TableCell align="right">PRE=PRESUNTIVO / DEF=DEFINITIVO</TableCell>
-                                        <TableCell align="right">CIE</TableCell>
+                                        <TableCell align="center">PRE=PRESUNTIVO / DEF=DEFINITIVO</TableCell>
+                                        <TableCell align="center">CIE</TableCell>
                                         <TableCell align="right">PRE</TableCell>
                                         <TableCell align="right">DEF</TableCell>
                                     </TableRow>
@@ -305,6 +304,30 @@ const PatientInfo = () => {
                                                 </TableRow>
                                             )
                                         }
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                        <br></br>
+                        <div id="datos">
+                        <TableContainer component={Paper}>
+                                <Table  sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableBody align="center">
+                                        <TableRow>
+                                            <TableCell class="border border-slate-300">Fecha de apertura</TableCell>
+                                            <TableCell class="border border-slate-300" align="right"><input type="date"></input></TableCell>
+                                            <TableCell class="border border-slate-300" align="right">Fecha de control</TableCell>
+                                            <TableCell class="border border-slate-300" align="right"><input type="date"></input></TableCell>
+                                            <TableCell class="border border-slate-300" align="right">Profesional</TableCell>
+                                            <TableCell class="border border-slate-300" align="right"><TextField defaultValue="Nicole Ávila"></TextField></TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell class="border border-slate-300"><TextField label="Código" id='outlined-size-small' ></TextField></TableCell>
+                                            <TableCell class="border border-slate-300" align="right">Firma</TableCell>
+                                            <TableCell class="border border-slate-300" align="right"><TextField defaultValue="Nicole Ávila"></TextField></TableCell>
+                                            <TableCell class="border border-slate-300" align="right">Número de hoja</TableCell>
+                                            <TableCell class="border border-slate-300" align="right"><input type="number" class="border border-slate-300"></input></TableCell>
+                                        </TableRow>
                                     </TableBody>
                                 </Table>
                             </TableContainer>
