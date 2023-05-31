@@ -63,9 +63,9 @@ const Login = () => {
     >
       <Box className="w-2/5 max-sm:w-full flex flex-col items-center">
         <img
-          src={"/assets/img/Logo.png"}
+          src={"/assets/img/iconT.png"}
           alt="DentelX Logo"
-          className="mb-10"
+          className="mb-1"
         />
         <Box className="w-3/5 flex flex-col items-center gap-y-3">
           <Typography
@@ -107,7 +107,9 @@ const Login = () => {
           </Button>
         </Box>
       </Box>
-      <Box className="w-3/5 h-screen bg-lime-200 max-sm:hidden" />
+      <Box className="w-3/5 h-screen bg-opacity-100 bg-no-repeat bg-cover bg-[url('/assets/img/stockDent.jpg')]  max-sm:hidden">
+        <Box className="w-5/5 h-screen bg-gray-900 bg-opacity-25  max-sm:hidden overflow-auto"/>  
+      </Box>
     </Box>
   );
 };
