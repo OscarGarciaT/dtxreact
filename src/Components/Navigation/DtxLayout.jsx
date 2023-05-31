@@ -90,17 +90,16 @@ const DtxLayout = ({ render }) => {
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
-            color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerToggle}
             edge="start"
-            sx={{ mr: 2, color: "#39CAB0" }}
+            sx={{ mr: 2 }}
           >
-            <Icon>menu_open</Icon>
+            <Icon color="primary">menu_open</Icon>
           </IconButton>
           <Box flexGrow={1} />
           <IconButton>
-            <Icon sx={{ color: "#39CAB0" }}>notifications</Icon>
+            <Icon color="primary">notifications</Icon>
           </IconButton>
           <IconButton>
             <Avatar src={profileImg} />
@@ -122,14 +121,14 @@ const DtxLayout = ({ render }) => {
       >
         <DrawerHeader>
           <img
-            src={"/assets/img/aura.png"}
+            src={"/assets/img/curva.png"}
             alt="Aura"
             onDragStart={(event) => event.preventDefault()}
           />
           <img
-            src={"/assets/img/Logo.png"}
+            src={"/assets/img/iconT2.png"}
             alt="DentelX Logo"
-            className="mb-5"
+            className="mb-1"
             onDragStart={(event) => event.preventDefault()}
           />
         </DrawerHeader>

@@ -1,10 +1,11 @@
 import { Routes, Navigate, Route, Outlet } from "react-router-dom";
+import DtxLayout from "./Navigation/DtxLayout";
 
 // Pages
 import Login from "../Pages/Login";
 import Placeholder from "../Pages/Placeholder";
-import DtxLayout from "./Navigation/DtxLayout";
-import PatientInfo from "../Pages/PatientInfo"
+import PatientInfo from "../Pages/PatientInfo";
+import Pacientes from "../Pages/Pacientes";
 
 const AppRouter = () => {
   return (
@@ -16,10 +17,7 @@ const AppRouter = () => {
           </div>
         }
       >
-        <Route
-          path="/pacientes"
-          element={<Placeholder text={"Pantalla Pacientes"} />}
-        />
+        <Route path="/pacientes" element={<Pacientes />} />
         <Route path="/test" element={<Placeholder text={"Pantalla Test"} />} />
         <Route path="/patient" element={<PatientInfo />} />
       </Route>

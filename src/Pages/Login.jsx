@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 
 const testLogin = {
   email: "test@dentelx.com",
+
   password: "123",
 };
 
@@ -108,7 +109,7 @@ const Login = () => {
         </Box>
       </Box>
       <Box className="w-3/5 h-screen bg-opacity-100 bg-no-repeat bg-cover bg-[url('/assets/img/stockDent.jpg')]  max-sm:hidden">
-        <Box className="w-5/5 h-screen bg-gray-900 bg-opacity-25  max-sm:hidden overflow-auto"/>  
+        <Box className="w-5/5 h-screen bg-gray-900 bg-opacity-25  max-sm:hidden overflow-auto" />
       </Box>
     </Box>
   );

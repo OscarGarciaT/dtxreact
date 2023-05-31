@@ -11,7 +11,7 @@ const SideBarItem = ({ onClick, currentPage, icon, label, tabId }) => {
       key={tabId}
       sx={{
         ...(currentPage === tabId
-          ? { backgroundColor: "#39CAB0", color: "#FFFDFD" }
+          ? { backgroundColor: "#3589A1", color: "#FFFDFD" }
           : {}),
       }}
       disablePadding
