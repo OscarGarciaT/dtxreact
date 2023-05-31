@@ -61,7 +61,7 @@ function a11yProps(index) {
 
 
 
-const PatientInfo = () => {
+const PatientCreation = () => {
     const longText = {
         width: "100%"
     };
@@ -79,56 +79,6 @@ const PatientInfo = () => {
       };
 
     const numeros = [1,2,3,4];
-    const tratamientos = [{
-        sesion:1,
-        fecha:new Date('Jul 12 2021'),
-        diagnostico: "K036",
-        procedimiento: "D1110, D4910",
-        prescripciones: "",
-        codigo: "",
-        firma: "Nicole Ávila"
-    },{
-        sesion:2,
-        fecha:new Date('Jul 20 2021'),
-        diagnostico: "K021 pieza#11",
-        procedimiento: "D2331",
-        prescripciones: "",
-        codigo: "",
-        firma: "Nicole Ávila"
-    },{
-        sesion:3,
-        fecha:new Date('Jul 30 2021'),
-        diagnostico: "K036",
-        procedimiento: "D1110, D4910",
-        prescripciones: "",
-        codigo: "",
-        firma: "Nicole Ávila"
-    }];
-    
-        const [showResults, setShowResults] = React.useState(false); 
-    
-      const Results = () => (
-        <div>
-        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-            <TableRow>
-                <TableCell component="th" scope="row"><TextField multiline label="Sesion" id='outlined-size-small' ></TextField></TableCell>
-                <TableCell align="right">FECHA</TableCell>
-                <TableCell align="right"><input type="date"></input></TableCell>
-            </TableRow>
-                                                    
-            <TableCell align="right" label="diagnosticos" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
-            <TableCell align="right" label="procedimientos" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
-            <TableCell align="right" label="prescripciones" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
-            <TableRow>
-                <TableCell class="border border-slate-300"><TextField label="Código" id='outlined-size-small' ></TextField></TableCell>
-                <TableCell class="border border-slate-300" align="right"><TextField label="Firma" defaultValue="Nicole Ávila"></TextField></TableCell>
-            </TableRow>
-        </TableRow>
-        <Button variant="contained" endIcon={<SendIcon />}>
-            Guardar registro
-        </Button>
-        </div>
-      )
 
     return (
         <div className='ml-3'>
@@ -145,14 +95,14 @@ const PatientInfo = () => {
                     <br />
                     <h1>Información General</h1>
                     <br />
-                    <TextField disabled id="outlined-disabled" label="Cédula" defaultValue="0930939145"></TextField>
-                    <TextField disabled id="outlined-disabled" label="Nombres" defaultValue="Eduardo Emilio"></TextField>
-                    <TextField disabled id="outlined-disabled" label="Apellidos" defaultValue="Salavarría Gómez"></TextField>
-                    <TextField disabled id="outlined-disabled" label="Celular" defaultValue="0990625269"></TextField>
+                    <TextField  id="outlined-disabled" label="Cédula" ></TextField>
+                    <TextField  id="outlined-disabled" label="Nombres" ></TextField>
+                    <TextField  id="outlined-disabled" label="Apellidos" ></TextField>
+                    <TextField  id="outlined-disabled" label="Celular"></TextField>
                     <br />
                     <br />
-                    <TextField disabled id="outlined-disabled" label="Sexo" defaultValue="Masculino"></TextField>
-                    <TextField disabled id="outlined-disabled" label="Edad" defaultValue="21"></TextField>
+                    <TextField id="outlined-disabled" label="Sexo" ></TextField>
+                    <TextField  id="outlined-disabled" label="Edad"></TextField>
                     <br />
                     <br />
                     <FormLabel id="demo-row-radio-buttons-group-label">Rango de Edad</FormLabel>
@@ -184,7 +134,7 @@ const PatientInfo = () => {
                                 1. Motivo de consulta
                             </Typography>
                             <TextField hiddenLabel multiline style={longText}
-                                id='outlined-size-small' defaultValue={"Vengo a hacerme una limpieza"}></TextField>
+                                id='outlined-size-small' ></TextField>
                         </div>
 
                         <div id="currentDiseaseOrProblem">
@@ -196,7 +146,7 @@ const PatientInfo = () => {
                                 2. Enfermedad o Problema actual
                             </Typography>
                             <TextField hiddenLabel multiline style={longText}
-                                id='outlined-size-small' defaultValue={"Asintomático"}></TextField>
+                                id='outlined-size-small'></TextField>
                         </div>
 
                         <div id="familyHistory">
@@ -231,10 +181,10 @@ const PatientInfo = () => {
                             >
                                 4. Signos Vitales
                             </Typography>
-                            <TextField label="Presión Arterial" id='outlined-size-small' defaultValue={"144/70"}></TextField>
-                            <TextField label="Frecuencia Cardiaca" id='outlined-size-small' defaultValue={"60"}></TextField>
-                            <TextField label="Temperatura C°" id='outlined-size-small' defaultValue={"36.7"}></TextField>
-                            <TextField label="F. Respiratoria/min" id='outlined-size-small' defaultValue={"15"}></TextField>
+                            <TextField label="Presión Arterial" id='outlined-size-small' ></TextField>
+                            <TextField label="Frecuencia Cardiaca" id='outlined-size-small' ></TextField>
+                            <TextField label="Temperatura C°" id='outlined-size-small'></TextField>
+                            <TextField label="F. Respiratoria/min" id='outlined-size-small'></TextField>
 
                             <TextField multiline label="Anotaciones" id='outlined-size-small' style={longText}></TextField>
                         </div>
@@ -389,8 +339,6 @@ const PatientInfo = () => {
                         </div>
                         <br></br>
                         <div id="tratamiento">
-                            
-                            <Stack direction="row" spacing={3}>
                             <Typography
                                 variant="h6"
                                 fontWeight="bold"
@@ -398,10 +346,6 @@ const PatientInfo = () => {
                             >
                                 12. Tratamiento
                             </Typography>
-                            <IconButton aria-label="add" onClick={() => { setShowResults(true); }}>
-                                <AddCircleIcon />
-                            </IconButton>
-                            </Stack>
                             <br></br>
                             <TableContainer component={Paper}>
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -414,29 +358,26 @@ const PatientInfo = () => {
                                         <TableCell align="center">CÓDIGO Y FIRMA</TableCell>
                                     </TableRow>
                                     </TableHead>
-                                    <TableBody>{
-                                            tratamientos.map(row=>
-                                                <TableRow align="center" sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                                    <TableRow>
-                                                        <TableCell component="th" scope="row">{row.sesion}</TableCell>
-                                                        <TableCell align="right">FECHA</TableCell>
-                                                        <TableCell align="right">{row.fecha.toDateString()}</TableCell>
-                                                    </TableRow>
-                                                    
-                                                    <TableCell label="diagnosticos" id='outlined-size-small'>{row.diagnostico}</TableCell>
-                                                    <TableCell label="procedimientos" id='outlined-size-small'>{row.procedimiento}</TableCell>
-                                                    <TableCell align="center" label="prescripciones" id='outlined-size-small'>{row.prescripciones}</TableCell>
-                                                    <TableRow>
-                                                    <TableCell align="center">{row.codigo}</TableCell>
-                                                    <TableCell align="right">{row.firma}</TableCell>
-                                                    </TableRow>
-                                                </TableRow>
-                                            )
-                                        }
-                                    </TableBody>
+                                        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                            <TableRow>
+                                                <TableCell component="th" scope="row"><TextField multiline label="Sesion" id='outlined-size-small' ></TextField></TableCell>
+                                                <TableCell align="right">FECHA</TableCell>
+                                                <TableCell align="right"><input type="date"></input></TableCell>
+                                            </TableRow>
+                                                                                    
+                                            <TableCell align="right" label="diagnosticos" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
+                                            <TableCell align="right" label="procedimientos" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
+                                            <TableCell align="right" label="prescripciones" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
+                                            <TableRow>
+                                                <TableCell class="border border-slate-300"><TextField label="Código" id='outlined-size-small' ></TextField></TableCell>
+                                                <TableCell class="border border-slate-300" align="right"><TextField label="Firma" defaultValue="Nicole Ávila"></TextField></TableCell>
+                                            </TableRow>
+                                        </TableRow>
+                                        <Button variant="contained" endIcon={<SendIcon />}>
+                                            Guardar registro
+                                        </Button>
                                 </Table>
                             </TableContainer>
-                            <div>{ showResults ? <Results /> : null }</div>
                         </div>
                     </TabPanel>
                 </Box>
@@ -445,4 +386,4 @@ const PatientInfo = () => {
     );
 }
 
-export default PatientInfo;
+export default PatientCreation;
