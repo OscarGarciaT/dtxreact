@@ -74,6 +74,31 @@ const PatientInfo = () => {
       };
 
     const numeros = [1,2,3,4];
+    const tratamientos = [{
+        sesion:1,
+        fecha:new Date('Jul 12 2021'),
+        diagnostico: "K036",
+        procedimiento: "D1110, D4910",
+        prescripciones: "",
+        codigo: "",
+        firma: "Nicole Ávila"
+    },{
+        sesion:2,
+        fecha:new Date('Jul 20 2021'),
+        diagnostico: "K021 pieza#11",
+        procedimiento: "D2331",
+        prescripciones: "",
+        codigo: "",
+        firma: "Nicole Ávila"
+    },{
+        sesion:3,
+        fecha:new Date('Jul 30 2021'),
+        diagnostico: "K036",
+        procedimiento: "D1110, D4910",
+        prescripciones: "",
+        codigo: "",
+        firma: "Nicole Ávila"
+    }];
 
     return (
         <div className='ml-3'>
@@ -328,6 +353,49 @@ const PatientInfo = () => {
                                             <TableCell class="border border-slate-300" align="right">Número de hoja</TableCell>
                                             <TableCell class="border border-slate-300" align="right"><input type="number" class="border border-slate-300"></input></TableCell>
                                         </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
+                        <br></br>
+                        <div id="tratamiento">
+                            <Typography
+                                variant="h6"
+                                fontWeight="bold"
+                                className="self-start"
+                            >
+                                12. Tratamiento
+                            </Typography>
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell align="center">SESIÓN Y FECHA</TableCell>
+                                        <TableCell align="center">DIAGNOSTICOS Y COMPLICACIONES</TableCell>
+                                        <TableCell align="center">PROCEDIMIENTOS</TableCell>
+                                        <TableCell align="center">PRESCRIPCIONES</TableCell>
+                                        <TableCell align="center">CÓDIGO Y FIRMA</TableCell>
+                                    </TableRow>
+                                    </TableHead>
+                                    <TableBody>{
+                                            tratamientos.map(row=>
+                                                <TableRow align="center" sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                    <TableRow>
+                                                        <TableCell component="th" scope="row">{row.sesion}</TableCell>
+                                                        <TableCell align="right">FECHA</TableCell>
+                                                        <TableCell align="right">{row.fecha.toDateString()}</TableCell>
+                                                    </TableRow>
+                                                    
+                                                    <TableCell label="diagnosticos" id='outlined-size-small'>{row.diagnostico}</TableCell>
+                                                    <TableCell label="procedimientos" id='outlined-size-small'>{row.procedimiento}</TableCell>
+                                                    <TableCell align="center" label="prescripciones" id='outlined-size-small'>{row.prescripciones}</TableCell>
+                                                    <TableRow>
+                                                    <TableCell align="center">{row.codigo}</TableCell>
+                                                    <TableCell align="right">{row.firma}</TableCell>
+                                                    </TableRow>
+                                                </TableRow>
+                                            )
+                                        }
                                     </TableBody>
                                 </Table>
                             </TableContainer>
