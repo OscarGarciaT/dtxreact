@@ -23,6 +23,10 @@
 body {
   width: 100%;
   margin: 0;
+<<<<<<< HEAD
+=======
+  display: flex;
+>>>>>>> 300b29e (creacion de la ruta para nueva pantalla, creacion de nueva componente (1er avance), cambios en el archivo css porque movia todos los componentes al centro)
   min-width: 320px;
   min-height: 100vh;
 }
