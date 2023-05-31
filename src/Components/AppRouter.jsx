@@ -1,5 +1,4 @@
 import { Routes, Navigate, Route, Outlet } from "react-router-dom";
-import DtxLayout from "./Navigation/DtxLayout";
 
 // Pages
 import Login from "../Pages/Login";
