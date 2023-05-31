@@ -20,6 +20,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Stack from '@mui/material/Stack';
+import SendIcon from '@mui/icons-material/Send';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -99,6 +104,31 @@ const PatientInfo = () => {
         codigo: "",
         firma: "Nicole Ávila"
     }];
+    
+        const [showResults, setShowResults] = React.useState(false); 
+    
+      const Results = () => (
+        <div>
+        <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableRow>
+                <TableCell component="th" scope="row"><TextField multiline label="Sesion" id='outlined-size-small' ></TextField></TableCell>
+                <TableCell align="right">FECHA</TableCell>
+                <TableCell align="right"><input type="date"></input></TableCell>
+            </TableRow>
+                                                    
+            <TableCell align="right" label="diagnosticos" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
+            <TableCell align="right" label="procedimientos" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
+            <TableCell align="right" label="prescripciones" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
+            <TableRow>
+                <TableCell class="border border-slate-300"><TextField label="Código" id='outlined-size-small' ></TextField></TableCell>
+                <TableCell class="border border-slate-300" align="right"><TextField label="Firma" defaultValue="Nicole Ávila"></TextField></TableCell>
+            </TableRow>
+        </TableRow>
+        <Button variant="contained" endIcon={<SendIcon />}>
+            Guardar registro
+        </Button>
+        </div>
+      )
 
     return (
         <div className='ml-3'>
@@ -359,6 +389,8 @@ const PatientInfo = () => {
                         </div>
                         <br></br>
                         <div id="tratamiento">
+                            
+                            <Stack direction="row" spacing={3}>
                             <Typography
                                 variant="h6"
                                 fontWeight="bold"
@@ -366,6 +398,11 @@ const PatientInfo = () => {
                             >
                                 12. Tratamiento
                             </Typography>
+                            <IconButton aria-label="add" onClick={() => { setShowResults(true); }}>
+                                <AddCircleIcon />
+                            </IconButton>
+                            </Stack>
+                            <br></br>
                             <TableContainer component={Paper}>
                                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                     <TableHead>
@@ -399,6 +436,7 @@ const PatientInfo = () => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
+                            <div>{ showResults ? <Results /> : null }</div>
                         </div>
                     </TabPanel>
                 </Box>
