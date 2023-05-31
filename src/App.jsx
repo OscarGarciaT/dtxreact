@@ -1,7 +1,10 @@
 import { BrowserRouter as Router } from "react-router-dom";
-
-import AppRouter from "./Components/AppRouter";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+
+import store from "./reducer/store";
+import AppRouter from "./Components/AppRouter";
+import { Provider } from "react-redux";
+import DialogStack from "./dialog/DialogStack";
 
 const theme = createTheme({
   palette: {
@@ -24,12 +27,15 @@ const theme = createTheme({
 
 function App() {
   return (
-    <Router>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <AppRouter />
-      </ThemeProvider>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <AppRouter />
+          <DialogStack />
+        </ThemeProvider>
+      </Router>
+    </Provider>
   );
 }
 
