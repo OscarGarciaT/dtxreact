@@ -13,6 +13,15 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import Checkbox from '@mui/material/Checkbox';
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { useState } from "react";
+
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -46,6 +55,8 @@ function a11yProps(index) {
     };
 }
 
+
+
 const PatientInfo = () => {
     const longText = {
         width: "100%"
@@ -55,6 +66,15 @@ const PatientInfo = () => {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     }
+
+    const [isDisabled, setIsDisabled] = React.useState(false);
+    const [checkboxValue, setCheckboxValue] = React.useState();
+    const handleCheck = e => {
+        setCheckboxValue(e.target.value);
+        //setIsDisabled(true);
+      };
+
+    const numeros = [1,2,3,4];
 
     return (
         <div className='ml-3'>
@@ -221,7 +241,74 @@ const PatientInfo = () => {
 
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        Ficha tratamientos
+                        <div id="planesDiagnostico">
+                            <Typography
+                                variant="h6"
+                                fontWeight="bold"
+                                className="self-start"
+                            >
+                                10. Planes de diagnóstico, terapéutico y educacional
+                            </Typography>
+                            <FormControlLabel control={<Checkbox  />} label="Biometría" />
+                            <FormControlLabel control={<Checkbox  />} label="Química sanguínea" />
+                            <FormControlLabel control={<Checkbox  />} label="Rayos-x" />
+                            <FormControlLabel control={<Checkbox  />} label="Otros" />
+                            <TextField multiline label="Anotaciones" style={longText}
+                                id='outlined-size-small' ></TextField>
+                        </div>
+
+                        <div id="diagnostico">
+                            <Typography
+                                variant="h6"
+                                fontWeight="bold"
+                                className="self-start"
+                            >
+                                11. Diagnóstico
+                            </Typography>
+                            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableHead>
+                                    <TableRow>
+                                        <TableCell>#</TableCell>
+                                        <TableCell align="right">PRE=PRESUNTIVO / DEF=DEFINITIVO</TableCell>
+                                        <TableCell align="right">CIE</TableCell>
+                                        <TableCell align="right">PRE</TableCell>
+                                        <TableCell align="right">DEF</TableCell>
+                                    </TableRow>
+                                    </TableHead>
+                                    <TableBody>{
+                                            numeros.map(row=>
+                                                <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                                                    <TableCell component="th" scope="row">{row}</TableCell>
+                                                    <TableCell align="right"><TextField multiline style={longText}
+                                            id='outlined-size-small' ></TextField></TableCell>
+                                                    <TableCell align="right"><TextField multiline style={longText}
+                                            id='outlined-size-small' ></TextField></TableCell>
+                                                    <TableCell align="right"> 
+                                                    <input
+                                                        type="checkbox"
+                                                        value="check1"
+                                                        checked={checkboxValue === "check1"}
+                                                        onChange={handleCheck}
+                                                        disabled={isDisabled}
+                                                    />
+                                                    </TableCell>
+                                                    <TableCell align="right">
+                                                    <input
+                                                        type="checkbox"
+                                                        value="check2"
+                                                        checked={checkboxValue === "check2"}
+                                                        onChange={handleCheck}
+                                                        disabled={isDisabled}
+                                                    />
+                                                    </TableCell>
+                                                </TableRow>
+                                            )
+                                        }
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </div>
                     </TabPanel>
                 </Box>
             </FormControl>
