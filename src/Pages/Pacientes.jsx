@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import useDebounceEffect from "../utils/hooks/useDebounceEffect";
 import { useDispatch } from "react-redux";
 import { pushDialog } from "../slices/dialogSlice";
+import { useNavigate } from "react-router";
 
 const pacientesMock = [
   {
@@ -37,6 +38,7 @@ const PacientesTable = () => {
   const { register, watch } = useForm();
 
   const formData = watch();
+  const navigate = useNavigate();
 
   useDebounceEffect(
     () => {
@@ -83,7 +85,7 @@ const PacientesTable = () => {
                 <TableCell align="left">{paciente.ultima_cita}</TableCell>
                 <TableCell align="left">
                   <IconButton>
-                    <Icon color="primary">edit_square</Icon>
+                    <Icon color="primary" onClick={()=>navigate("/patient")}>edit_square</Icon>
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -104,7 +106,7 @@ const Pacientes = () => {
         <Icon color="primary">groups</Icon>
         <Typography variant="h5">Pacientes</Typography>
         <Box flexGrow={1} />
-        <IconButton onClick={() => dispatch(pushDialog({ id: "PLACEHOLDER" }))}>
+        <IconButton onClick={() => dispatch(pushDialog({id: "PATIENT_INFO"}))}>
           <Icon color="primary">add_circle</Icon>
         </IconButton>
       </Box>
