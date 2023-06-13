@@ -15,6 +15,7 @@ const useDebounceEffect = (callback, delay, dependencies) => {
     return () => {
       clearTimeout(timerRef.current);
     };
+    // eslint-disable-next-line
   }, dependencies);
 };
 
