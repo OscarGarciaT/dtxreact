@@ -1,5 +1,10 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import {
+  CssBaseline,
+  StyledEngineProvider,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 
 import store from "./reducer/store";
 import AppRouter from "./Components/AppRouter";
@@ -7,6 +12,28 @@ import { Provider } from "react-redux";
 import DialogStack from "./dialog/DialogStack";
 
 const theme = createTheme({
+  components: {
+    MuiPopover: {
+      defaultProps: {
+        container: () => document.getElementById("root"),
+      },
+    },
+    MuiPopper: {
+      defaultProps: {
+        container: () => document.getElementById("root"),
+      },
+    },
+    MuiDialog: {
+      defaultProps: {
+        container: () => document.getElementById("root"),
+      },
+    },
+    MuiModal: {
+      defaultProps: {
+        container: () => document.getElementById("root"),
+      },
+    },
+  },
   palette: {
     mode: "light",
     primary: {
@@ -29,11 +56,13 @@ function App() {
   return (
     <Provider store={store}>
       <Router>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <AppRouter />
-          <DialogStack />
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <AppRouter />
+            <DialogStack />
+          </ThemeProvider>
+        </StyledEngineProvider>
       </Router>
     </Provider>
   );

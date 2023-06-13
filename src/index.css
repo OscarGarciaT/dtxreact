@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
-@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -8,10 +7,6 @@
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #fff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

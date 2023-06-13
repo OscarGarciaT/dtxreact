@@ -85,7 +85,9 @@ const PacientesTable = () => {
                 <TableCell align="left">{paciente.ultima_cita}</TableCell>
                 <TableCell align="left">
                   <IconButton>
-                    <Icon color="primary" onClick={()=>navigate("/patient")}>edit_square</Icon>
+                    <Icon color="primary" onClick={() => navigate("/patient")}>
+                      edit_square
+                    </Icon>
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -106,7 +108,9 @@ const Pacientes = () => {
         <Icon color="primary">groups</Icon>
         <Typography variant="h5">Pacientes</Typography>
         <Box flexGrow={1} />
-        <IconButton onClick={() => dispatch(pushDialog({id: "PATIENT_INFO"}))}>
+        <IconButton
+          onClick={() => dispatch(pushDialog({ id: "CREATE_PATIENT_VIEW" }))}
+        >
           <Icon color="primary">add_circle</Icon>
         </IconButton>
       </Box>

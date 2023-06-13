@@ -4,12 +4,12 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'dental-stock': "url('/Images/tooth.jpg')",
+        "dental-stock": "url('/Images/tooth.jpg')",
       },
       colors: {
-        'cakepurple': '#33b3a6',
-        'aquablue':   '#40e0d0', 
-        'dental-green': '#058789',
+        cakepurple: "#33b3a6",
+        aquablue: "#40e0d0",
+        "dental-green": "#058789",
       },
     },
   },
