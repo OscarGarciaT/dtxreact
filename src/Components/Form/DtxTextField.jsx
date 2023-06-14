@@ -1,13 +1,22 @@
 import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-const DtxTextField = ({ control, name, ...props }) => {
+const DtxTextField = ({ control, name, required, ...props }) => {
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field }) => (
-        <TextField onChange={field.onChange} value={field.value} {...props} />
+      rules={{ required: required }}
+      defaultValue={""}
+      render={({ field, fieldState: { invalid, error } }) => (
+        <TextField
+          required={required}
+          error={invalid}
+          helperText={error?.message}
+          inputRef={field.ref}
+          {...field}
+          {...props}
+        />
       )}
     />
   );

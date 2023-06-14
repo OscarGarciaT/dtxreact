@@ -84,10 +84,8 @@ const PacientesTable = () => {
                 <TableCell align="left">{paciente.telefono}</TableCell>
                 <TableCell align="left">{paciente.ultima_cita}</TableCell>
                 <TableCell align="left">
-                  <IconButton>
-                    <Icon color="primary" onClick={() => navigate("/patient")}>
-                      edit_square
-                    </Icon>
+                  <IconButton onClick={() => navigate("/patient")}>
+                    <Icon color="primary">edit_square</Icon>
                   </IconButton>
                 </TableCell>
               </TableRow>
