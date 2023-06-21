@@ -1,11 +1,11 @@
-import PatientCreation from "../Pages/PatientCreation";
 import Placeholder from "../Pages/Placeholder";
 import PatientInfo from "../Pages/PatientInfo";
+import PatientCreationNew from "../Pages/PatientCreationNew";
 
 export const registry = {
   PLACEHOLDER: Placeholder,
   PATIENT_INFO: PatientInfo,
-  CREATE_PATIENT_VIEW: PatientCreation,
+  CREATE_PATIENT_VIEW: PatientCreationNew,
 };
 
 export const dialogTitles = {
