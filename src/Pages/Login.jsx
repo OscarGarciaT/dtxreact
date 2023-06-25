@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button,
@@ -25,7 +26,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm({ mode: "onSubmit", defaultValues: testLogin });
+  } = useForm({ mode: "onSubmit" });
 
   const emailValidation = {
     required: "Email is required",
