@@ -31,7 +31,7 @@ const CpoIndices = ({ control, watch }) => {
     return (
         <div>
 
-            <div className='flex flex-row justify-center' component={Paper} >
+            <div className='flex flex-row justify-center items-center ' component={Paper} >
                 <TableContainer sx={{ maxWidth: "100%", textAlign: 'center' }}>
                     <TableRow>
                         <TableCell align='center' rowSpan={2}>D</TableCell>

@@ -1,6 +1,5 @@
 import Placeholder from "../Pages/Placeholder";
 import PatientInfo from "../Pages/PatientInfo";
-//import PatientCreationNew from "../Pages/PatientCreationNew";
 import PatientCreation from "../Pages/PatientCreation";
 
 export const registry = {
