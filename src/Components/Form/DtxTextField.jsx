@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-const DtxTextField = ({ control, name, required, pattern, patternMessage, ...props }) => {
+const DtxTextField = ({ control, name, required, pattern, patternMessage, defaultValue, ...props }) => {
   return (
     <Controller
       name={name}
@@ -13,7 +13,7 @@ const DtxTextField = ({ control, name, required, pattern, patternMessage, ...pro
           message: patternMessage
         }
       }}
-      defaultValue={""}
+      defaultValue={defaultValue}
       render={({ field, fieldState: { invalid, error } }) => (
         <TextField
           className='w-20'
