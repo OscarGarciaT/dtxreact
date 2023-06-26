@@ -29,7 +29,7 @@ import { Controller, useForm } from 'react-hook-form';
 import SOralHigiene from "../Components/Table/SimplifiedOralHigene";
 import CpoIndices from '../Components/Table/CpoIndices';
 
-const DtxTextField = ({ control, name, required, ...props }) => {
+const CustomTextField = ({ control, name, required, ...props }) => {
   return (
     <Controller
       name={name}
@@ -102,65 +102,71 @@ const PatientInfo = () => {
 
   const [isDisabled, setIsDisabled] = React.useState(false);
   const [checkboxValue, setCheckboxValue] = React.useState();
-  const handleCheck = e => {
-    setCheckboxValue(e.target.value);
-    setIsDisabled(true);
-  };
-
   const numeros = [1, 2, 3, 4];
 
   const tratamientos = [{
-    sesion: 1,
-    fecha: new Date('Jul 12 2021'),
-    diagnostico: "K036",
-    procedimiento: "D1110, D4910",
-    prescripciones: "",
-    codigo: "",
-    firma: "Nicole Ávila"
+    session: 1,
+    date: (new Date('Jul 12 2021')).toString(),
+    diag: "K036",
+    proced: "D1110, D4910",
+    pres: "",
+    code: "",
+    sign: "Nicole Ávila"
   }, {
-    sesion: 2,
-    fecha: new Date('Jul 20 2021'),
-    diagnostico: "K021 pieza#11",
-    procedimiento: "D2331",
-    prescripciones: "",
-    codigo: "",
-    firma: "Nicole Ávila"
+    session: 2,
+    date: (new Date('Jul 12 2021')).toString(),
+    diag: "K021 pieza#11",
+    proced: "D2331",
+    pres: "",
+    code: "",
+    sign: "Nicole Ávila"
   }, {
-    sesion: 3,
-    fecha: new Date('Jul 30 2021'),
-    diagnostico: "K036",
-    procedimiento: "D1110, D4910",
-    prescripciones: "",
-    codigo: "",
-    firma: "Nicole Ávila"
+    session: 3,
+    date: (new Date('Jul 12 2021')).toString(),
+    diag: "K036",
+    proced: "D1110, D4910",
+    pres: "",
+    code: "",
+    sign: "Nicole Ávila"
   }];
+
+  const [session, setSession] = useState('');
+  const [date, setDate] = useState('');
+  const [diag, setDiag] = useState('');
+  const [proced, setProced] = useState('');
+  const [pres, setPres] = useState('');
+  const [code, setCode] = useState('');
+  const [sign, setSign] = useState('');
+  const [rTratamientos, setRTratamientos] = useState(tratamientos)
+
+  const addTreatmentRow = () => {
+    const tratamiento = {
+      session: session,
+      date: date,
+      diag: diag,
+      proced: proced,
+      pres: pres,
+      code: code,
+      sign: sign,
+    };
+    addTreatment(tratamiento);
+  };
+
+  const addTreatment = (tratamiento) => {
+    console.log('Tratamiento:', tratamiento);
+    const newTratamientos = [...rTratamientos, tratamiento];
+    setRTratamientos(newTratamientos);
+    console.log(newTratamientos);
+  };
+
+
+
 
 
   const [showResults, setShowResults] = React.useState(false);
 
   const { control, watch } = useForm();
 
-  const Results = () => (
-    <div>
-      <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-        <TableRow>
-          <TableCell component="th" scope="row"><TextField multiline label="Sesion" id='outlined-size-small' ></TextField></TableCell>
-          <TableCell align="right">FECHA</TableCell>
-          <TableCell align="right"><input type="date"></input></TableCell>
-        </TableRow>
-        <TableCell align="right" label="diagnosticos" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
-        <TableCell align="right" label="procedimientos" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
-        <TableCell align="right" label="prescripciones" id='outlined-size-small'><TextField multiline style={longText} id='outlined-size-small' ></TextField></TableCell>
-        <TableRow>
-          <TableCell className="border border-slate-300"><TextField label="Código" id='outlined-size-small' ></TextField></TableCell>
-          <TableCell className="border border-slate-300" align="right"><TextField label="Firma" defaultValue="Nicole Ávila"></TextField></TableCell>
-        </TableRow>
-      </TableRow>
-      <Button variant="contained" endIcon={<SendIcon />}>
-        Guardar registro
-      </Button>
-    </div>
-  )
 
   return (
     <div className='ml-3'>
@@ -254,7 +260,7 @@ const PatientInfo = () => {
                   1. Motivo de consulta
                 </Typography>
                 <TextField hiddenLabel multiline style={longText}
-                  id='outlined-size-small' defaultValue={"Vengo a hacerme una limpieza"}></TextField>
+                  defaultValue={"Vengo a hacerme una limpieza"}></TextField>
               </div>
               <div id="currentDiseaseOrProblem">
                 <Typography
@@ -265,7 +271,7 @@ const PatientInfo = () => {
                   2. Enfermedad o Problema actual
                 </Typography>
                 <TextField hiddenLabel multiline style={longText}
-                  id='outlined-size-small' defaultValue={"Asintomático"}></TextField>
+                  defaultValue={"Asintomático"}></TextField>
               </div>
               <div id="familyHistory">
                 <Typography
@@ -294,7 +300,7 @@ const PatientInfo = () => {
 
                 <TextField
                   hiddenLabel multiline style={longText}
-                  id='outlined-size-small'
+
                   defaultValue={"No refiere antecedentes personales"}
                 >
                 </TextField>
@@ -309,14 +315,14 @@ const PatientInfo = () => {
                 </Typography>
                 <br />
                 <div className="flex flex-row gap-5 ">
-                  <TextField label="Presión Arterial" id='outlined-size-small' defaultValue={"144/70"}></TextField>
-                  <TextField label="Frecuencia Cardiaca" id='outlined-size-small' defaultValue={"60"}></TextField>
-                  <TextField label="Temperatura C°" id='outlined-size-small' defaultValue={"36.7"}></TextField>
-                  <TextField label="F. Respiratoria/min" id='outlined-size-small' defaultValue={"15"}></TextField>
+                  <TextField label="Presión Arterial" defaultValue={"144/70"}></TextField>
+                  <TextField label="Frecuencia Cardiaca" defaultValue={"60"}></TextField>
+                  <TextField label="Temperatura C°" defaultValue={"36.7"}></TextField>
+                  <TextField label="F. Respiratoria/min" defaultValue={"15"}></TextField>
                 </div>
 
                 <br />
-                <TextField multiline label="Anotaciones" id='outlined-size-small' style={longText}></TextField>
+                <TextField multiline label="Anotaciones" style={longText}></TextField>
               </div>
               <div id="examinationStomatognathicSystem">
                 <Typography
@@ -343,7 +349,7 @@ const PatientInfo = () => {
                 <TextField
                   multiline label="Anotaciones"
                   style={longText}
-                  id='outlined-size-small'
+
                 ></TextField>
               </div>
               <div id="odontogram">
@@ -414,7 +420,7 @@ const PatientInfo = () => {
               <FormControlLabel control={<Checkbox />} label="Rayos-x" />
               <FormControlLabel control={<Checkbox />} label="Otros" />
               <TextField multiline label="Anotaciones" style={longText}
-                id='outlined-size-small' ></TextField>
+              ></TextField>
             </div>
 
             <div id="diagnostico">
@@ -432,35 +438,25 @@ const PatientInfo = () => {
                       <TableCell>#</TableCell>
                       <TableCell align="center">PRE=PRESUNTIVO / DEF=DEFINITIVO</TableCell>
                       <TableCell align="center">CIE</TableCell>
-                      <TableCell align="right">PRE</TableCell>
-                      <TableCell align="right">DEF</TableCell>
+                      <TableCell align="center">PRE/DEF</TableCell>
+
                     </TableRow>
                   </TableHead>
                   <TableBody>{
                     numeros.map((row, i) =>
                       <TableRow key={i} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                         <TableCell component="th" scope="row">{row}</TableCell>
-                        <TableCell align="right"><TextField multiline style={longText}
-                          id='outlined-size-small' ></TextField></TableCell>
-                        <TableCell align="right"><TextField multiline style={longText}
-                          id='outlined-size-small' ></TextField></TableCell>
-                        <TableCell align="right">
-                          <input
-                            type="checkbox"
-                            value="check1"
-                            checked={checkboxValue === "check1"}
-                            onChange={handleCheck}
-                            disabled={isDisabled}
-                          />
-                        </TableCell>
-                        <TableCell align="right">
-                          <input
-                            type="checkbox"
-                            value="check2"
-                            checked={checkboxValue === "check2"}
-                            onChange={handleCheck}
-                            disabled={isDisabled}
-                          />
+                        <TableCell align="right"><TextField style={longText} /></TableCell>
+                        <TableCell align="right"><TextField style={longText} /></TableCell>
+                        <TableCell className='flex flex-col items-center justify-center'>
+                          <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                          >
+                            <FormControlLabel value="1" control={<Radio />} label="Pre" />
+                            <FormControlLabel value="2" control={<Radio />} label="Def" />
+                          </RadioGroup>
                         </TableCell>
                       </TableRow>
                     )
@@ -470,24 +466,25 @@ const PatientInfo = () => {
               </TableContainer>
             </div>
             <br></br>
-            <div id="datos">
+            <div id="datosOdontólogo">
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                   <TableBody align="center">
                     <TableRow>
-                      <TableCell className="border border-slate-300">Fecha de apertura</TableCell>
-                      <TableCell className="border border-slate-300" align="right"><input type="date"></input></TableCell>
-                      <TableCell className="border border-slate-300" align="right">Fecha de control</TableCell>
-                      <TableCell className="border border-slate-300" align="right"><input type="date"></input></TableCell>
-                      <TableCell className="border border-slate-300" align="right">Profesional</TableCell>
-                      <TableCell className="border border-slate-300" align="right"><TextField defaultValue="Nicole Ávila"></TextField></TableCell>
+                      <TableCell>Fecha de apertura</TableCell>
+                      <TableCell >Fecha de control</TableCell>
+                      <TableCell >Profesional</TableCell>
+                      <TableCell >Código</TableCell>
+                      <TableCell >Firma</TableCell>
+                      <TableCell >Número de hoja</TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell className="border border-slate-300"><TextField label="Código" id='outlined-size-small' ></TextField></TableCell>
-                      <TableCell className="border border-slate-300" align="right">Firma</TableCell>
-                      <TableCell className="border border-slate-300" align="right"><TextField defaultValue="Nicole Ávila"></TextField></TableCell>
-                      <TableCell className="border border-slate-300" align="right">Número de hoja</TableCell>
-                      <TableCell className="border border-slate-300" align="right"><input type="number"></input></TableCell>
+                      <TableCell ><input type="date" className='h-10' /></TableCell>
+                      <TableCell ><input type="date" className='h-10' /></TableCell>
+                      <TableCell ><TextField></TextField></TableCell>
+                      <TableCell ><TextField label="Código" ></TextField></TableCell>
+                      <TableCell ><TextField defaultValue="Nicole Ávila"  ></TextField></TableCell>
+                      <TableCell ><input type="number" className='h-10' /></TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -504,50 +501,73 @@ const PatientInfo = () => {
                 >
                   12. Tratamiento
                 </Typography>
-                <IconButton aria-label="add" onClick={() => { setShowResults(true); }}>
-                  <AddCircleIcon />
-                </IconButton>
               </Stack>
               <br></br>
               <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                  <TableHead>
+                  <TableBody><div>
                     <TableRow>
-                      <TableCell align="center">SESIÓN Y FECHA</TableCell>
+                      <TableCell align="center">SESIÓN</TableCell>
+                      <TableCell align="center">FECHA</TableCell>
                       <TableCell align="center">DIAGNOSTICOS Y COMPLICACIONES</TableCell>
                       <TableCell align="center">PROCEDIMIENTOS</TableCell>
                       <TableCell align="center">PRESCRIPCIONES</TableCell>
-                      <TableCell align="center">CÓDIGO Y FIRMA</TableCell>
+                      <TableCell align="center">CÓDIGO </TableCell>
+                      <TableCell align="center">FIRMA </TableCell>
                     </TableRow>
-                  </TableHead>
-                  <TableBody>{
-                    tratamientos.map((row, index) =>
-                      <TableRow align="center" key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableRow>
-                          <TableCell component="th" scope="row">{row.sesion}</TableCell>
-                          <TableCell align="right">FECHA</TableCell>
-                          <TableCell align="right">{row.fecha.toDateString()}</TableCell>
-                        </TableRow>
-
-                        <TableCell label="diagnosticos" id='outlined-size-small'>{row.diagnostico}</TableCell>
-                        <TableCell label="procedimientos" id='outlined-size-small'>{row.procedimiento}</TableCell>
-                        <TableCell align="center" label="prescripciones" id='outlined-size-small'>{row.prescripciones}</TableCell>
-                        <TableRow>
-                          <TableCell align="center">{row.codigo}</TableCell>
-                          <TableCell align="right">{row.firma}</TableCell>
-                        </TableRow>
+                    {rTratamientos.map((row, index) => (
+                      < TableRow align="center" key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell component="th" scope="row">{row.session}</TableCell>
+                        <TableCell align="right">{row.date}</TableCell>
+                        <TableCell>{row.diag}</TableCell>
+                        <TableCell>{row.proced}</TableCell>
+                        <TableCell align="center">{row.pres}</TableCell>
+                        <TableCell align="center">{row.code}</TableCell>
+                        <TableCell align="right">{row.sign}</TableCell>
                       </TableRow>
-                    )
-                  }
+                    ))}
+                  </div>
                   </TableBody>
                 </Table>
               </TableContainer>
-              <div>{showResults ? <Results /> : null}</div>
+              <div>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                    <TableRow className='flex flex-row items-center justify-center'>
+                      <TableCell component="th" scope="row">
+                        <TextField multiline label="Sesion" value={session} onChange={(event) => setSession(event.target.value)} />
+                      </TableCell>
+                      <TableCell align="right">
+                        <input type="date" className='h-10' value={date} onChange={(event) => setDate(event.target.value ? event.target.value : new Date())} />
+                      </TableCell>
+                      <TableCell align="right" label="diagnosticos">
+                        <TextField multiline style={longText} value={diag} onChange={(event) => setDiag(event.target.value)} />
+                      </TableCell>
+                      <TableCell align="right" label="procedimientos">
+                        <TextField multiline style={longText} value={proced} onChange={(event) => setProced(event.target.value)} />
+                      </TableCell>
+                      <TableCell align="right" label="prescripciones">
+                        <TextField multiline style={longText} value={pres} onChange={(event) => setPres(event.target.value)} />
+                      </TableCell>
+                      <TableCell>
+                        <TextField label="Código" value={code} onChange={(event) => setCode(event.target.value)} />
+                      </TableCell>
+                      <TableCell align="right">
+                        <TextField label="Firma" defaultValue="Nicole Ávila" value={sign} onChange={(event) => setSign(event.target.value)} />
+                      </TableCell>
+                      <Button variant="contained" onClick={addTreatmentRow}>
+                        <SendIcon />
+                      </Button>
+                    </TableRow>
+                  </Table>
+                </TableContainer>
+
+              </div>
             </div>
           </TabPanel>
         </Box>
       </FormControl>
-    </div>
+    </div >
   );
 }
 
