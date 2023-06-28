@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Box,
   Divider,
@@ -18,7 +17,8 @@ import { useForm } from "react-hook-form";
 import useDebounceEffect from "../utils/hooks/useDebounceEffect";
 import { useDispatch } from "react-redux";
 import { pushDialog } from "../slices/dialogSlice";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import usePatients from "../utils/hooks/usePatients";
 
 const pacientesMock = [
   {
@@ -35,18 +35,19 @@ const pacientesMock = [
   },
 ];
 
-const PacientesTable = () => {
+const PacientesTable = ({ handleEditPatient }) => {
+  const [searchQuery, setSearchQuery] = useState("");
   const { register, watch } = useForm();
+  const search = watch("search");
 
-  const formData = watch();
-  const navigate = useNavigate();
+  const patients = usePatients(searchQuery);
 
   useDebounceEffect(
     () => {
-      console.log(formData);
+      setSearchQuery(search);
     },
     350,
-    [formData]
+    [search]
   );
 
   return (
@@ -78,21 +79,33 @@ const PacientesTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {pacientesMock.map((paciente, index) => (
-              <TableRow key={index}>
-                <TableCell align="left">{paciente.nombres}</TableCell>
-                <TableCell align="left">{paciente.apellidos}</TableCell>
-                <TableCell align="left">{paciente.telefono}</TableCell>
-                <TableCell align="left">{paciente.ultima_cita}</TableCell>
-                <TableCell align="left">
-                  <IconButton>
-                    <Icon data-testid="edit-button-s" color="primary" onClick={() => navigate("/patient")}>
-                      edit_square
-                    </Icon>
-                  </IconButton>
+            {!patients.length ? (
+              <TableRow>
+                <TableCell colSpan={4}>
+                  <div className="w-full flex justify-center">
+                    <Typography variant="caption">
+                      No se han registrado pacientes
+                    </Typography>
+                  </div>
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              patients?.map((paciente, index) => (
+                <TableRow key={index}>
+                  <TableCell align="left">{paciente?.nombres}</TableCell>
+                  <TableCell align="left">{paciente?.apellidos}</TableCell>
+                  <TableCell align="left">{paciente?.celular}</TableCell>
+                  <TableCell align="left">{paciente?.ultima_cita}</TableCell>
+                  <TableCell align="left">
+                    <IconButton onClick={() => handleEditPatient(paciente)}>
+                      <Icon data-testid="edit-button-s" color="primary">
+                        edit_square
+                      </Icon>
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -103,21 +116,28 @@ const PacientesTable = () => {
 const Pacientes = () => {
   const dispatch = useDispatch();
 
+  const handleCreatePatient = () => {
+    dispatch(
+      pushDialog({ id: "CREATE_PATIENT_VIEW", props: { mode: "CREATE" } })
+    );
+  };
+
+  const handleEditPatient = (patientData) => {
+    dispatch(pushDialog({ id: "EDIT_PATIENT_VIEW", props: { mode: "EDIT", patientData } }));
+  };
+
   return (
     <Box padding={3} display="flex" flexDirection="column">
       <Box display="flex" alignItems="center" columnGap={2} paddingBottom={1}>
         <Icon color="primary">groups</Icon>
         <Typography variant="h5">Pacientes</Typography>
         <Box flexGrow={1} />
-        <IconButton
-          onClick={() => dispatch(pushDialog({ id: "CREATE_PATIENT_VIEW" }))}
-          data-testid="add-button"
-        >
+        <IconButton onClick={handleCreatePatient} data-testid="add-button">
           <Icon color="primary">add_circle</Icon>
         </IconButton>
       </Box>
       <Divider />
-      <PacientesTable />
+      <PacientesTable handleEditPatient={handleEditPatient} />
     </Box>
   );
 };

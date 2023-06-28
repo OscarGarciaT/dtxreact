@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import DtxTextField from '../Form/DtxTextField';
+
 import { TextField } from '@mui/material';
 
 
-const CpoIndices = ({ control, watch }) => {
-    const [sumRowD, setSumRowD] = useState(0);
-    const [sumRowd, setSumRowd] = useState(0);
-
-    const rowD = watch(["DC1", "DP", "DO"])
-    const rowd = watch(["dc2", "de", "do"])
+const CpoIndices = ({ control, watch, setValue }) => {
+    const rowD = watch(["indices_cpo_cbo.rowD.DC1", "indices_cpo_cbo.rowD.DP", "indices_cpo_cbo.rowD.DO"])
+    const rowd = watch(["indices_cpo_cbo.rowd.dc2", "indices_cpo_cbo.rowd.de", "indices_cpo_cbo.rowd.do"])
 
     const sumarFila = () => {
         const sumRowD = rowD.reduce((acum, num) => {
@@ -22,16 +19,17 @@ const CpoIndices = ({ control, watch }) => {
         const sumRowd = rowd.reduce((acum, num) => {
             return (Number(acum) || 0) + (Number(num) || 0)
         }, 0);
-        setSumRowD(sumRowD)
-        setSumRowd(sumRowd)
+        setValue("indices_cpo_cbo.total_rowD",sumRowD)
+        setValue("indices_cpo_cbo.total_rowd",sumRowd)
     }
+    
     useEffect(() => { sumarFila() }, [rowD, rowd])
 
 
     return (
         <div>
 
-            <div className='flex flex-row justify-center items-center ' component={Paper} >
+            <div className='flex flex-row justify-center items-center'>
                 <TableContainer sx={{ maxWidth: "100%", textAlign: 'center' }}>
                     <TableRow>
                         <TableCell align='center' rowSpan={2}>D</TableCell>
@@ -41,10 +39,10 @@ const CpoIndices = ({ control, watch }) => {
                         <TableCell align='center'>Total</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell align='center'><DtxTextField control={control} name={"DC1"} /></TableCell>
-                        <TableCell align='center'><DtxTextField control={control} name={"DP"} /></TableCell>
-                        <TableCell align='center'><DtxTextField control={control} name={"DO"} /></TableCell>
-                        <TableCell align='center'><TextField variant="outlined" value={sumRowD} className='w-20' /></TableCell>
+                        <TableCell align='center'><DtxTextField className='w-20' control={control} name={"indices_cpo_cbo.rowD.DC1"} /></TableCell>
+                        <TableCell align='center'><DtxTextField className='w-20' control={control} name={"indices_cpo_cbo.rowD.DP"} /></TableCell>
+                        <TableCell align='center'><DtxTextField className='w-20' control={control} name={"indices_cpo_cbo.rowD.DO"} /></TableCell>
+                        <TableCell align='center'><DtxTextField className='w-20' control={control} name={"indices_cpo_cbo.total_rowD"} /></TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align='center' rowSpan={2}>d</TableCell>
@@ -54,10 +52,10 @@ const CpoIndices = ({ control, watch }) => {
                         <TableCell align='center'>Total</TableCell>
                     </TableRow>
                     <TableRow>
-                        <TableCell align='center'><DtxTextField control={control} name={"dc2"} /></TableCell>
-                        <TableCell align='center'><DtxTextField control={control} name={"de"} /></TableCell>
-                        <TableCell align='center'><DtxTextField control={control} name={"do"} /></TableCell>
-                        <TableCell align='center'><TextField variant="outlined" value={sumRowd} className='w-20' /></TableCell>
+                        <TableCell align='center'><DtxTextField className='w-20' control={control} name={"indices_cpo_cbo.rowd.dc2"} /></TableCell>
+                        <TableCell align='center'><DtxTextField className='w-20' control={control} name={"indices_cpo_cbo.rowd.de"} /></TableCell>
+                        <TableCell align='center'><DtxTextField className='w-20' control={control} name={"indices_cpo_cbo.rowd.do"} /></TableCell>
+                        <TableCell align='center'><DtxTextField className='w-20' control={control} name={"indices_cpo_cbo.total_rowd"}/></TableCell>
                     </TableRow>
                 </TableContainer>
             </div>

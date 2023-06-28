@@ -1,179 +1,436 @@
-import React, { useState } from 'react';
-import { TextField } from '@mui/material';
-import { useForm, useController } from 'react-hook-form';
-import { useEffect } from 'react';
-import { Controller } from 'react-hook-form';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import ButtonGroup from '../ButtonGroup';
-import DtxTextField from '../Form/DtxTextField';
+import { useCallback, useState, useEffect } from "react";
 
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
+import DtxTextField from "../Form/DtxTextField";
+import DtxButtonGroup from "../Form/DtxButtonGroup";
 
+const SimplifiedOralHigene = ({ control, watch, setValue }) => {
+  const [totalDivision, setTotalDivision] = useState(1);
 
-const SimplifiedOralHigene = ({ control, watch }) => {
+  const piezas_dentales_r1 = watch(
+    "salud_bucal.tabla_higiene.piezas_dentales_r1"
+  );
 
-    const [sumaCol1, setSumaCol1] = useState(0);
-    const [sumaCol2, setSumaCol2] = useState(0);
-    const [sumaCol3, setSumaCol3] = useState(0);
-    const [totalDivision, setTotalDivision] = useState(0)
+  const piezas_dentales_r2 = watch(
+    "salud_bucal.tabla_higiene.piezas_dentales_r2"
+  );
 
-    const [enableRow1, setEnableRow1] = useState(true)
-    const [enableRow2, setEnableRow2] = useState(true)
-    const [enableRow3, setEnableRow3] = useState(true)
-    const [enableRow4, setEnableRow4] = useState(true)
-    const [enableRow5, setEnableRow5] = useState(true)
-    const [enableRow6, setEnableRow6] = useState(true)
+  const piezas_dentales_r3 = watch(
+    "salud_bucal.tabla_higiene.piezas_dentales_r3"
+  );
 
+  const piezas_dentales_r4 = watch(
+    "salud_bucal.tabla_higiene.piezas_dentales_r4"
+  );
 
+  const piezas_dentales_r5 = watch(
+    "salud_bucal.tabla_higiene.piezas_dentales_r5"
+  );
 
-    const numbersCol1 = watch(['c1r1', 'c1r2', 'c1r3', 'c1r4', 'c1r5', 'c1r6', 'c2r1', 'c2r2', 'c2r3', 'c2r4', 'c2r5', 'c2r6', 'c3r1', 'c3r2', 'c3r3', 'c3r4', 'c3r5', 'c3r6']);
+  const piezas_dentales_r6 = watch(
+    "salud_bucal.tabla_higiene.piezas_dentales_r6"
+  );
 
-    const showRow1 = () => {
-        if (enableRow1) {
-            setTotalDivision(totalDivision + 1)
-        }
-        setEnableRow1(false);
-    }
+  const placa = watch([
+    "salud_bucal.tabla_higiene.placa.c1r1",
+    "salud_bucal.tabla_higiene.placa.c1r2",
+    "salud_bucal.tabla_higiene.placa.c1r3",
+    "salud_bucal.tabla_higiene.placa.c1r4",
+    "salud_bucal.tabla_higiene.placa.c1r5",
+    "salud_bucal.tabla_higiene.placa.c1r6",
+  ]);
 
-    const showRow2 = () => {
-        if (enableRow2) {
-            setTotalDivision(totalDivision + 1)
-        }
-        setEnableRow2(false);
-    }
+  const calculo = watch([
+    "salud_bucal.tabla_higiene.calculo.c2r1",
+    "salud_bucal.tabla_higiene.calculo.c2r2",
+    "salud_bucal.tabla_higiene.calculo.c2r3",
+    "salud_bucal.tabla_higiene.calculo.c2r4",
+    "salud_bucal.tabla_higiene.calculo.c2r5",
+    "salud_bucal.tabla_higiene.calculo.c2r6",
+  ]);
 
-    const showRow3 = () => {
-        if (enableRow3) {
-            setTotalDivision(totalDivision + 1)
-        }
-        setEnableRow3(false);
-    }
+  const gingivitis = watch([
+    "salud_bucal.tabla_higiene.gingivitis.c3r1",
+    "salud_bucal.tabla_higiene.gingivitis.c3r2",
+    "salud_bucal.tabla_higiene.gingivitis.c3r3",
+    "salud_bucal.tabla_higiene.gingivitis.c3r4",
+    "salud_bucal.tabla_higiene.gingivitis.c3r5",
+    "salud_bucal.tabla_higiene.gingivitis.c3r6",
+  ]);
 
-    const showRow4 = () => {
-        if (enableRow4) {
-            setTotalDivision(totalDivision + 1)
-        }
-        setEnableRow4(false);
-    }
+  useEffect(() => {
+    const piezas_dentales_habilitadas = [
+      piezas_dentales_r1,
+      piezas_dentales_r2,
+      piezas_dentales_r3,
+      piezas_dentales_r4,
+      piezas_dentales_r5,
+      piezas_dentales_r6,
+    ];
+    const newTotalDivision =
+      piezas_dentales_habilitadas.filter(Boolean).length + 1;
+    setTotalDivision(newTotalDivision);
+  }, [
+    piezas_dentales_r1,
+    piezas_dentales_r2,
+    piezas_dentales_r3,
+    piezas_dentales_r4,
+    piezas_dentales_r5,
+    piezas_dentales_r6,
+  ]);
 
-    const showRow5 = () => {
-        if (enableRow5) {
-            setTotalDivision(totalDivision + 1)
-        }
-        setEnableRow5(false);
-    }
+  const sumarCeldas = useCallback(
+    (values) => {
+      const total = values.reduce((acc, curr) => {
+        return acc + (Number(curr) || 0);
+      }, 0);
+      const totalConDivision = (total / totalDivision).toFixed(2);
+      return totalConDivision;
+    },
+    [totalDivision]
+  );
 
-    const showRow6 = () => {
-        if (enableRow6) {
-            setTotalDivision(totalDivision + 1)
-        }
-        setEnableRow6(false);
-    }
+  useEffect(() => {
+    const totalPlaca = sumarCeldas(placa);
+    setValue("salud_bucal.tabla_higiene.placa.total_placa", totalPlaca);
+    // eslint-disable-next-line
+  }, [placa]);
 
-    const actualizarSuma = () => {
-        const sumaCol1 = numbersCol1.slice(0, 6).reduce((acum, num) => {
-            return (Number(acum) || 0) + (Number(num) || 0)
-        }, 0);
-        const sumaCol2 = numbersCol1.slice(6, 12).reduce((acum, num) => {
-            return (Number(acum) || 0) + (Number(num) || 0)
-        }, 0);
-        const sumaCol3 = numbersCol1.slice(12,).reduce((acum, num) => {
-            return (Number(acum) || 0) + (Number(num) || 0)
-        }, 0);
-        setSumaCol1((sumaCol1 / (totalDivision || 1)).toFixed(2));
-        setSumaCol2((sumaCol2 / (totalDivision || 1)).toFixed(2));
-        setSumaCol3((sumaCol3 / (totalDivision || 1)).toFixed(2));
-    }
+  useEffect(() => {
+    const totalCalculo = sumarCeldas(calculo);
+    setValue("salud_bucal.tabla_higiene.calculo.total_calculo", totalCalculo);
+    // eslint-disable-next-line
+  }, [calculo]);
 
-    useEffect(() => {
-        actualizarSuma();
-    }, [numbersCol1])
-
-
-    return (
-
-        <TableContainer component={Paper} sx={{ maxWidth: "100%", textAlign: 'center' }} className="flex flex-row  items-center  justify-center" >
-            <TableHead>
-                <TableRow>
-                    <TableCell align="center" colSpan={9}>
-                        Higiene Oral Simplificada
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell align='center'>Piezas Dentales</TableCell>
-                    <TableCell align="right">Placa 0-1-2-3-4</TableCell>
-                    <TableCell align="right">Cálculo 0-1-2-3</TableCell>
-                    <TableCell lign="right">Gingitivitis 0-1</TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell><ButtonGroup
-                        buttons={["16", "17", "55"]}
-                        doSomethingAfterClick={showRow1}
-                        name={"row1"}
-                    /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c1r1"} disabled={enableRow1} defaultValue={0} pattern={"^[1-4]$"} patternMessage={"Err"} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c2r1"} disabled={enableRow1} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c3r1"} disabled={enableRow1} defaultValue={0} /></TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell><ButtonGroup
-                        buttons={["11", "21", "51"]}
-                        doSomethingAfterClick={showRow2}
-                    /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c1r2"} disabled={enableRow2} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c2r2"} disabled={enableRow2} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c3r2"} disabled={enableRow2} defaultValue={0} /></TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell><ButtonGroup
-                        buttons={["26", "27", "65"]}
-                        doSomethingAfterClick={showRow3}
-                    /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c1r3"} disabled={enableRow3} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c2r3"} disabled={enableRow3} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c3r3"} disabled={enableRow3} defaultValue={0} /></TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell><ButtonGroup
-                        buttons={["36", "37", "75"]}
-                        doSomethingAfterClick={showRow4}
-                    /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c1r4"} disabled={enableRow4} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c2r4"} disabled={enableRow4} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c3r4"} disabled={enableRow4} defaultValue={0} /></TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell><ButtonGroup
-                        buttons={["31", "41", "71"]}
-                        doSomethingAfterClick={showRow5}
-                    /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c1r5"} disabled={enableRow5} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c2r5"} disabled={enableRow5} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c3r5"} disabled={enableRow5} defaultValue={0} /></TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell><ButtonGroup
-                        buttons={["46", "47", "85"]}
-                        doSomethingAfterClick={showRow6}
-                    /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c1r6"} disabled={enableRow6} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c2r6"} disabled={enableRow6} defaultValue={0} /></TableCell>
-                    <TableCell><DtxTextField control={control} name={"c3r6"} disabled={enableRow6} defaultValue={0} /></TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell align='center' >Totales</TableCell>
-                    <TableCell><TextField variant="outlined" value={sumaCol1} defaultValue={0} className='w-20' /></TableCell>
-                    <TableCell><TextField variant="outlined" value={sumaCol2} defaultValue={0} className='w-20' /></TableCell>
-                    <TableCell><TextField variant="outlined" value={sumaCol3} defaultValue={0} className='w-20' /></TableCell>
-                </TableRow>
-            </TableHead>
-        </TableContainer>
-
+  useEffect(() => {
+    const totalGingivitis = sumarCeldas(gingivitis);
+    setValue(
+      "salud_bucal.tabla_higiene.gingivitis.total_gingivitis",
+      totalGingivitis
     );
+    // eslint-disable-next-line
+  }, [gingivitis]);
+
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{ maxWidth: "100%", textAlign: "center" }}
+      className="items-center  justify-center"
+    >
+      <TableHead>
+        <TableRow>
+          <TableCell align="center" colSpan={9}>
+            Higiene Oral Simplificada
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell align="center">Piezas Dentales</TableCell>
+          <TableCell align="right">Placa 0-1-2-3-4</TableCell>
+          <TableCell align="right">Cálculo 0-1-2-3</TableCell>
+          <TableCell lign="right">Gingitivitis 0-1</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <DtxButtonGroup
+              fullWidth
+              control={control}
+              name={"salud_bucal.tabla_higiene.piezas_dentales_r1"}
+              options={[
+                { label: "16", value: "16" },
+                { label: "17", value: "17" },
+                { label: "55", value: "55" },
+              ]}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.placa.c1r1"}
+              disabled={!piezas_dentales_r1}
+              defaultValue={0}
+              pattern={/^[0-4]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.calculo.c2r1"}
+              disabled={!piezas_dentales_r1}
+              defaultValue={0}
+              pattern={/^[0-3]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.gingivitis.c3r1"}
+              disabled={!piezas_dentales_r1}
+              defaultValue={0}
+              pattern={/^[0-1]$/g}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <DtxButtonGroup
+              fullWidth
+              control={control}
+              name={"salud_bucal.tabla_higiene.piezas_dentales_r2"}
+              options={[
+                { label: "11", value: "11" },
+                { label: "21", value: "21" },
+                { label: "51", value: "51" },
+              ]}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.placa.c1r2"}
+              disabled={!piezas_dentales_r2}
+              defaultValue={0}
+              pattern={/^[0-4]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.calculo.c2r2"}
+              disabled={!piezas_dentales_r2}
+              defaultValue={0}
+              pattern={/^[0-3]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.gingivitis.c3r2"}
+              disabled={!piezas_dentales_r2}
+              defaultValue={0}
+              pattern={/^[0-1]$/g}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <DtxButtonGroup
+              fullWidth
+              control={control}
+              name={"salud_bucal.tabla_higiene.piezas_dentales_r3"}
+              options={[
+                { label: "26", value: "26" },
+                { label: "27", value: "27" },
+                { label: "65", value: "65" },
+              ]}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.placa.c1r3"}
+              disabled={!piezas_dentales_r3}
+              defaultValue={0}
+              pattern={/^[0-4]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.calculo.c2r3"}
+              disabled={!piezas_dentales_r3}
+              defaultValue={0}
+              pattern={/^[0-3]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.gingivitis.c3r3"}
+              disabled={!piezas_dentales_r3}
+              defaultValue={0}
+              pattern={/^[0-1]$/g}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <DtxButtonGroup
+              fullWidth
+              control={control}
+              name={"salud_bucal.tabla_higiene.piezas_dentales_r4"}
+              options={[
+                { label: "36", value: "36" },
+                { label: "37", value: "37" },
+                { label: "75", value: "75" },
+              ]}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.placa.c1r4"}
+              disabled={!piezas_dentales_r4}
+              defaultValue={0}
+              pattern={/^[0-4]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.calculo.c2r4"}
+              disabled={!piezas_dentales_r4}
+              defaultValue={0}
+              pattern={/^[0-3]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.gingivitis.c3r4"}
+              disabled={!piezas_dentales_r4}
+              defaultValue={0}
+              pattern={/^[0-1]$/g}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <DtxButtonGroup
+              fullWidth
+              control={control}
+              name={"salud_bucal.tabla_higiene.piezas_dentales_r5"}
+              options={[
+                { label: "31", value: "31" },
+                { label: "41", value: "41" },
+                { label: "71", value: "71" },
+              ]}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.placa.c1r5"}
+              disabled={!piezas_dentales_r5}
+              defaultValue={0}
+              pattern={/^[0-4]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.calculo.c2r5"}
+              disabled={!piezas_dentales_r5}
+              defaultValue={0}
+              pattern={/^[0-3]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.gingivitis.c3r5"}
+              disabled={!piezas_dentales_r5}
+              defaultValue={0}
+              pattern={/^[0-1]$/g}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <DtxButtonGroup
+              fullWidth
+              control={control}
+              name={"salud_bucal.tabla_higiene.piezas_dentales_r6"}
+              options={[
+                { label: "46", value: "46" },
+                { label: "47", value: "47" },
+                { label: "85", value: "85" },
+              ]}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.placa.c1r6"}
+              disabled={!piezas_dentales_r6}
+              defaultValue={0}
+              pattern={/^[0-4]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.calculo.c2r6"}
+              disabled={!piezas_dentales_r6}
+              defaultValue={0}
+              pattern={/^[0-3]$/g}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              name={"salud_bucal.tabla_higiene.gingivitis.c3r6"}
+              disabled={!piezas_dentales_r6}
+              defaultValue={0}
+              pattern={/^[0-1]$/g}
+            />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell align="center">Totales</TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              disabled
+              name={"salud_bucal.tabla_higiene.placa.total_placa"}
+              defaultValue={0}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              disabled
+              name={"salud_bucal.tabla_higiene.calculo.total_calculo"}
+              defaultValue={0}
+            />
+          </TableCell>
+          <TableCell>
+            <DtxTextField
+              control={control}
+              className="w-20"
+              disabled
+              name={"salud_bucal.tabla_higiene.gingivitis.total_gingivitis"}
+              defaultValue={0}
+            />
+          </TableCell>
+        </TableRow>
+      </TableHead>
+    </TableContainer>
+  );
 };
 
 export default SimplifiedOralHigene;

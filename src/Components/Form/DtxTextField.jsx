@@ -1,9 +1,16 @@
-import React from "react";
-
-import { TextField } from "@mui/material";
+import { FormHelperText, TextField, Typography } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-const DtxTextField = ({ control, name, required, pattern, patternMessage, defaultValue, ...props }) => {
+const DtxTextField = ({
+  control,
+  name,
+  required,
+  pattern,
+  patternMessage,
+  defaultValue = "",
+  viewMode = false,
+  ...props
+}) => {
   return (
     <Controller
       name={name}
@@ -12,21 +19,37 @@ const DtxTextField = ({ control, name, required, pattern, patternMessage, defaul
         required: required,
         pattern: {
           value: pattern,
-          message: patternMessage
-        }
+          message: patternMessage ?? "Entrada invalida",
+        },
       }}
       defaultValue={defaultValue}
-      render={({ field, fieldState: { invalid, error } }) => (
-        <TextField
-          className='w-20'
-          required={required}
-          error={invalid}
-          helperText={error?.message}
-          inputRef={field.ref}
-          {...field}
-          {...props}
-        />
-      )}
+      render={({ field, fieldState: { invalid, error } }) =>
+        viewMode ? (
+          <div className="flex flex-col">
+            <Typography variant="caption" color="primary">
+              {props.label}
+            </Typography>
+            <Typography variant="body1" fontWeight={700}>
+              {field?.value ? field.value : "Sin información"}
+            </Typography>
+          </div>
+        ) : (
+          <>
+            <TextField
+              required={required}
+              error={invalid}
+              inputRef={field.ref}
+              {...field}
+              {...props}
+            />
+            {error && (
+              <FormHelperText error sx={{ fontSize: "0.6rem" }}>
+                {error.message}
+              </FormHelperText>
+            )}
+          </>
+        )
+      }
     />
   );
 };

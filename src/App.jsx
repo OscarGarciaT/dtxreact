@@ -10,6 +10,7 @@ import store from "./reducer/store";
 import AppRouter from "./Components/AppRouter";
 import { Provider } from "react-redux";
 import DialogStack from "./dialog/DialogStack";
+import Auth from "./Components/Auth";
 
 const theme = createTheme({
   components: {
@@ -57,11 +58,13 @@ function App() {
     <Provider store={store}>
       <Router>
         <StyledEngineProvider injectFirst>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AppRouter />
-            <DialogStack />
-          </ThemeProvider>
+          <Auth>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <AppRouter />
+              <DialogStack />
+            </ThemeProvider>
+          </Auth>
         </StyledEngineProvider>
       </Router>
     </Provider>
