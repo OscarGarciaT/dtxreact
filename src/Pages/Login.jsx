@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   Box,
   Button,
   CircularProgress,
@@ -9,17 +10,22 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { clearLoginErrors, submitLogin } from "../slices/loginSlice";
+import { registerUser } from "../services/loginServices";
 
-const testLogin = {
-  email: "test@dentelx.com",
-
-  password: "123",
+const registerData = {
+  email: "oscar@dentelx.com",
+  password: "abc123",
+  nombres: "Oscar",
+  apellidos: "Garcia",
+  cargo: "DENTISTA",
+  telefono: "0919821232"
 };
 
 const Login = () => {
-  const navigate = useNavigate();
-
-  const [loading, setLoading] = useState(false);
+  const login = useSelector(({ login }) => login)
+  const dispatch = useDispatch()
 
   const {
     register,
@@ -42,25 +48,21 @@ const Login = () => {
 
   const handleLogin = async (data) => {
     try {
-      // TODO: Login backend logic
-      setLoading(true);
+      dispatch(clearLoginErrors())
+      dispatch(submitLogin(data))
       console.log({ data });
-      await new Promise((resolve) => setTimeout(() => resolve(), 2000));
-      navigate("/pacientes");
     } catch (err) {
       setError("email", {
         type: "custom",
         message: "Couldn't verify information",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
   return (
     <Box
       className={`w-screen h-screen flex justify-center items-center bg-white select-none ${
-        loading ? "opacity-70 pointer-events-none" : ""
+        login?.inProgress ? "opacity-70 pointer-events-none" : ""
       }`}
     >
       <Box className="w-2/5 max-sm:w-full flex flex-col items-center">
@@ -101,12 +103,13 @@ const Login = () => {
             }}
             onClick={handleSubmit(handleLogin)}
           >
-            {!loading ? (
+            {!login?.inProgress ? (
               <Typography variant="body2">Login in</Typography>
             ) : (
               <CircularProgress size="1.25rem" sx={{ color: "white" }} />
             )}
           </Button>
+          {!!login?.errors.length && login?.errors.map((err, i) => (<Alert key={i} severity="error">{err?.message}</Alert>) ) }
         </Box>
       </Box>
       <Box className="w-3/5 h-screen bg-opacity-100 bg-no-repeat bg-cover bg-[url('/assets/img/stockDent.jpg')]  max-sm:hidden">

@@ -1,13 +1,13 @@
 import { createRequest } from "../utils/requestUtils";
 
-export const getPatients = () => {
+export const getPatients = (doctorId, params) => {
   return createRequest()
-    .get("patients")
+    .get(`patients/${doctorId}`, { params })
     .then((res) => res.data);
 };
 
-export const createPatient = (patientData) => {
+export const createPatient = (doctorId, patientData) => {
   return createRequest()
-    .post("patients", { patientData })
+    .post(`patients/${doctorId}`, { patientData })
     .then((res) => res.data);
 };

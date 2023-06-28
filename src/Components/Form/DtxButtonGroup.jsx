@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, FormHelperText } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-const DtxButtonGroup = ({ control, name, options, fullWidth }) => {
+const DtxButtonGroup = ({ control, name, options, fullWidth, ...props }) => {
   return (
     <Controller
       name={name}
@@ -17,6 +17,7 @@ const DtxButtonGroup = ({ control, name, options, fullWidth }) => {
             variant="outlined"
             aria-label={name}
             fullWidth={fullWidth}
+            {...props}
           >
             {options.map((option) => (
               <Button

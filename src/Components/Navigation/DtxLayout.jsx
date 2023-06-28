@@ -6,10 +6,11 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import { Avatar, Icon } from "@mui/material";
+import { Avatar, Icon, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SideBarItem from "./SideBarItem";
+import { useSelector } from "react-redux";
 
 const drawerWidth = 222;
 
@@ -61,6 +62,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 const DtxLayout = ({ render }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const user = useSelector(({ user }) => user)
 
   const [open, setOpen] = useState(false);
 
@@ -77,9 +79,9 @@ const DtxLayout = ({ render }) => {
     setOpen((prevValue) => !prevValue);
   };
 
-  const handleTestClick = () => {
-    navigate("/test", { replace: true });
-  };
+  // const handleTestClick = () => {
+  //   navigate("/test", { replace: true });
+  // };
 
   const handlePacientesClick = () => {
     navigate("/pacientes", { replace: true });
@@ -97,12 +99,15 @@ const DtxLayout = ({ render }) => {
           >
             <Icon color="primary">menu_open</Icon>
           </IconButton>
-          <Box flexGrow={1} />
           <IconButton>
             <Icon color="primary">notifications</Icon>
           </IconButton>
+          <Box flexGrow={1} />
+          <Typography color="black">
+            {user?.doctor_nombre}
+          </Typography>
           <IconButton>
-            <Avatar src={profileImg} />
+            <Avatar src={profileImg} alt={user?.doctor_nombre} />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -141,13 +146,13 @@ const DtxLayout = ({ render }) => {
             label={"Pacientes"}
             tabId={"pacientes"}
           />
-          <SideBarItem
+          {/* <SideBarItem
             onClick={handleTestClick}
             currentPage={currentPage}
             icon={<Icon>bug_report</Icon>}
             label={"Test page"}
             tabId={"test"}
-          />
+          /> */}
         </List>
       </Drawer>
       <Main open={open}>

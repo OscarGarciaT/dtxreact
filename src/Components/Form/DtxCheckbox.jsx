@@ -1,7 +1,7 @@
 import { FormControlLabel, Checkbox } from "@mui/material";
 import { Controller } from "react-hook-form";
 
-const DtxCheckbox = ({ control, name, label, required, defaultValue }) => {
+const DtxCheckbox = ({ control, name, label, required, defaultValue = false }) => {
   return (
     <Controller
       name={name}
@@ -29,7 +29,7 @@ const DtxCheckbox = ({ control, name, label, required, defaultValue }) => {
                 {label ?? ""}
               </span>
             }
-            error={invalid}
+            error={invalid ? invalid : undefined}
             required={required}
           />
         </>
