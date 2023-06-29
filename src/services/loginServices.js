@@ -12,22 +12,34 @@ export function signInWithEmailAndPassword(username, password) {
 					resolve(response.data);
 				} else {
 					console.log(`loginServices: status=${response?.status}, data=`, response?.data);
-					reject(new Error(`El inicio de sesion ha fallado con status "${response?.status}"`, response?.status, response?.data));
+					reject(new Error(`El inicio de sesion ha fallado, ${response?.message}`));
 				}
 			})
 			.catch((error) => {
-				let response = error?.response;
-				console.log(`loginServices: status=${response?.status}, data=`, response?.data, error);
-        reject(new Error(`El inicio de sesion ha fallado con status "${response?.status}"`, response?.status, response?.data));
+				console.log({ error });
+        reject(new Error(`El inicio de sesion ha fallado, ${error?.message}`));
 			});
 	});
 }
 
-export const registerUser = (registerData) => {
-  return axios
-    .post("users/signup", registerData)
-    .then((res) => res.data);
-};
+export function registerUser(registerData) {
+	return new Promise((resolve, reject) => {
+		axios
+			.post("users/signup", registerData)
+			.then((response) => {
+				if (response && response.status === 200) {
+          saveUserData(response.data, true);
+					resolve(response.data);
+				} else {
+					reject(new Error(`El registro ha fallado, ${response?.message}`));
+				}
+			})
+			.catch((error) => {
+				console.log({ error });
+        reject(new Error(`El registro ha fallado, ${error?.message}`));
+			});
+	});
+}
 
 export function saveUserData(data, hasToken) {
 	if (hasToken) {

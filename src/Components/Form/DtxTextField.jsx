@@ -36,14 +36,14 @@ const DtxTextField = ({
         ) : (
           <>
             <TextField
-              required={required}
+              required={!!required}
               error={invalid}
               inputRef={field.ref}
               {...field}
               {...props}
             />
             {error && (
-              <FormHelperText error sx={{ fontSize: "0.6rem" }}>
+              <FormHelperText error sx={{ fontSize: "0.6rem", marginTop: -1, alignSelf: "start" }}>
                 {error.message}
               </FormHelperText>
             )}
