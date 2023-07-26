@@ -255,9 +255,8 @@ const Login = () => {
 
   return (
     <Box
-      className={`w-screen h-screen flex justify-center items-center bg-white select-none ${
-        login?.inProgress ? "opacity-70 pointer-events-none" : ""
-      }`}
+      className={`w-screen h-screen flex justify-center items-center bg-white select-none ${login?.inProgress ? "opacity-70 pointer-events-none" : ""
+        }`}
     >
       <Box className="w-2/5 max-sm:w-full flex flex-col items-center">
         <img
