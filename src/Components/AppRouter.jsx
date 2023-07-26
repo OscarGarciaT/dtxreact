@@ -1,4 +1,5 @@
 import { Routes, Navigate, Route, Outlet } from "react-router-dom";
+import Calendario from "../Pages/Calendario";
 
 // Pages
 import Login from "../Pages/Login";
@@ -16,6 +17,7 @@ const AppRouter = () => {
         }
       >
         <Route path="/pacientes" element={<Pacientes />} />
+        <Route path="/calendario" element={<Calendario />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<Navigate to="/login" replace />} />

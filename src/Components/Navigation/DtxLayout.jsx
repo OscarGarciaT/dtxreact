@@ -7,6 +7,7 @@ import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import { Avatar, Icon, Typography } from "@mui/material";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SideBarItem from "./SideBarItem";
@@ -79,12 +80,12 @@ const DtxLayout = ({ render }) => {
     setOpen((prevValue) => !prevValue);
   };
 
-  // const handleTestClick = () => {
-  //   navigate("/test", { replace: true });
-  // };
-
   const handlePacientesClick = () => {
     navigate("/pacientes", { replace: true });
+  };
+
+  const handleCalendarioClick = () => {
+    navigate("/calendario", { replace: true });
   };
 
   return (
@@ -146,13 +147,13 @@ const DtxLayout = ({ render }) => {
             label={"Pacientes"}
             tabId={"pacientes"}
           />
-          {/* <SideBarItem
-            onClick={handleTestClick}
+          <SideBarItem
+            onClick={handleCalendarioClick}
             currentPage={currentPage}
-            icon={<Icon>bug_report</Icon>}
-            label={"Test page"}
-            tabId={"test"}
-          /> */}
+            icon={<CalendarMonthIcon />}
+            label={"Calendario"}
+            tabId={"calendario"}
+          />
         </List>
       </Drawer>
       <Main open={open}>
