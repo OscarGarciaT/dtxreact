@@ -1,16 +1,14 @@
-import React from "react";
 import {
   Alert,
   Box,
   Button,
   CircularProgress,
+  Icon,
   Link,
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import {
   clearLoginErrors,
@@ -19,7 +17,6 @@ import {
   submitSignUp,
 } from "../slices/loginSlice";
 import DtxTextField from "../Components/Form/DtxTextField";
-import { registerUser } from "../services/loginServices";
 import DtxSelect from "../Components/Form/DtxSelect";
 
 const LoginForm = () => {
@@ -49,7 +46,6 @@ const LoginForm = () => {
     try {
       dispatch(clearLoginErrors());
       dispatch(submitLogin(data));
-      console.log({ data });
     } catch (err) {
       setError("email", {
         type: "custom",
@@ -250,13 +246,40 @@ const SignUpForm = () => {
   );
 };
 
+const LoginSuccesful = () => {
+  return (
+    <Box className="w-3/5 flex flex-col items-center gap-y-3">
+      <div className="flex flex-row items-center justify-center">
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          sx={{ marginBottom: "1rem" }}
+        >
+          Login Exitoso
+        </Typography>
+        <Icon color="success" fontSize="large" className="ml-3 -mt-3">
+          check_circle
+        </Icon>
+      </div>
+      <Typography
+        variant="caption"
+        className="self-start flex flex-row items-center justify-center"
+        sx={{ marginBottom: "1rem" }}
+      >
+        Espera un momento para ser redireccionado o refresca la pagina
+      </Typography>
+    </Box>
+  );
+};
+
 const Login = () => {
   const login = useSelector(({ login }) => login);
 
   return (
     <Box
-      className={`w-screen h-screen flex justify-center items-center bg-white select-none ${login?.inProgress ? "opacity-70 pointer-events-none" : ""
-        }`}
+      className={`w-screen h-screen flex justify-center items-center bg-white select-none ${
+        login?.inProgress ? "opacity-70 pointer-events-none" : ""
+      }`}
     >
       <Box className="w-2/5 max-sm:w-full flex flex-col items-center">
         <img
@@ -266,6 +289,7 @@ const Login = () => {
         />
         {login.status === "login" && <LoginForm />}
         {login.status === "signup" && <SignUpForm />}
+        {!login.status && <LoginSuccesful />}
       </Box>
       <Box className="w-3/5 h-screen bg-opacity-100 bg-no-repeat bg-cover bg-[url('/assets/img/stockDent.jpg')]  max-sm:hidden">
         <Box className="w-5/5 h-screen bg-gray-900 bg-opacity-25  max-sm:hidden overflow-auto" />

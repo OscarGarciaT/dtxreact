@@ -1,8 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { setUserData } from "./userSlice";
 import {
+  clearUserData,
+  getAuthToken,
   registerUser,
   signInWithEmailAndPassword,
+  signInWithToken,
 } from "../services/loginServices";
 
 export const submitLogin =
@@ -17,10 +20,10 @@ export const submitLogin =
       password?.trim()
     ).then(
       (loginResponse) => {
-        dispatch(setLoginInProgress(false));
+        dispatchLogin(dispatch, loginResponse);
         if (onProgressOverride) onProgressOverride(false);
         if (onDoneOverride) onDoneOverride(loginResponse);
-        return dispatchLogin(dispatch, loginResponse);
+        return dispatch(setLoginInProgress(false));
       },
       (error) => {
         dispatch(setLoginInProgress(false));
@@ -43,6 +46,23 @@ export const submitLogin =
     );
   };
 
+export const loginWithtoken = () => async (dispatch) => {
+  if (!getAuthToken()) {
+    return;
+  }
+
+  return signInWithToken().then(
+    (loginResponse) => {
+      return dispatchLogin(dispatch, loginResponse);
+    },
+    (error) => {
+      console.error(error?.message);
+      clearUserData();
+      return dispatch(clearLoginStatus());
+    }
+  );
+};
+
 export const submitSignUp = (data) => async (dispatch) => {
   const email = data?.email;
   const password = data?.password;
@@ -63,8 +83,8 @@ export const submitSignUp = (data) => async (dispatch) => {
   dispatch(setLoginInProgress(true));
   return registerUser(registerData).then(
     (signUpResponse) => {
-      dispatch(setLoginInProgress(false));
-      return dispatchLogin(dispatch, signUpResponse);
+      dispatchLogin(dispatch, signUpResponse);
+      return dispatch(setLoginInProgress(false));
     },
     (error) => {
       dispatch(setLoginInProgress(false));
@@ -126,6 +146,7 @@ const loginSlice = createSlice({
     clearErrors: (state) => {
       state.errors = [];
     },
+    clearLoginStatus: () => initialState,
   },
   extraReducers: {},
 });
@@ -136,6 +157,7 @@ export const {
   loginError,
   setloginStatus,
   clearErrors,
+  clearLoginStatus,
 } = loginSlice.actions;
 
 export const loginReducer = loginSlice.reducer;

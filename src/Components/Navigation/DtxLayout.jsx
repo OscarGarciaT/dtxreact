@@ -6,12 +6,15 @@ import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import { Avatar, Icon, Typography } from "@mui/material";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { Avatar, Icon, Menu, MenuItem, Typography } from "@mui/material";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import SideBarItem from "./SideBarItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clearUserData } from "../../services/loginServices";
+import { userLoggedOut } from "../../slices/userSlice";
+import { clearLoginStatus } from "../../slices/loginSlice";
 
 const drawerWidth = 222;
 
@@ -62,10 +65,12 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 const DtxLayout = ({ render }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
-  const user = useSelector(({ user }) => user)
+  const user = useSelector(({ user }) => user);
 
   const [open, setOpen] = useState(false);
+  const [settingsAnchorEl, setSettingsAnchorEl] = useState(null);
 
   const profileImg = "no-image.png";
   const currentPage = location?.pathname?.split?.("/")?.[1];
@@ -75,6 +80,22 @@ const DtxLayout = ({ render }) => {
       setOpen(true);
     }, 500);
   }, []);
+
+  const handleOpenUserIcon = (event) => {
+    setSettingsAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseUserIcon = () => {
+    setSettingsAnchorEl(null);
+  };
+
+  const redirectToLogin = () => {
+    setSettingsAnchorEl(null);
+    clearUserData()
+    dispatch(userLoggedOut());
+    dispatch(clearLoginStatus());
+    navigate("/", { replace: true });
+  };
 
   const handleDrawerToggle = () => {
     setOpen((prevValue) => !prevValue);
@@ -104,12 +125,33 @@ const DtxLayout = ({ render }) => {
             <Icon color="primary">notifications</Icon>
           </IconButton>
           <Box flexGrow={1} />
-          <Typography color="black">
-            {user?.doctor_nombre}
-          </Typography>
-          <IconButton>
+          <Typography color="black">{user?.doctor_nombre}</Typography>
+          <IconButton
+            onClick={handleOpenUserIcon}
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+          >
             <Avatar src={profileImg} alt={user?.doctor_nombre} />
           </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={settingsAnchorEl}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            open={Boolean(settingsAnchorEl)}
+            onClose={handleCloseUserIcon}
+          >
+            <MenuItem onClick={redirectToLogin}>
+              <Typography textAlign="center"> Cerrar sesión</Typography>
+            </MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <Drawer

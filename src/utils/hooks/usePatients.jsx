@@ -4,14 +4,18 @@ import { useSelector } from "react-redux";
 
 const usePatients = (searchQuery) => {
   const doctorId = useSelector(({ user }) => user?.doctorId);
-  const patientRevision = useSelector(({ revision }) => revision?.patientRevision);
+  const patientRevision = useSelector(
+    ({ revision }) => revision?.patientRevision
+  );
   const [patients, setPatients] = useState([]);
 
   useEffect(() => {
     try {
       (async () => {
-        const fetchPatients = await getPatients(doctorId, { searchQuery });
-        setPatients(fetchPatients);
+        if (doctorId) {
+          const fetchPatients = await getPatients(doctorId, { searchQuery });
+          setPatients(fetchPatients);
+        }
       })();
     } catch (err) {
       console.err("[Pacientes] Error obteniendo los pacientes");
