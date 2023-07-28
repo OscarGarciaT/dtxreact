@@ -20,21 +20,6 @@ import { pushDialog } from "../slices/dialogSlice";
 import { useState } from "react";
 import usePatients from "../utils/hooks/usePatients";
 
-const pacientesMock = [
-  {
-    nombres: "Oscar Moises",
-    apellidos: "Garcia Tinoco",
-    telefono: "0939621218",
-    ultima_cita: "31/5/2023",
-  },
-  {
-    nombres: "Sebastian",
-    apellidos: "Rivera",
-    telefono: "0912345678",
-    ultima_cita: "30/5/2023",
-  },
-];
-
 const PacientesTable = ({ handleEditPatient }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const { register, watch } = useForm();
