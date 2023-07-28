@@ -1,10 +1,9 @@
 import {
-  FormControl,
   FormControlLabel,
   FormHelperText,
   FormLabel,
   Radio,
-  RadioGroup,
+  RadioGroup
 } from "@mui/material";
 import { Controller } from "react-hook-form";
 

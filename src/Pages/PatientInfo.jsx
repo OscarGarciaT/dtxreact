@@ -24,7 +24,6 @@ import DtxRadioGroup from "../Components/Form/DtxRadioGroup";
 import DtxCheckbox from "../Components/Form/DtxCheckbox";
 import DtxButtonGroup from "../Components/Form/DtxButtonGroup";
 import PatientTreatments from "../Components/Table/PatientTreatments";
-import { IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { createPatient } from "../services/patientServices";
 import { popDialog } from "../slices/dialogSlice";

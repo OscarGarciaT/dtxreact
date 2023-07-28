@@ -17,18 +17,6 @@ import {
 
 import SendIcon from "@mui/icons-material/Send";
 
-const tratamientos = [
-  {
-    session: 1,
-    date: new Date("Jul 12 2021").toString(),
-    diag: "K036",
-    proced: "D1110, D4910",
-    pres: "",
-    code: "",
-    sign: "Nicole Ávila",
-  },
-];
-
 const NewRow = ({ rTratamientos, setRTratamientos }) => {
   const [session, setSession] = useState("");
   const [date, setDate] = useState("");
