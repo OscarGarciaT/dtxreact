@@ -1,12 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import DtxTextField from '../Form/DtxTextField';
-
-import { TextField } from '@mui/material';
-
 
 const CpoIndices = ({ control, watch, setValue }) => {
     const rowD = watch(["indices_cpo_cbo.rowD.DC1", "indices_cpo_cbo.rowD.DP", "indices_cpo_cbo.rowD.DO"])
