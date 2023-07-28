@@ -53,7 +53,7 @@ function a11yProps(index) {
   };
 }
 
-const PatientInfo = ({ onProgress, ...props}) => {
+const PatientInfo = ({ onProgress, ...props }) => {
   const mode = props?.mode;
   const patientData = props?.patientData
   const isEditMode = mode === "EDIT";
@@ -174,9 +174,8 @@ const PatientInfo = ({ onProgress, ...props}) => {
             </div>
 
             <div
-              className={`pt-5 ${
-                isEditMode ? "pointer-events-none opacity-75" : ""
-              }`}
+              className={`pt-5 ${isEditMode ? "pointer-events-none opacity-75" : ""
+                }`}
             >
               <DtxRadioGroup
                 control={control}
@@ -197,9 +196,8 @@ const PatientInfo = ({ onProgress, ...props}) => {
             </div>
 
             <div
-              className={`pb-4 ${
-                isEditMode ? "pointer-events-none opacity-75" : ""
-              }`}
+              className={`pb-4 ${isEditMode ? "pointer-events-none opacity-75" : ""
+                }`}
             >
               <Typography variant="h6" fontWeight="bold" className="self-start">
                 Estado de gestación
@@ -268,9 +266,8 @@ const PatientInfo = ({ onProgress, ...props}) => {
                   3. Antecedentes Familiares
                 </Typography>
                 <div
-                  className={`grid grid-cols-4 ${
-                    isEditMode ? "pointer-events-none opacity-75" : ""
-                  }`}
+                  className={`grid grid-cols-4 ${isEditMode ? "pointer-events-none opacity-75" : ""
+                    }`}
                 >
                   <DtxCheckbox
                     control={control}
@@ -391,9 +388,8 @@ const PatientInfo = ({ onProgress, ...props}) => {
                   5. Examen del Sistema Estomatognático
                 </Typography>
                 <div
-                  className={`grid grid-cols-4 mb-3 ${
-                    isEditMode ? "pointer-events-none opacity-75" : ""
-                  }`}
+                  className={`grid grid-cols-4 mb-3 ${isEditMode ? "pointer-events-none opacity-75" : ""
+                    }`}
                 >
                   <DtxCheckbox
                     control={control}
@@ -480,9 +476,8 @@ const PatientInfo = ({ onProgress, ...props}) => {
               </Typography>
               <div
                 id="oralHealthIndicators"
-                className={`flex flex-row gap-4 ${
-                  isEditMode ? "pointer-events-none opacity-90" : ""
-                }`}
+                className={`flex flex-row gap-4 ${isEditMode ? "pointer-events-none opacity-90" : ""
+                  }`}
               >
                 <SOralHigiene
                   control={control}
@@ -542,9 +537,8 @@ const PatientInfo = ({ onProgress, ...props}) => {
                   8. Índices CPO-<sub>CBO</sub>
                 </Typography>
                 <div
-                  className={`${
-                    isEditMode ? "pointer-events-none opacity-90" : ""
-                  }`}
+                  className={`${isEditMode ? "pointer-events-none opacity-90" : ""
+                    }`}
                 >
                   <CpoIndices
                     setValue={setValue}
@@ -565,9 +559,8 @@ const PatientInfo = ({ onProgress, ...props}) => {
                 10. Planes de diagnóstico, terapéutico y educacional
               </Typography>
               <div
-                className={`${
-                  isEditMode ? "my-3 pointer-events-none opacity-90" : ""
-                }`}
+                className={`${isEditMode ? "my-3 pointer-events-none opacity-90" : ""
+                  }`}
               >
                 <DtxCheckbox
                   control={control}
