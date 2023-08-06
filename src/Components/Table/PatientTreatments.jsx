@@ -1,127 +1,46 @@
-import { useState } from "react";
-
 import {
-  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableRow,
-  TextField,
-  Button,
   TableHead,
   Typography,
   IconButton,
   Icon,
 } from "@mui/material";
 
-import SendIcon from "@mui/icons-material/Send";
-
-const NewRow = ({ rTratamientos, setRTratamientos }) => {
-  const [session, setSession] = useState("");
-  const [date, setDate] = useState("");
-  const [diag, setDiag] = useState("");
-  const [proced, setProced] = useState("");
-  const [pres, setPres] = useState("");
-  const [code, setCode] = useState("");
-  const [sign, setSign] = useState("");
-
-  const addTreatmentRow = () => {
-    const tratamiento = {
-      session: session,
-      date: date,
-      diag: diag,
-      proced: proced,
-      pres: pres,
-      code: code,
-      sign: sign,
-    };
-    addTreatment(tratamiento);
-  };
-
-  const addTreatment = (tratamiento) => {
-    console.log("Tratamiento:", tratamiento);
-    const newTratamientos = [...rTratamientos, tratamiento];
-    setRTratamientos(newTratamientos);
-    console.log(newTratamientos);
-  };
-
-  return (
-    <div>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableRow className="flex flex-row items-center justify-center">
-            <TableCell component="th" scope="row">
-              <TextField
-                multiline
-                label="Sesion"
-                value={session}
-                onChange={(event) => setSession(event.target.value)}
-              />
-            </TableCell>
-            <TableCell align="right">
-              <input
-                type="date"
-                className="h-10"
-                value={date}
-                onChange={(event) =>
-                  setDate(event.target.value ? event.target.value : new Date())
-                }
-              />
-            </TableCell>
-            <TableCell align="right" label="diagnosticos">
-              <TextField
-                multiline
-                fullWidth
-                value={diag}
-                onChange={(event) => setDiag(event.target.value)}
-              />
-            </TableCell>
-            <TableCell align="right" label="procedimientos">
-              <TextField
-                multiline
-                fullWidth
-                value={proced}
-                onChange={(event) => setProced(event.target.value)}
-              />
-            </TableCell>
-            <TableCell align="right" label="prescripciones">
-              <TextField
-                multiline
-                fullWidth
-                value={pres}
-                onChange={(event) => setPres(event.target.value)}
-              />
-            </TableCell>
-            <TableCell>
-              <TextField
-                label="Código"
-                value={code}
-                onChange={(event) => setCode(event.target.value)}
-              />
-            </TableCell>
-            <TableCell align="right">
-              <TextField
-                label="Firma"
-                defaultValue="Nicole Ávila"
-                value={sign}
-                onChange={(event) => setSign(event.target.value)}
-              />
-            </TableCell>
-            <Button variant="contained" onClick={addTreatmentRow}>
-              <SendIcon />
-            </Button>
-          </TableRow>
-        </Table>
-      </TableContainer>
-    </div>
-  );
-};
+import { Controller, useFieldArray } from "react-hook-form";
+import DtxTextField from "../Form/DtxTextField";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const PatientTreatments = (props) => {
   const isEditMode = props?.isEditMode;
+  const control = props?.control;
 
-  const [rTratamientos, setRTratamientos] = useState([]);
+  const {
+    fields: tratamientos,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: "tratamientos",
+  });
+
+  const addNewTreatment = () => {
+    append({
+      number: tratamientos.length + 1,
+      fecha: dayjs(),
+      diag: "",
+      proced: "",
+      pres: "",
+      cod: "",
+      firma: "",
+      canEdit: true,
+    });
+  };
 
   return (
     <div className="mb-6">
@@ -129,7 +48,7 @@ const PatientTreatments = (props) => {
         <Typography variant="h6" fontWeight="bold" className="self-start my-3">
           12. Tratamiento
         </Typography>
-        <IconButton disabled={!isEditMode}>
+        <IconButton disabled={!isEditMode} onClick={addNewTreatment}>
           <Icon color={isEditMode ? "primary" : undefined}>add_circle</Icon>
         </IconButton>
       </div>
@@ -159,36 +78,109 @@ const PatientTreatments = (props) => {
                   </div>
                 </TableCell>
               </TableRow>
-            ) : !rTratamientos.length ? (
+            ) : !tratamientos.length ? (
               <TableRow>
                 <TableCell colSpan={7}>
                   <div className="w-full flex justify-center">
-                    <Typography variant="caption">
-                      Sin registros
-                    </Typography>
+                    <Typography variant="caption">Sin registros</Typography>
                   </div>
                 </TableCell>
               </TableRow>
             ) : (
-              rTratamientos.map((row, index) => (
-                <TableRow
-                  align="center"
-                  key={index}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.session}
-                  </TableCell>
-                  <TableCell align="right">{row.date}</TableCell>
-                  <TableCell>{row.diag}</TableCell>
-                  <TableCell>{row.proced}</TableCell>
-                  <TableCell align="center">{row.pres}</TableCell>
-                  <TableCell align="center">{row.code}</TableCell>
-                  <TableCell align="right">{row.sign}</TableCell>
-                </TableRow>
-              ))
+              tratamientos.map((row, index) => {
+                const canEdit = row.canEdit;
+
+                return (
+                  <TableRow
+                    align="center"
+                    key={row.id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <DtxTextField
+                        control={control}
+                        name={`tratamientos.${index}.number`}
+                        label={""}
+                        viewMode={true}
+                      />
+                    </TableCell>
+                    <TableCell align="center" sx={{ width: "210px" }}>
+                      {canEdit ? (
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <Controller
+                            name={`tratamientos.${index}.fecha`}
+                            defaultValue={dayjs()}
+                            control={control}
+                            render={({ field }) => <DatePicker {...field} />}
+                          />
+                        </LocalizationProvider>
+                      ) : (
+                        <Typography>
+                          {dayjs(row.fecha).format("DD/MM/YY")}
+                        </Typography>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <DtxTextField
+                        control={control}
+                        name={`tratamientos.${index}.diag`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <DtxTextField
+                        control={control}
+                        name={`tratamientos.${index}.proced`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <DtxTextField
+                        control={control}
+                        name={`tratamientos.${index}.pres`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <DtxTextField
+                        control={control}
+                        name={`tratamientos.${index}.cod`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <DtxTextField
+                        control={control}
+                        name={`tratamientos.${index}.firma`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      className={`${
+                        !canEdit
+                          ? "pointer-events-none opacity-75 grayscale"
+                          : ""
+                      }`}
+                    >
+                      {canEdit && (
+                        <IconButton onClick={() => remove(index)}>
+                          <Icon color="error">close</Icon>
+                        </IconButton>
+                      )}
+
+                      {!canEdit && <Typography> - </Typography>}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>

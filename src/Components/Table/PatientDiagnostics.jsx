@@ -1,23 +1,40 @@
-import { useState } from "react";
 
 import {
-  FormControlLabel,
   Icon,
-  IconButton, Radio,
-  RadioGroup,
-  Table,
+  IconButton, Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  TextField,
-  Typography
+  TableRow, Typography
 } from "@mui/material";
+import { useFieldArray } from "react-hook-form";
+import DtxTextField from "../Form/DtxTextField";
+import DtxRadioGroup from "../Form/DtxRadioGroup";
 
 const PatientDiagnostics = (props) => {
   const isEditMode = props?.isEditMode;
-  const [diagnosticos] = useState([]);
+  const control = props?.control;
+  const setValue = props?.setValue;
+
+  const {
+    fields: diagnosticos,
+    append,
+    remove,
+  } = useFieldArray({
+    control,
+    name: "diagnosticos",
+  });
+
+  const addNewDiagnostic = () => {
+    append({
+      number: diagnosticos.length + 1,
+      preDefLarge: "",
+      cie: "",
+      preDef: 1,
+      canEdit: true,
+    });
+  };
 
   return (
     <div>
@@ -25,7 +42,7 @@ const PatientDiagnostics = (props) => {
         <Typography variant="h6" fontWeight="bold" className="self-start my-3">
           11. Diagnóstico
         </Typography>
-        <IconButton disabled={!isEditMode}>
+        <IconButton disabled={!isEditMode} onClick={addNewDiagnostic}>
           <Icon color={isEditMode ? "primary" : undefined}>add_circle</Icon>
         </IconButton>
       </div>
@@ -61,42 +78,78 @@ const PatientDiagnostics = (props) => {
                 </TableCell>
               </TableRow>
             ) : (
-              diagnosticos.map((row, i) => (
-                <TableRow
-                  key={i}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row}
-                  </TableCell>
-                  <TableCell align="right">
-                    <TextField fullWidth />
-                  </TableCell>
-                  <TableCell align="right">
-                    <TextField fullWidth />
-                  </TableCell>
-                  <TableCell className="flex flex-col items-center justify-center">
-                    <RadioGroup
-                      row
-                      aria-labelledby="demo-row-radio-buttons-group-label"
-                      name="row-radio-buttons-group"
+              diagnosticos.map((row, index) => {
+                const canEdit = row.canEdit;
+
+                return (
+                  <TableRow
+                    key={row.id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <TableCell component="th" scope="row">
+                      <DtxTextField
+                        control={control}
+                        name={`diagnosticos.${index}.number`}
+                        label={""}
+                        viewMode={true}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <DtxTextField
+                        control={control}
+                        name={`diagnosticos.${index}.preDefLarge`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <DtxTextField
+                        control={control}
+                        name={`diagnosticos.${index}.cie`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell className="flex flex-col items-center justify-center">
+                      <div
+                        className={`${
+                          !canEdit ? "pointer-events-none opacity-75" : ""
+                        }`}
+                      >
+                        <DtxRadioGroup
+                          control={control}
+                          row
+                          name={`diagnosticos.${index}.preDef`}
+                          setValue={setValue}
+                          labelFontSize={20}
+                          options={[
+                            { value: "1", label: "Pre" },
+                            { value: "2", label: "Def" },
+                          ]}
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      className={`${
+                        !canEdit
+                          ? "pointer-events-none opacity-75 grayscale"
+                          : ""
+                      }`}
                     >
-                      <FormControlLabel
-                        value="1"
-                        control={<Radio />}
-                        label="Pre"
-                      />
-                      <FormControlLabel
-                        value="2"
-                        control={<Radio />}
-                        label="Def"
-                      />
-                    </RadioGroup>
-                  </TableCell>
-                </TableRow>
-              ))
+                      {canEdit && (
+                        <IconButton onClick={() => remove(index)}>
+                          <Icon color="error">close</Icon>
+                        </IconButton>
+                      )}
+
+                      {!canEdit && <Typography> - </Typography>}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>
