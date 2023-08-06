@@ -11,3 +11,9 @@ export const createPatient = (doctorId, patientData) => {
     .post(`patients/${doctorId}`, { patientData })
     .then((res) => res.data);
 };
+
+export const updatePatient = (doctorId, patientId, patientData) => {
+  return createRequest()
+    .put(`patients/${doctorId}/patient/${patientId}`, { patientData })
+    .then((res) => res.data);
+};
