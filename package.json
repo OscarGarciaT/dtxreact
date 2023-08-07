@@ -62,6 +62,9 @@
     "vite": "^4.3.2"
   },
   "jest": {
+    "setupFilesAfterEnv": [
+      "./test/setup.js"
+    ],
     "testEnvironment": "jest-environment-jsdom",
     "testEnvironmentOptions": {
       "url": "http://localhost:5173/login"
