@@ -7,15 +7,25 @@ import { pushDialog } from "../slices/dialogSlice";
 import { ScheduleComponent, Day, Week, WorkWeek, Month, Agenda, Inject } from '@syncfusion/ej2-react-schedule';
 import '/src/index.css';
 
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+
+//import { getAppointments } from "../services/appointmentServices";
+
 const Calendario = () => {
-    const data = [
-        {
-          Id: 1,
-          Subject: 'Meeting',
-          StartTime: new Date(2023, 1, 15, 10, 0),
-          EndTime: new Date(2023, 1, 15, 12, 30),
-        },
-      ];
+    const events = [
+        { title: 'Meeting', start: new Date() },
+    ];
+
+    function renderEventContent(eventInfo) {
+      return (
+        <>
+          <b>{eventInfo.timeText}</b>
+          <i>{eventInfo.event.title}</i>
+        </>
+      )
+    }
     //Renderizar modal de appointment
     const dispatch = useDispatch();
     const handleCrearNuevaCita = () => {
@@ -32,15 +42,19 @@ const Calendario = () => {
                 </Typography>
                 <Button variant="contained" onClick={handleCrearNuevaCita}>Nueva Cita<AddIcon /></Button>
             </div>
-            <div>
-                <ScheduleComponent
-                    selectedDate={new Date(2023, 1, 15)}
-                    eventSettings={{
-                        dataSource: data,
-                    }}
-                >
-                    <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
-                </ScheduleComponent>
+            <div className="p-5">
+              <FullCalendar
+                plugins={[dayGridPlugin, timeGridPlugin]}
+                initialView={'timeGridWeek'}
+                headerToolbar={{
+                    start: "today prev,next",
+                    center: "title",
+                    end:"dayGridMonth,timeGridWeek,timeGridDay"
+                }}
+                events={events}
+                eventContent={renderEventContent}
+
+              />
             </div>
         </div>
     )
