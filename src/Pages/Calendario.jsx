@@ -13,12 +13,16 @@ import interactionPlugin from '@fullcalendar/interaction'
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import useAppointments from '../utils/hooks/useAppointments';
+import usePatients from "../utils/hooks/usePatients";
 
 
 const Calendario = () => {
     const appointments = useAppointments();
+
     const setEvents = () => {
       let array = []
+      const patients = usePatients();
+      console.log(appointments)
       for (const cita of appointments){
         let newCita = {title:'', start:'', end:''}
 
@@ -60,7 +64,16 @@ const Calendario = () => {
         
         newCita.start = startDate
         newCita.end = endDate
-        newCita.title = cita.motivo
+        if (patients.length>0){
+          const paciente = patients.filter((patient) => patient._id===cita.paciente_id)[0]
+          if (paciente!=undefined){
+            newCita.title = cita.motivo + " - " + paciente.nombres + " " + paciente.apellidos
+          } else {
+            newCita.title = cita.motivo
+          }
+        } else { 
+          newCita.title = cita.motivo
+        }
         array.push(newCita)
       }
       
@@ -68,15 +81,6 @@ const Calendario = () => {
     }
     const events = setEvents()
 
-    function renderEventContent(eventInfo) {
-      return (
-        <>
-          <b>{eventInfo.timeText}</b>
-          <br/>
-          <i>{eventInfo.event.title}</i>
-        </>
-      )
-    }
     //Renderizar modal de appointment
     const dispatch = useDispatch();
     const handleCrearNuevaCita = () => {
@@ -104,7 +108,6 @@ const Calendario = () => {
                 }}
                 height={"90vh"}
                 events={events}
-                eventContent={renderEventContent}
                 eventDidMount={(info) => {
                   return new bootstrap.Popover(info.el, {
                     title: info.event.title,
