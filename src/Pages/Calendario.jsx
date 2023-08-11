@@ -17,13 +17,48 @@ const Calendario = () => {
       let array = []
       for (const cita of appointments){
         let newCita = {title:'', start:'', end:''}
-        newCita.end = Date.parse(cita.hora_fin_cita)
-        newCita.start = Date.parse(cita.hora_inicio_cita)
-        newCita.title = cita.motivo
+
+        // FECHA
+        const date = new Date(cita.fecha_cita);
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth();
+        const day = date.getUTCDate();
+
+        //GETTING START TIME
+        let dateTime = new Date(cita.hora_inicio_cita);
+        let hours = dateTime.getUTCHours();
+        let minutes = dateTime.getUTCMinutes();
+        let seconds = dateTime.getUTCSeconds();
+
+        //START FULL DATE
+        const startDate = new Date();
+        startDate.setUTCHours(hours);
+        startDate.setUTCMinutes(minutes);
+        startDate.setUTCSeconds(seconds);
+        startDate.setUTCFullYear(year);
+        startDate.setUTCMonth(month);
+        startDate.setUTCDate(day);
+
+        //GETTING END TIME
+        dateTime = new Date(cita.hora_fin_cita);
+        hours = dateTime.getUTCHours();
+        minutes = dateTime.getUTCMinutes();
+        seconds = dateTime.getUTCSeconds();
+
+        //START FULL DATE
+        const endDate = new Date();
+        endDate.setUTCHours(hours);
+        endDate.setUTCMinutes(minutes);
+        endDate.setUTCSeconds(seconds);
+        endDate.setUTCFullYear(year);
+        endDate.setUTCMonth(month);
+        endDate.setUTCDate(day);
+        
+        newCita.start = startDate
+        newCita.end = endDate
         array.push(newCita)
       }
-      console.log("hola")
-      console.log(array)
+      
       return array
     }
     const events = setEvents()
