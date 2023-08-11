@@ -27,7 +27,7 @@ const AppointmentInfo = ({ ...props }) => {
     const { control, watch, reset, handleSubmit } = useForm({
         mode: "onChange",
         defaultValues: {
-            //selectedPatient,
+
             fecha_cita: dayjs(),
             fecha_inicio_cita: dayjs('2022-04-17T15:30'),
             fecha_fin_cita: dayjs('2022-04-17T15:30'),
