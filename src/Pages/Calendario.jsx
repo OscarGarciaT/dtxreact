@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Typography } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
@@ -8,13 +9,20 @@ import { pushDialog } from "../slices/dialogSlice";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
+import * as bootstrap from "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import useAppointments from '../utils/hooks/useAppointments';
+import usePatients from "../utils/hooks/usePatients";
 
 
 const Calendario = () => {
     const appointments = useAppointments();
+
     const setEvents = () => {
       let array = []
+      const patients = usePatients();
+      console.log(appointments)
       for (const cita of appointments){
         let newCita = {title:'', start:'', end:''}
 
@@ -56,6 +64,16 @@ const Calendario = () => {
         
         newCita.start = startDate
         newCita.end = endDate
+        if (patients.length>0){
+          const paciente = patients.filter((patient) => patient._id===cita.paciente_id)[0]
+          if (paciente!=undefined){
+            newCita.title = cita.motivo + " - " + paciente.nombres + " " + paciente.apellidos
+          } else {
+            newCita.title = cita.motivo
+          }
+        } else { 
+          newCita.title = cita.motivo
+        }
         array.push(newCita)
       }
       
@@ -63,14 +81,6 @@ const Calendario = () => {
     }
     const events = setEvents()
 
-    function renderEventContent(eventInfo) {
-      return (
-        <>
-          <b>{eventInfo.timeText}</b>
-          <i>{eventInfo.event.title}</i>
-        </>
-      )
-    }
     //Renderizar modal de appointment
     const dispatch = useDispatch();
     const handleCrearNuevaCita = () => {
@@ -78,7 +88,7 @@ const Calendario = () => {
             pushDialog({ id: "CREATE_APPOINTMENT_VIEW", props: { mode: "CREATE" } })
         );
     }
-    
+
     return (
         <div className="calendario-containter p-10">
             <div className="calendario-header flex flex-row justify-between">
@@ -96,9 +106,19 @@ const Calendario = () => {
                     center: "title",
                     end:"dayGridMonth,timeGridWeek,timeGridDay"
                 }}
+                height={"90vh"}
                 events={events}
-                eventContent={renderEventContent}
-
+                eventDidMount={(info) => {
+                  return new bootstrap.Popover(info.el, {
+                    title: info.event.title,
+                    placement: "auto",
+                    trigger: "hover",
+                    customClass: "popoverStyle",
+                    content:`<p><strong>Inicio:</strong>${info.event.start?info.event.start.toUTCString(): ''}
+                             <br\><strong>Fin:</strong>${info.event.end?info.event.end.toUTCString(): ''}</p>`,
+                    html:true
+                  });
+                }}
               />
             </div>
         </div>
