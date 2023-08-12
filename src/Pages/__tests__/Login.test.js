@@ -1,60 +1,83 @@
+/**
+ * @group login
+ * @groupid login
+ */
+
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom'
-import '@testing-library/jest-dom'
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/extend-expect';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
 import Login from '../Login';
 
-describe('Login component', () => {
-    test('renders login form', () => {
-      render(
-        <Router>
-          <Login />
-        </Router>
-      );
-      // Verifica si los elementos del formulario de inicio de sesión se renderizan correctamente
-      expect(screen.getByLabelText('Email')).toBeInTheDocument();
-      expect(screen.getByLabelText('Password')).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: 'Login in' })).toBeInTheDocument();
-    });
-    
+describe('Login Component', () => {
+  const mockStore = configureStore([]);
+  let store;
 
-    test('validates required fields', async () => {
-      render(
-        <Router>
-          <Login />
-        </Router>
-      );
-      fireEvent.click(screen.getByRole('button', { name: 'Login in' }));
-      // Verifica si se muestran los mensajes de error de campo obligatorio
-      await waitFor(() => {
-        const requiredEmailText = screen.getByText('Email is required');
-        const requiredPasswordText = screen.getByText('Password is required');
-        expect(requiredEmailText).toBeInTheDocument();
-        expect(requiredPasswordText).toBeInTheDocument();
-      });
+  beforeEach(() => {
+    store = mockStore({
+      login: {
+        status: 'login',
+        inProgress: false,
+        errors: [],
+      },
     });
-    
-
-    test('should navigate to "/pacientes" after successful login', async () => {
-      render(
-        <Router>
-          <Login />
-        </Router>
-      );
-      
-      // Ingresa los datos de prueba en los campos de texto
-      userEvent.type(screen.getByLabelText('Email'), 'test@dentelx.com');
-      userEvent.type(screen.getByLabelText('Password'), '123');
-      
-      // Simula hacer clic en el botón de submit
-      fireEvent.click(screen.getByText('Login in'));
-      // Espera a que ocurra el traslado de página
-      await waitFor(() => {
-        // Verifica que se haya trasladado a la página correcta
-        window.history.pushState({}, 'Pacientes', 'http://localhost:5173/pacientes');
-      });
-    });
-
-   
   });
+
+  /**
+   * Renders login form correctly.
+   */
+  it('renders login form correctly', () => {
+    render(
+      <Provider store={store}>
+        <Login />
+      </Provider>
+    );
+
+    expect(screen.getByLabelText('Email')).toBeInTheDocument();
+    expect(screen.getByLabelText('Password')).toBeInTheDocument();
+    expect(screen.getByText('Login in')).toBeInTheDocument();
+  });
+
+  /**
+   * Handles login submission.
+   */
+  it('handles login submission', async () => {
+    render(
+      <Provider store={store}>
+        <Login />
+      </Provider>
+    );
+
+    const emailInput = screen.getByLabelText('Email');
+    const passwordInput = screen.getByLabelText('Password');
+    const loginButton = screen.getByText('Login in');
+
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+    fireEvent.click(loginButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("Couldn't verify information")).toBeInTheDocument();
+    });
+  });
+
+  /**
+   * Renders signup form correctly.
+   */
+  it('renders signup form correctly', () => {
+    store.getState().login.status = 'signup'; 
+    render(
+      <Provider store={store}>
+        <Login />
+      </Provider>
+    );
+  
+    expect(screen.getByText('Nombres')).toBeInTheDocument();
+    expect(screen.getByText('Apellidos')).toBeInTheDocument();
+    expect(screen.getByText('Email')).toBeInTheDocument();
+
+
+  });
+});
