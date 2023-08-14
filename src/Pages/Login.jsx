@@ -99,6 +99,7 @@ const LoginForm = () => {
           marginTop: "1rem",
         }}
         onClick={handleSubmit(handleLogin)}
+        data-testid="login-button"
       >
         {!login?.inProgress ? (
           <Typography variant="body2">Login in</Typography>

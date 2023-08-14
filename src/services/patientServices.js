@@ -1,3 +1,4 @@
+import React from 'react';
 import { createRequest } from "../utils/requestUtils";
 
 export const getPatients = (doctorId, params) => {

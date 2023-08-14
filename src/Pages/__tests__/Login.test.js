@@ -49,15 +49,12 @@ describe('Login Component', () => {
         <Login />
       </Provider>
     );
-
     const emailInput = screen.getByLabelText('Email');
     const passwordInput = screen.getByLabelText('Password');
     const loginButton = screen.getByText('Login in');
-
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
     fireEvent.change(passwordInput, { target: { value: 'password123' } });
     fireEvent.click(loginButton);
-
     await waitFor(() => {
       expect(screen.getByText("Couldn't verify information")).toBeInTheDocument();
     });
@@ -73,11 +70,8 @@ describe('Login Component', () => {
         <Login />
       </Provider>
     );
-  
     expect(screen.getByText('Nombres')).toBeInTheDocument();
     expect(screen.getByText('Apellidos')).toBeInTheDocument();
     expect(screen.getByText('Email')).toBeInTheDocument();
-
-
   });
 });
