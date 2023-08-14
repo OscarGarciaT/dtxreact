@@ -90,14 +90,14 @@ const Calendario = () => {
     }
 
     return (
-        <div className="calendario-containter p-10">
+        <div className="calendario-containter p-3">
             <div className="calendario-header flex flex-row justify-between">
-                <Typography variant="h6" fontWeight="bold" className="self-start">
+                <Typography variant="h5" fontWeight="bold" className="self-start">
                     Calendario <CalendarMonthIcon />
                 </Typography>
                 <Button variant="contained" onClick={handleCrearNuevaCita}>Nueva Cita<AddIcon /></Button>
             </div>
-            <div className="p-5">
+            <div className="p-3">
               <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin]}
                 initialView={'timeGridWeek'}
@@ -114,8 +114,8 @@ const Calendario = () => {
                     placement: "auto",
                     trigger: "hover",
                     customClass: "popoverStyle",
-                    content:`<p><strong>Inicio:</strong>${info.event.start?info.event.start.toUTCString(): ''}
-                             <br\><strong>Fin:</strong>${info.event.end?info.event.end.toUTCString(): ''}</p>`,
+                    content:`<p>${info.event.start?'<strong>Inicio: </strong>'+info.event.start.toUTCString(): ''}
+                             <br\>${info.event.end?'<strong>Fin: </strong>'+info.event.end.toUTCString(): ''}</p>`,
                     html:true
                   });
                 }}
