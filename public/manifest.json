@@ -1,0 +1,66 @@
+{
+    "name": "DentelX",
+    "short_name": "DentelX",
+    "start_url": ".",
+    "lang": "en-US",
+    "display": "standalone",
+    "icons": [
+      {
+        "src": "icon.png",
+        "sizes": "50x50",
+        "type": "image/png",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "iconT.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "/assets/img/aura.png",
+        "sizes": "222x99",
+        "type": "image/png",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "/assets/img/curva.png",
+        "sizes": "222x99",
+        "type": "image/png",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "/assets/img/iconT.png",
+        "sizes": "250x250",
+        "type": "image/png",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "/assets/img/iconT2.png",
+        "sizes": "169x169",
+        "type": "image/png",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "/assets/img/icontT.png",
+        "sizes": "225x225",
+        "type": "image/png",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "/assets/img/Logo.png",
+        "sizes": "177x88",
+        "type": "image/png",
+        "purpose":"any maskable"
+      },
+      {
+        "src": "/assets/img/stockDent.jpg",
+        "sizes": "6000x4000",
+        "type": "image/jpg",
+        "purpose":"any maskable"
+      }
+    ],
+    "prefer_related_applications": true,
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+  }
