@@ -11,6 +11,7 @@ import {
 import { useFieldArray } from "react-hook-form";
 import DtxTextField from "../Form/DtxTextField";
 import DtxRadioGroup from "../Form/DtxRadioGroup";
+import DtxSuggestField from "../Form/DtxSuggestField";
 
 const PatientDiagnostics = (props) => {
   const isEditMode = props?.isEditMode;
@@ -51,9 +52,6 @@ const PatientDiagnostics = (props) => {
           <TableHead>
             <TableRow>
               <TableCell>#</TableCell>
-              <TableCell align="center">
-                PRE=PRESUNTIVO / DEF=DEFINITIVO
-              </TableCell>
               <TableCell align="center">CIE</TableCell>
               <TableCell align="center">PRE/DEF</TableCell>
             </TableRow>
@@ -96,16 +94,8 @@ const PatientDiagnostics = (props) => {
                         viewMode={true}
                       />
                     </TableCell>
-                    <TableCell align="center">
-                      <DtxTextField
-                        control={control}
-                        name={`diagnosticos.${index}.preDefLarge`}
-                        label={""}
-                        viewMode={!canEdit}
-                      />
-                    </TableCell>
-                    <TableCell align="center">
-                      <DtxTextField
+                    <TableCell>
+                      <DtxSuggestField
                         control={control}
                         name={`diagnosticos.${index}.cie`}
                         label={""}
@@ -114,9 +104,8 @@ const PatientDiagnostics = (props) => {
                     </TableCell>
                     <TableCell className="flex flex-col items-center justify-center">
                       <div
-                        className={`${
-                          !canEdit ? "pointer-events-none opacity-75" : ""
-                        }`}
+                        className={`${!canEdit ? "pointer-events-none opacity-75" : ""
+                          }`}
                       >
                         <DtxRadioGroup
                           control={control}
@@ -133,11 +122,10 @@ const PatientDiagnostics = (props) => {
                     </TableCell>
                     <TableCell
                       align="center"
-                      className={`${
-                        !canEdit
+                      className={`${!canEdit
                           ? "pointer-events-none opacity-75 grayscale"
                           : ""
-                      }`}
+                        }`}
                     >
                       {canEdit && (
                         <IconButton onClick={() => remove(index)}>

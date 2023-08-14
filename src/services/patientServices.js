@@ -17,3 +17,9 @@ export const updatePatient = (doctorId, patientId, patientData) => {
     .put(`patients/${doctorId}/patient/${patientId}`, { patientData })
     .then((res) => res.data);
 };
+
+export const getAllDiagnoses = () => {
+  return createRequest()
+    .get(`patients/diagnoses`)
+    .then(res => res.data);
+}
