@@ -9,7 +9,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { popDialog } from "../slices/dialogSlice";
 
 //services
 import { createAppointment } from "../services/appointmentServices";
@@ -24,6 +25,8 @@ const AppointmentInfo = ({ ...props }) => {
     const [loading, setLoading] = useState(false);
     const patients = usePatients(searchQuery);
     const [selectedPatient, setSelectedPatient] = useState("");
+    const dispatch = useDispatch();
+
     const { control, watch, reset, handleSubmit } = useForm({
         mode: "onChange",
         defaultValues: {
@@ -61,7 +64,7 @@ const AppointmentInfo = ({ ...props }) => {
     const appointmentData = props?.appointmentData
     const isEditMode = mode === "EDIT";
     const doctorId = useSelector(({ user }) => user.doctorId)
-
+    
     // Función para manejar el envío del formulario
     const onSubmit = async (data) => {
 
@@ -78,8 +81,8 @@ const AppointmentInfo = ({ ...props }) => {
             //onProgress(true)
 
             await createAppointment(doctorId, appointmentDataToSend)
-            //dispatch(incrementDataRevision({ event: "patientRevision" }))
-            //dispatch(popDialog())
+            //dispatch(incrementDataRevision({ event: "appointmentRevision" }))
+            dispatch(popDialog())
         } catch (err) {
             console.error(err)
         } finally {
@@ -104,7 +107,8 @@ const AppointmentInfo = ({ ...props }) => {
                     }}
                     getOptionLabel={option => `${option.nombres} ${option.apellidos} - ${option.cedula}`}
                     onChange={handlePatienteChange}
-                    renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." />}
+                    renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required/>}
+                    required
                 />
                 <Typography variant="h6" fontWeight="bold" className="self-start">
                     Información paciente
@@ -177,6 +181,7 @@ const AppointmentInfo = ({ ...props }) => {
                             control={control}
                             defaultValue={dayjs()}
                             render={({ field }) => <DatePicker {...field} />}
+                            required
                         />
 
                         <label htmlFor="hora_inicio_cita">Seleccionar Hora Inicio:</label>
@@ -185,14 +190,16 @@ const AppointmentInfo = ({ ...props }) => {
                             control={control}
                             defaultValue={dayjs('2022-04-17T15:30')}
                             render={({ field }) => <TimeField {...field} />}
+                            required
                         />
 
                         <label htmlFor="hora_fin_cita">Seleccionar Hora Fin:</label>
                         <Controller
                             name="hora_fin_cita"
                             control={control}
-                            defaultValue={dayjs('2022-04-17T15:30')}
+                            defaultValue={dayjs('2022-04-17T16:00')}
                             render={({ field }) => <TimeField {...field} />}
+                            required
                         />
 
                     </LocalizationProvider>
@@ -202,7 +209,6 @@ const AppointmentInfo = ({ ...props }) => {
                     <Controller
                         name="nota"
                         control={control}
-                        defaultValue=""
                         render={({ field }) => (
                             <TextField
                                 {...field}
