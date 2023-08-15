@@ -76,8 +76,8 @@ const SimplifiedOralHigene = ({ control, watch, setValue }) => {
       piezas_dentales_r6,
     ];
     const newTotalDivision =
-      piezas_dentales_habilitadas.filter(Boolean).length + 1;
-    setTotalDivision(newTotalDivision);
+      piezas_dentales_habilitadas.filter(Boolean).length;
+    setTotalDivision(!newTotalDivision ? 1 : newTotalDivision);
   }, [
     piezas_dentales_r1,
     piezas_dentales_r2,
