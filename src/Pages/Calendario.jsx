@@ -22,7 +22,7 @@ const Calendario = () => {
     const setEvents = () => {
       let array = []
       const patients = usePatients();
-      console.log(appointments)
+
       for (const cita of appointments){
         let newCita = {title:'', start:'', end:''}
 
@@ -67,13 +67,14 @@ const Calendario = () => {
         if (patients.length>0){
           const paciente = patients.filter((patient) => patient._id===cita.paciente_id)[0]
           if (paciente!=undefined){
-            newCita.title = cita.motivo + " - " + paciente.nombres + " " + paciente.apellidos
+            newCita.title = paciente.nombres + " " + paciente.apellidos
           } else {
-            newCita.title = cita.motivo
+            newCita.title = 'Cita-'
           }
-        } else { 
-          newCita.title = cita.motivo
-        }
+          if(cita.motivo){
+            newCita.title += "-" + cita.motivo
+          }
+        } 
         array.push(newCita)
       }
       
@@ -110,12 +111,13 @@ const Calendario = () => {
                 events={events}
                 eventDidMount={(info) => {
                   return new bootstrap.Popover(info.el, {
-                    title: info.event.title,
+                    title: info.event.title.split("-")[0],
                     placement: "auto",
                     trigger: "hover",
                     customClass: "popoverStyle",
-                    content:`<p>${info.event.start?'<strong>Inicio: </strong>'+info.event.start.toUTCString(): ''}
-                             <br\>${info.event.end?'<strong>Fin: </strong>'+info.event.end.toUTCString(): ''}</p>`,
+                    content:`<p>${info.event.start?'<strong>Inicio: </strong>'+info.event.start.toTimeString().split(' ')[0]: ''}
+                             <br\>${info.event.end?'<strong>Fin: </strong>'+info.event.end.toTimeString().split(' ')[0]: ''}
+                             <br\>${info.event.title.split("-")[1]? info.event.title.split("-")[1]: ''}</p>`,
                     html:true
                   });
                 }}

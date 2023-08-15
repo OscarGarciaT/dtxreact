@@ -107,7 +107,8 @@ const AppointmentInfo = ({ ...props }) => {
                     }}
                     getOptionLabel={option => `${option.nombres} ${option.apellidos} - ${option.cedula}`}
                     onChange={handlePatienteChange}
-                    renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." />}
+                    renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required/>}
+                    required
                 />
                 <Typography variant="h6" fontWeight="bold" className="self-start">
                     Información paciente
@@ -180,6 +181,7 @@ const AppointmentInfo = ({ ...props }) => {
                             control={control}
                             defaultValue={dayjs()}
                             render={({ field }) => <DatePicker {...field} />}
+                            required
                         />
 
                         <label htmlFor="hora_inicio_cita">Seleccionar Hora Inicio:</label>
@@ -188,14 +190,16 @@ const AppointmentInfo = ({ ...props }) => {
                             control={control}
                             defaultValue={dayjs('2022-04-17T15:30')}
                             render={({ field }) => <TimeField {...field} />}
+                            required
                         />
 
                         <label htmlFor="hora_fin_cita">Seleccionar Hora Fin:</label>
                         <Controller
                             name="hora_fin_cita"
                             control={control}
-                            defaultValue={dayjs('2022-04-17T15:30')}
+                            defaultValue={dayjs('2022-04-17T16:00')}
                             render={({ field }) => <TimeField {...field} />}
+                            required
                         />
 
                     </LocalizationProvider>
@@ -205,7 +209,6 @@ const AppointmentInfo = ({ ...props }) => {
                     <Controller
                         name="nota"
                         control={control}
-                        defaultValue=""
                         render={({ field }) => (
                             <TextField
                                 {...field}
