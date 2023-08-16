@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { pushDialog } from "../slices/dialogSlice";
 import { useState } from "react";
 import usePatients from "../utils/hooks/usePatients";
+import dayjs from "dayjs";
 
 const PacientesTable = ({ handleEditPatient }) => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -56,6 +57,7 @@ const PacientesTable = ({ handleEditPatient }) => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell>Cedula</TableCell>
               <TableCell>Nombres</TableCell>
               <TableCell align="left">Apellidos</TableCell>
               <TableCell align="left">Contacto</TableCell>
@@ -77,10 +79,21 @@ const PacientesTable = ({ handleEditPatient }) => {
             ) : (
               patients?.map((paciente, index) => (
                 <TableRow key={index}>
+                  <TableCell>{paciente?.cedula}</TableCell>
                   <TableCell align="left">{paciente?.nombres}</TableCell>
                   <TableCell align="left">{paciente?.apellidos}</TableCell>
                   <TableCell align="left">{paciente?.celular}</TableCell>
-                  <TableCell align="left">{paciente?.ultima_cita}</TableCell>
+                  <TableCell align="left">
+
+                    <div>
+                      {paciente?.tratamientos[paciente.tratamientos.length - 1]?.fecha ? (
+                        <p>{dayjs(paciente?.tratamientos[paciente.tratamientos.length - 1]?.fecha).format("DD/MM/YY")}</p>
+                      ) : (
+                        <p>Sin ultima cita</p>
+                      )}
+                    </div>
+
+                  </TableCell>
                   <TableCell align="left">
                     <IconButton onClick={() => handleEditPatient(paciente)}>
                       <Icon data-testid="edit-button-s" color="primary">
