@@ -6,7 +6,9 @@ import { getAppointments } from "../../services/appointmentServices";
 const useAppointments = () => {
     const doctorId = useSelector(({ user }) => user?.doctorId);
     const [apts, setApts] = useState([]);
-  
+    const appointmentRevision = useSelector(
+      ({ revision }) => revision?.appointmentRevision
+    );
     useEffect(() => {
       try {
         (async () => {
@@ -19,7 +21,7 @@ const useAppointments = () => {
         console.err("[CITAS] Error obteniendo los APTS");
       }
       // eslint-disable-next-line
-    }, []);
+    }, [appointmentRevision]);
     return apts;
   };
 

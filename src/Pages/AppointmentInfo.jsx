@@ -11,8 +11,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { useDispatch, useSelector } from "react-redux";
 import { popDialog } from "../slices/dialogSlice";
+
+import { incrementDataRevision } from "../slices/revisionSlice";
 //services
-import { createAppointment, updateAppointment} from "../services/appointmentServices";
+import { createAppointment, updateAppointment } from "../services/appointmentServices";
 
 //local
 import DtxTextField from "../Components/Form/DtxTextField";
@@ -25,44 +27,43 @@ const AppointmentInfo = ({ ...props }) => {
     const patients = usePatients(searchQuery);
     const [selectedPatient, setSelectedPatient] = useState("");
     const dispatch = useDispatch();
-
     const mode = props?.mode;
     const isEditMode = mode === "EDIT";
     const appointmentData = props?.appointmentData
     const appointmentId = appointmentData?._id;
     const doctorId = useSelector(({ user }) => user.doctorId)
-    let paciente =''
-    const startDate = new Date();
-    if (appointmentData){
-        paciente = patients.filter((patient) => patient._id===appointmentData.paciente_id)[0]
-        console.log(paciente)
-        const date = new Date(appointmentData.fecha_cita);
-        const year = date.getUTCFullYear();
-        const month = date.getUTCMonth();
-        const day = date.getUTCDate();
-        startDate.setUTCFullYear(year);
-        startDate.setUTCMonth(month);
-        startDate.setUTCDate(day);
-    }
+    const [patient, setPatient] = useState(null);
 
-    const { control, watch, reset, handleSubmit } = isEditMode?useForm({
+
+    const { control, watch, reset, handleSubmit, setValue } = useForm({
         mode: "onChange",
         defaultValues: {
-            patient:paciente,
-            fecha_cita: dayjs(startDate),
-            hora_inicio_cita: dayjs(appointmentData.hora_inicio_cita),
-            hora_fin_cita: dayjs(appointmentData.hora_fin_cita),
-            nota: appointmentData.motivo
-        },
-    }):useForm({
-        mode: "onChange",
-        defaultValues: {
-            //selectedPatient,
-            fecha_cita: dayjs(),
-            hora_inicio_cita: dayjs('2022-04-17T15:30'),
-            hora_fin_cita: dayjs('2022-04-17T16:00'),
+            ...(isEditMode ? {
+                patient: patient,
+                nota: appointmentData.motivo,
+                fecha_cita: dayjs(),
+                hora_inicio_cita: dayjs(appointmentData.hora_inicio_cita),
+                hora_fin_cita: dayjs(appointmentData.hora_fin_cita),
+            } : {
+                fecha_cita: dayjs(),
+                hora_inicio_cita: dayjs('2022-04-17T15:30'),
+                hora_fin_cita: dayjs('2022-04-17T16:00'),
+            }
+            ),
+            //nota: appointmentData.motivo
         },
     })
+    useEffect(() => {
+        if (appointmentData && patients.length) {
+            let paciente = patients.filter((pat) => pat._id === appointmentData.paciente_id)[0]
+            setPatient(paciente)
+            setValue("patient", paciente)
+            setValue("fecha_cita", dayjs(appointmentData.fecha_cita))
+        }
+    }, [patients])
+
+    useEffect(() => { console.log("paciente: ", { patient }) }, [patient])
+
     const search = watch("search");
 
     const handlePatienteChange = (event, value) => {
@@ -83,7 +84,7 @@ const AppointmentInfo = ({ ...props }) => {
         350,
         [search]
     );
-    
+
     // Función para manejar el envío del formulario
     const onSubmit = async (data) => {
 
@@ -100,10 +101,10 @@ const AppointmentInfo = ({ ...props }) => {
             //onProgress(true)
             if (isEditMode) {
                 await updateAppointment(doctorId, appointmentId, appointmentDataToSend);
-              } else {
+            } else {
                 await createAppointment(doctorId, appointmentDataToSend)
-              }
-            //dispatch(incrementDataRevision({ event: "appointmentRevision" }))
+            }
+            dispatch(incrementDataRevision({ event: "appointmentRevision" }))
             dispatch(popDialog())
         } catch (err) {
             console.error(err)
@@ -117,26 +118,28 @@ const AppointmentInfo = ({ ...props }) => {
         <div className="flex flex-col gap-5">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Controller
-                        name="patient"
-                        control={control}
-                        render={({ field }) => (
-                            <Autocomplete
-                                options={patients}
-                                key={option => option["_id"]}
-                                renderOption={(props, option) => {
-                                    return (
-                                        <li {...props} key={option["_id"]}>
-                                            {option.nombres} {option.apellidos} - {option.cedula}
-                                        </li>
-                                    );
-                                }}
-                                getOptionLabel={option => `${option.nombres} ${option.apellidos} - ${option.cedula}`}
-                                onChange={handlePatienteChange}
-                                renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required/>}
-                                required
-                            />
-                        )}
-                    />
+                    name="patient"
+                    control={control}
+                    render={({ field }) => (
+                        <Autocomplete
+                            options={patients}
+                            value={field?.value}
+                            key={option => option["_id"]}
+                            renderOption={(props, option) => {
+                                return (
+                                    <li {...props} key={option["_id"]}>
+                                        {option.nombres} {option.apellidos} - {option.cedula}
+
+                                    </li>
+                                );
+                            }}
+                            getOptionLabel={option => `${option.nombres} ${option.apellidos} - ${option.cedula}`}
+                            onChange={handlePatienteChange}
+                            renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required />}
+                            required
+                        />
+                    )}
+                />
                 <Typography variant="h6" fontWeight="bold" className="self-start">
                     Información paciente
                 </Typography>
