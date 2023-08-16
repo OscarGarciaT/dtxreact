@@ -48,7 +48,6 @@ const AppointmentInfo = ({ ...props }) => {
         }
     }, [selectedPatient, reset]);
 
-    console.log(patients)
 
     useDebounceEffect(
         () => {
@@ -64,7 +63,7 @@ const AppointmentInfo = ({ ...props }) => {
     const appointmentData = props?.appointmentData
     const isEditMode = mode === "EDIT";
     const doctorId = useSelector(({ user }) => user.doctorId)
-    
+
     // Función para manejar el envío del formulario
     const onSubmit = async (data) => {
 
@@ -75,7 +74,7 @@ const AppointmentInfo = ({ ...props }) => {
             hora_fin_cita: data["hora_fin_cita"],
             motivo: data["nota"]
         }
-        console.log(appointmentDataToSend)
+
         try {
             setLoading(true)
             //onProgress(true)
@@ -107,7 +106,7 @@ const AppointmentInfo = ({ ...props }) => {
                     }}
                     getOptionLabel={option => `${option.nombres} ${option.apellidos} - ${option.cedula}`}
                     onChange={handlePatienteChange}
-                    renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required/>}
+                    renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required />}
                     required
                 />
                 <Typography variant="h6" fontWeight="bold" className="self-start">
