@@ -37,6 +37,7 @@ const PatientTreatments = (props) => {
       fecha: dayjs(),
       diag: "",
       proced: "",
+      piezas: "",
       pres: "",
       cod: "",
       firma: "",
@@ -63,6 +64,7 @@ const PatientTreatments = (props) => {
               <TableCell align="center">
                 DIAGNOSTICOS Y COMPLICACIONES
               </TableCell>
+              <TableCell align="center">PIEZA(S) DENTAL(ES)</TableCell>
               <TableCell align="center">PROCEDIMIENTOS</TableCell>
               <TableCell align="center">PRESCRIPCIONES</TableCell>
               <TableCell align="center">CÓDIGO </TableCell>
@@ -128,6 +130,14 @@ const PatientTreatments = (props) => {
                       <DtxSuggestField
                         control={control}
                         name={`tratamientos.${index}.diag`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <DtxTextField
+                        control={control}
+                        name={`tratamientos.${index}.piezas`}
                         label={""}
                         viewMode={!canEdit}
                       />
