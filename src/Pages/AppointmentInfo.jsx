@@ -19,6 +19,7 @@ import { createAppointment, updateAppointment } from "../services/appointmentSer
 //local
 import DtxTextField from "../Components/Form/DtxTextField";
 import DtxSelect from "../Components/Form/DtxSelect";
+import DtxCheckbox from "../Components/Form/DtxCheckbox";
 
 
 const AppointmentInfo = ({ ...props }) => {
@@ -34,7 +35,7 @@ const AppointmentInfo = ({ ...props }) => {
     const doctorId = useSelector(({ user }) => user.doctorId)
     const [patient, setPatient] = useState(null);
 
-
+    console.log(appointmentData)
     const { control, watch, reset, handleSubmit, setValue } = useForm({
         mode: "onChange",
         defaultValues: {
@@ -49,6 +50,7 @@ const AppointmentInfo = ({ ...props }) => {
                 cedula: patient?.cedula,
                 sexo: patient?.sexo,
                 edad: patient?.edad,
+                asistencia: appointmentData?.asistencia,
             } : {
                 fecha_cita: dayjs(),
                 hora_inicio_cita: dayjs('2022-04-17T15:30'),
@@ -70,6 +72,7 @@ const AppointmentInfo = ({ ...props }) => {
             setValue("edad", paciente?.edad)
             setValue("celular", paciente?.celular)
             setValue("fecha_cita", dayjs(appointmentData.fecha_cita))
+            setValue("asistencia", appointmentData?.asistencia)
         }
     }, [patients])
 
@@ -99,12 +102,15 @@ const AppointmentInfo = ({ ...props }) => {
     // Función para manejar el envío del formulario
     const onSubmit = async (data) => {
 
-        const appointmentDataToSend = {
+        let appointmentDataToSend = {
             paciente_id: data["_id"],
             fecha_cita: data["fecha_cita"],
             hora_inicio_cita: data["hora_inicio_cita"],
             hora_fin_cita: data["hora_fin_cita"],
             motivo: data["nota"]
+        }
+        if (isEditMode){
+            appointmentDataToSend['asistencia'] = data["asistencia"]
         }
 
         try {
@@ -213,10 +219,21 @@ const AppointmentInfo = ({ ...props }) => {
                         patternMessage={"# Celular invalido"}
                     />
                 </div>
+                <br/>
+                <div hidden={!isEditMode}>
+                <Typography variant="h6" fontWeight="bold" className="self-start">
+                        Asistencia
+                </Typography>
+                <DtxCheckbox 
+                    control={control}
+                    label={"¿Se presentó?"}
+                    name={"asistencia"}
+                />
+                </div>
                 <Typography variant="h6" fontWeight="bold" className="self-start">
                     Horario
                 </Typography>
-                <div className="appointment-date-container flex flex-col gap-5">
+                <div className="appointment-date-container flex flex-col gap-3">
                     <LocalizationProvider dateAdapter={AdapterDayjs} >
                         <label htmlFor="fecha_cita">Fecha de cita:</label>
                         <Controller
@@ -244,8 +261,8 @@ const AppointmentInfo = ({ ...props }) => {
 
                     </LocalizationProvider>
                 </div>
-                <div className="appointment-footer flex flex-col gap-5">
-                    Agregar Nota
+                <div className="appointment-footer flex flex-col gap-4">
+                    <label>Agregar Nota</label>
                     <Controller
                         name="nota"
                         control={control}
@@ -259,7 +276,7 @@ const AppointmentInfo = ({ ...props }) => {
                             />
                         )}
                     />
-                    <button type="submit">Enviar</button>
+                    <button type="submit" className="bg-blue-400 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Enviar</button>
                 </div>
             </form>
         </div>
