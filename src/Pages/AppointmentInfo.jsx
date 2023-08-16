@@ -11,7 +11,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { useDispatch, useSelector } from "react-redux";
 import { popDialog } from "../slices/dialogSlice";
-
+import moment from 'moment';
 //services
 import { createAppointment, updateAppointment} from "../services/appointmentServices";
 
@@ -30,15 +30,27 @@ const AppointmentInfo = ({ ...props }) => {
     const mode = props?.mode;
     const isEditMode = mode === "EDIT";
     const appointmentData = props?.appointmentData
-    console.log(isEditMode)
     const appointmentId = appointmentData?._id;
     const doctorId = useSelector(({ user }) => user.doctorId)
+    let paciente =''
+    const startDate = new Date();
+    if (appointmentData){
+        paciente = patients.filter((patient) => patient._id===appointmentData.paciente_id)[0]
+        console.log(paciente)
+        const date = new Date(appointmentData.fecha_cita);
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth();
+        const day = date.getUTCDate();
+        startDate.setUTCFullYear(year);
+        startDate.setUTCMonth(month);
+        startDate.setUTCDate(day);
+    }
 
     const { control, watch, reset, handleSubmit } = isEditMode?useForm({
         mode: "onChange",
         defaultValues: {
-            //selectedPatient,
-            fecha_cita: dayjs(appointmentData.fecha_cita),
+            patient:paciente,
+            fecha_cita: dayjs(startDate),
             hora_inicio_cita: dayjs(appointmentData.hora_inicio_cita),
             hora_fin_cita: dayjs(appointmentData.hora_fin_cita),
             nota: appointmentData.motivo
@@ -64,7 +76,6 @@ const AppointmentInfo = ({ ...props }) => {
         }
     }, [selectedPatient, reset]);
 
-    console.log(patients)
 
     useDebounceEffect(
         () => {
@@ -106,22 +117,27 @@ const AppointmentInfo = ({ ...props }) => {
     return (<div className="appointment-container p-10">
         <div className="flex flex-col gap-5">
             <form onSubmit={handleSubmit(onSubmit)}>
-
-                <Autocomplete
-                    options={patients}
-                    key={option => option["_id"]}
-                    renderOption={(props, option) => {
-                        return (
-                            <li {...props} key={option["_id"]}>
-                                {option.nombres} {option.apellidos} - {option.cedula}
-                            </li>
-                        );
-                    }}
-                    getOptionLabel={option => `${option.nombres} ${option.apellidos} - ${option.cedula}`}
-                    onChange={handlePatienteChange}
-                    renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required/>}
-                    required
-                />
+                <Controller
+                        name="patient"
+                        control={control}
+                        render={({ field }) => (
+                            <Autocomplete
+                                options={patients}
+                                key={option => option["_id"]}
+                                renderOption={(props, option) => {
+                                    return (
+                                        <li {...props} key={option["_id"]}>
+                                            {option.nombres} {option.apellidos} - {option.cedula}
+                                        </li>
+                                    );
+                                }}
+                                getOptionLabel={option => `${option.nombres} ${option.apellidos} - ${option.cedula}`}
+                                onChange={handlePatienteChange}
+                                renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required/>}
+                                required
+                            />
+                        )}
+                    />
                 <Typography variant="h6" fontWeight="bold" className="self-start">
                     Información paciente
                 </Typography>

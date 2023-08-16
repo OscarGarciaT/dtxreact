@@ -91,7 +91,7 @@ const Calendario = () => {
         );
     }
     const handleEditarCita = (appointmentData) => {
-      dispatch(pushDialog({ id: "EDIT_APPOINTMENT_VIEW", props: { mode: "EDIT", appointmentData } }));
+      dispatch(pushDialog({ id: "EDIT_APPOINTMENT_VIEW", props: { mode: "EDIT", appointmentData} }));
     };
 
     return (
