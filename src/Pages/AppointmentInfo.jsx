@@ -41,9 +41,14 @@ const AppointmentInfo = ({ ...props }) => {
             ...(isEditMode ? {
                 patient: patient,
                 nota: appointmentData.motivo,
-                fecha_cita: dayjs(),
+                fecha_cita: dayjs(appointmentData.fecha_cita),
                 hora_inicio_cita: dayjs(appointmentData.hora_inicio_cita),
                 hora_fin_cita: dayjs(appointmentData.hora_fin_cita),
+                nombres: patient?.nombres,
+                apellidos: patient?.apellidos,
+                cedula: patient?.cedula,
+                sexo: patient?.sexo,
+                edad: patient?.edad,
             } : {
                 fecha_cita: dayjs(),
                 hora_inicio_cita: dayjs('2022-04-17T15:30'),
@@ -58,6 +63,12 @@ const AppointmentInfo = ({ ...props }) => {
             let paciente = patients.filter((pat) => pat._id === appointmentData.paciente_id)[0]
             setPatient(paciente)
             setValue("patient", paciente)
+            setValue("nombres", paciente?.nombres)
+            setValue("apellidos", paciente?.apellidos)
+            setValue("cedula", paciente?.cedula)
+            setValue("sexo", paciente?.sexo)
+            setValue("edad", paciente?.edad)
+            setValue("celular", paciente?.celular)
             setValue("fecha_cita", dayjs(appointmentData.fecha_cita))
         }
     }, [patients])
@@ -133,9 +144,11 @@ const AppointmentInfo = ({ ...props }) => {
                                     </li>
                                 );
                             }}
+                            isOptionEqualToValue={(option, value) => option._id === value._id}
                             getOptionLabel={option => `${option.nombres} ${option.apellidos} - ${option.cedula}`}
                             onChange={handlePatienteChange}
                             renderInput={(params) => <TextField {...params} label="Seleccione un paciente..." required />}
+                            disabled = {isEditMode}
                             required
                         />
                     )}
@@ -147,7 +160,7 @@ const AppointmentInfo = ({ ...props }) => {
                     <DtxTextField
                         viewMode={true}
                         control={control}
-                        name={"info_general.nombres"}
+                        name={"nombres"}
                         pattern={/^[A-Za-z ]+$/g}
                         patternMessage={"Solo se aceptan letras y espacios"}
                         label="Nombres"
@@ -155,7 +168,7 @@ const AppointmentInfo = ({ ...props }) => {
                     <DtxTextField
                         viewMode={true}
                         control={control}
-                        name={"info_general.apellidos"}
+                        name={"apellidos"}
                         pattern={/^[A-Za-z ]+$/g}
                         patternMessage={"Solo se aceptan letras y espacios"}
                         label="Apellidos"
@@ -163,7 +176,7 @@ const AppointmentInfo = ({ ...props }) => {
                     <DtxTextField
                         viewMode={true}
                         control={control}
-                        name={"info_general.cedula"}
+                        name={"cedula"}
                         pattern={/^\d{10}$/g}
                         patternMessage={"# Cedula invalido"}
                         label="Cédula"
@@ -173,7 +186,7 @@ const AppointmentInfo = ({ ...props }) => {
                     <DtxSelect
                         viewMode={true}
                         control={control}
-                        name={"info_general.sexo"}
+                        name={"sexo"}
                         label="Sexo"
                         options={[
                             { label: "Masculino", value: "masculino" },
@@ -184,7 +197,7 @@ const AppointmentInfo = ({ ...props }) => {
                     <DtxTextField
                         viewMode={true}
                         control={control}
-                        name={"info_general.edad"}
+                        name={"edad"}
                         label="Edad"
                         pattern={/^(?:1[0-4]\d|[0-9]{1,2})$|^150$/g}
                         patternMessage={"Edades válidas: 0-150 años."}
@@ -194,7 +207,7 @@ const AppointmentInfo = ({ ...props }) => {
                     <DtxTextField
                         viewMode={true}
                         control={control}
-                        name={"info_general.celular"}
+                        name={"celular"}
                         label="Celular"
                         pattern={/^\d{10}$/g}
                         patternMessage={"# Celular invalido"}
