@@ -109,10 +109,6 @@ const DtxLayout = ({ render }) => {
     navigate("/calendario", { replace: true });
   };
 
-  const handleTestClick = () => {
-    navigate("/test", { replace: true })
-  }
-
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar position="fixed" open={open}>
@@ -199,13 +195,6 @@ const DtxLayout = ({ render }) => {
             icon={<CalendarMonthIcon />}
             label={"Calendario"}
             tabId={"calendario"}
-          />
-          <SideBarItem
-            onClick={handleTestClick}
-            currentPage={currentPage}
-            icon={<CalendarMonthIcon />}
-            label={"Test"}
-            tabId={"test"}
           />
         </List>
       </Drawer>

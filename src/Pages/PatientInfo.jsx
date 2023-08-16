@@ -74,17 +74,11 @@ const PatientInfo = ({ onProgress, ...props }) => {
     defaultValues: patientData,
   });
 
-  useEffect(() => {
-    console.log({ formState })
-  }, [formState])
-
   const handleSubmitPatient = async (model) => {
-    console.log(model)
+
     try {
       setLoading(true);
       onProgress(true);
-
-      console.log("a")
 
       if (isEditMode) {
         await updatePatient(doctorId, patientId, model);
@@ -124,7 +118,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
             </div>
             <div className="flex flex-row gap-x-5">
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.nombres"}
                 pattern={/^[A-Za-z ]+$/g}
@@ -133,7 +127,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
                 required
               />
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.apellidos"}
                 pattern={/^[A-Za-z ]+$/g}
@@ -142,7 +136,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
                 required
               />
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.cedula"}
                 pattern={/^\d{10}$/g}
@@ -154,7 +148,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
 
             <div className="flex  flex-row gap-x-5">
               <DtxSelect
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.sexo"}
                 label="Sexo"
@@ -167,19 +161,18 @@ const PatientInfo = ({ onProgress, ...props }) => {
               />
 
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.edad"}
                 label="Edad"
                 pattern={/^(?:1[0-4]\d|[0-9]{1,2})$|^150$/g}
                 patternMessage={"Edades válidas: 0-150 años."}
-                defaultValue="20"
               />
             </div>
 
             <div className="flex gap-x-5">
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.celular"}
                 label="Celular"
