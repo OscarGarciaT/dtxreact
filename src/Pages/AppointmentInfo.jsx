@@ -11,7 +11,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { useDispatch, useSelector } from "react-redux";
 import { popDialog } from "../slices/dialogSlice";
-import moment from 'moment';
 //services
 import { createAppointment, updateAppointment} from "../services/appointmentServices";
 
