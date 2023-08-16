@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { popDialog } from "../slices/dialogSlice";
 
 //services
-import { createAppointment } from "../services/appointmentServices";
+import { createAppointment, updateAppointment} from "../services/appointmentServices";
 
 //local
 import DtxTextField from "../Components/Form/DtxTextField";
@@ -27,15 +27,31 @@ const AppointmentInfo = ({ ...props }) => {
     const [selectedPatient, setSelectedPatient] = useState("");
     const dispatch = useDispatch();
 
-    const { control, watch, reset, handleSubmit } = useForm({
+    const mode = props?.mode;
+    const isEditMode = mode === "EDIT";
+    const appointmentData = props?.appointmentData
+    console.log(isEditMode)
+    const appointmentId = appointmentData?._id;
+    const doctorId = useSelector(({ user }) => user.doctorId)
+
+    const { control, watch, reset, handleSubmit } = isEditMode?useForm({
+        mode: "onChange",
+        defaultValues: {
+            //selectedPatient,
+            fecha_cita: dayjs(appointmentData.fecha_cita),
+            hora_inicio_cita: dayjs(appointmentData.hora_inicio_cita),
+            hora_fin_cita: dayjs(appointmentData.hora_fin_cita),
+            nota: appointmentData.motivo
+        },
+    }):useForm({
         mode: "onChange",
         defaultValues: {
             //selectedPatient,
             fecha_cita: dayjs(),
-            fecha_inicio_cita: dayjs('2022-04-17T15:30'),
-            fecha_fin_cita: dayjs('2022-04-17T15:30'),
+            hora_inicio_cita: dayjs('2022-04-17T15:30'),
+            hora_fin_cita: dayjs('2022-04-17T16:00'),
         },
-    });
+    })
     const search = watch("search");
 
     const handlePatienteChange = (event, value) => {
@@ -57,13 +73,6 @@ const AppointmentInfo = ({ ...props }) => {
         350,
         [search]
     );
-
-
-
-    const mode = props?.mode;
-    const appointmentData = props?.appointmentData
-    const isEditMode = mode === "EDIT";
-    const doctorId = useSelector(({ user }) => user.doctorId)
     
     // Función para manejar el envío del formulario
     const onSubmit = async (data) => {
@@ -75,12 +84,15 @@ const AppointmentInfo = ({ ...props }) => {
             hora_fin_cita: data["hora_fin_cita"],
             motivo: data["nota"]
         }
-        console.log(appointmentDataToSend)
+
         try {
             setLoading(true)
             //onProgress(true)
-
-            await createAppointment(doctorId, appointmentDataToSend)
+            if (isEditMode) {
+                await updateAppointment(doctorId, appointmentId, appointmentDataToSend);
+              } else {
+                await createAppointment(doctorId, appointmentDataToSend)
+              }
             //dispatch(incrementDataRevision({ event: "appointmentRevision" }))
             dispatch(popDialog())
         } catch (err) {
@@ -179,7 +191,6 @@ const AppointmentInfo = ({ ...props }) => {
                         <Controller
                             name="fecha_cita"
                             control={control}
-                            defaultValue={dayjs()}
                             render={({ field }) => <DatePicker {...field} />}
                             required
                         />
@@ -188,7 +199,6 @@ const AppointmentInfo = ({ ...props }) => {
                         <Controller
                             name="hora_inicio_cita"
                             control={control}
-                            defaultValue={dayjs('2022-04-17T15:30')}
                             render={({ field }) => <TimeField {...field} />}
                             required
                         />
@@ -197,7 +207,6 @@ const AppointmentInfo = ({ ...props }) => {
                         <Controller
                             name="hora_fin_cita"
                             control={control}
-                            defaultValue={dayjs('2022-04-17T16:00')}
                             render={({ field }) => <TimeField {...field} />}
                             required
                         />
