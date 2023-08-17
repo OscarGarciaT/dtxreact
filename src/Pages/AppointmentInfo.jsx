@@ -99,6 +99,7 @@ const AppointmentInfo = ({ ...props }) => {
         [search]
     );
 
+
     // Función para manejar el envío del formulario
     const onSubmit = async (data) => {
 
@@ -109,9 +110,11 @@ const AppointmentInfo = ({ ...props }) => {
             hora_fin_cita: data["hora_fin_cita"],
             motivo: data["nota"]
         }
+
         if (isEditMode){
             appointmentDataToSend['asistencia'] = data["asistencia"]
         }
+
 
         try {
             setLoading(true)
@@ -164,7 +167,6 @@ const AppointmentInfo = ({ ...props }) => {
                                 return (
                                     <li {...props} key={option["_id"]}>
                                         {option.nombres} {option.apellidos} - {option.cedula}
-
                                     </li>
                                 );
                             }}

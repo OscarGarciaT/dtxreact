@@ -69,12 +69,13 @@ const PatientInfo = ({ onProgress, ...props }) => {
     setTabValue(newValue);
   };
 
-  const { control, watch, handleSubmit, setValue } = useForm({
+  const { control, watch, handleSubmit, setValue, formState } = useForm({
     mode: "onChange",
     defaultValues: patientData,
   });
 
   const handleSubmitPatient = async (model) => {
+
     try {
       setLoading(true);
       onProgress(true);
@@ -117,7 +118,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
             </div>
             <div className="flex flex-row gap-x-5">
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.nombres"}
                 pattern={/^[A-Za-z ]+$/g}
@@ -126,7 +127,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
                 required
               />
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.apellidos"}
                 pattern={/^[A-Za-z ]+$/g}
@@ -135,7 +136,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
                 required
               />
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.cedula"}
                 pattern={/^\d{10}$/g}
@@ -147,7 +148,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
 
             <div className="flex  flex-row gap-x-5">
               <DtxSelect
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.sexo"}
                 label="Sexo"
@@ -160,19 +161,18 @@ const PatientInfo = ({ onProgress, ...props }) => {
               />
 
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.edad"}
                 label="Edad"
                 pattern={/^(?:1[0-4]\d|[0-9]{1,2})$|^150$/g}
                 patternMessage={"Edades válidas: 0-150 años."}
-                defaultValue="20"
               />
             </div>
 
             <div className="flex gap-x-5">
               <DtxTextField
-                viewMode={isEditMode}
+                viewMode={false}
                 control={control}
                 name={"info_general.celular"}
                 label="Celular"
@@ -182,9 +182,8 @@ const PatientInfo = ({ onProgress, ...props }) => {
             </div>
 
             <div
-              className={`pt-5 ${
-                isEditMode ? "pointer-events-none opacity-75" : ""
-              }`}
+              className={`pt-5 ${isEditMode ? "pointer-events-none opacity-75" : ""
+                }`}
             >
               <DtxRadioGroup
                 control={control}
@@ -205,9 +204,8 @@ const PatientInfo = ({ onProgress, ...props }) => {
             </div>
 
             <div
-              className={`pb-4 ${
-                isEditMode ? "pointer-events-none opacity-75" : ""
-              }`}
+              className={`pb-4 ${isEditMode ? "pointer-events-none opacity-75" : ""
+                }`}
             >
               <Typography variant="h6" fontWeight="bold" className="self-start">
                 Estado de gestación
@@ -276,9 +274,8 @@ const PatientInfo = ({ onProgress, ...props }) => {
                   3. Antecedentes Familiares
                 </Typography>
                 <div
-                  className={`grid grid-cols-4 ${
-                    isEditMode ? "pointer-events-none opacity-75" : ""
-                  }`}
+                  className={`grid grid-cols-4 ${isEditMode ? "pointer-events-none opacity-75" : ""
+                    }`}
                 >
                   <DtxCheckbox
                     control={control}
@@ -399,9 +396,8 @@ const PatientInfo = ({ onProgress, ...props }) => {
                   5. Examen del Sistema Estomatognático
                 </Typography>
                 <div
-                  className={`grid grid-cols-4 mb-3 ${
-                    isEditMode ? "pointer-events-none opacity-75" : ""
-                  }`}
+                  className={`grid grid-cols-4 mb-3 ${isEditMode ? "pointer-events-none opacity-75" : ""
+                    }`}
                 >
                   <DtxCheckbox
                     control={control}
@@ -488,9 +484,8 @@ const PatientInfo = ({ onProgress, ...props }) => {
               </Typography>
               <div
                 id="oralHealthIndicators"
-                className={`flex flex-row gap-4 ${
-                  isEditMode ? "pointer-events-none opacity-90" : ""
-                }`}
+                className={`flex flex-row gap-4 ${isEditMode ? "pointer-events-none opacity-90" : ""
+                  }`}
               >
                 <SOralHigiene
                   control={control}
@@ -550,9 +545,8 @@ const PatientInfo = ({ onProgress, ...props }) => {
                   8. Índices CPO-<sub>CBO</sub>
                 </Typography>
                 <div
-                  className={`${
-                    isEditMode ? "pointer-events-none opacity-90" : ""
-                  }`}
+                  className={`${isEditMode ? "pointer-events-none opacity-90" : ""
+                    }`}
                 >
                   <CpoIndices
                     setValue={setValue}
@@ -573,9 +567,8 @@ const PatientInfo = ({ onProgress, ...props }) => {
                 10. Planes de diagnóstico, terapéutico y educacional
               </Typography>
               <div
-                className={`${
-                  isEditMode ? "my-3 pointer-events-none opacity-90" : ""
-                }`}
+                className={`${isEditMode ? "my-3 pointer-events-none opacity-90" : ""
+                  }`}
               >
                 <DtxCheckbox
                   control={control}

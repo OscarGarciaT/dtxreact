@@ -15,6 +15,8 @@ import DtxTextField from "../Form/DtxTextField";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import DtxSuggestField from "../Form/DtxSuggestField";
+import { useState } from "react"
 
 const PatientTreatments = (props) => {
   const isEditMode = props?.isEditMode;
@@ -35,6 +37,7 @@ const PatientTreatments = (props) => {
       fecha: dayjs(),
       diag: "",
       proced: "",
+      piezas: "",
       pres: "",
       cod: "",
       firma: "",
@@ -61,6 +64,7 @@ const PatientTreatments = (props) => {
               <TableCell align="center">
                 DIAGNOSTICOS Y COMPLICACIONES
               </TableCell>
+              <TableCell align="center">PIEZA(S) DENTAL(ES)</TableCell>
               <TableCell align="center">PROCEDIMIENTOS</TableCell>
               <TableCell align="center">PRESCRIPCIONES</TableCell>
               <TableCell align="center">CÓDIGO </TableCell>
@@ -123,9 +127,17 @@ const PatientTreatments = (props) => {
                       )}
                     </TableCell>
                     <TableCell>
-                      <DtxTextField
+                      <DtxSuggestField
                         control={control}
                         name={`tratamientos.${index}.diag`}
+                        label={""}
+                        viewMode={!canEdit}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <DtxTextField
+                        control={control}
+                        name={`tratamientos.${index}.piezas`}
                         label={""}
                         viewMode={!canEdit}
                       />
@@ -164,11 +176,10 @@ const PatientTreatments = (props) => {
                     </TableCell>
                     <TableCell
                       align="center"
-                      className={`${
-                        !canEdit
-                          ? "pointer-events-none opacity-75 grayscale"
-                          : ""
-                      }`}
+                      className={`${!canEdit
+                        ? "pointer-events-none opacity-75 grayscale"
+                        : ""
+                        }`}
                     >
                       {canEdit && (
                         <IconButton onClick={() => remove(index)}>
