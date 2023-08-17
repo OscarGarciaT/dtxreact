@@ -11,3 +11,15 @@ export const getAppointments = (doctorId) => {
       .get(`appointments/${doctorId}/all`)
       .then((res) => res.data);
   };
+
+export const updateAppointment = (doctorId, appointmentId, appointmentData) => {
+    return createRequest()
+      .put(`appointments/${doctorId}/appointment/${appointmentId}`, { appointmentData })
+      .then((res) => res.data);
+};
+
+export const deleteAppointment = (doctorId, appointmentId) => {
+  return createRequest()
+    .delete(`appointments/${doctorId}/appointment/${appointmentId}`)
+    .then((res) => res.data);
+};

@@ -24,7 +24,7 @@ const Calendario = () => {
       const patients = usePatients();
 
       for (const cita of appointments){
-        let newCita = {title:'', start:'', end:''}
+        let newCita = {title:'', start:'', end:'', extendedProps: {cita: {}, description:''}}
 
         // FECHA
         const date = new Date(cita.fecha_cita);
@@ -64,17 +64,18 @@ const Calendario = () => {
         
         newCita.start = startDate
         newCita.end = endDate
+
+        if (cita.motivo){
+          newCita.title = cita.motivo
+        }
+
         if (patients.length>0){
           const paciente = patients.filter((patient) => patient._id===cita.paciente_id)[0]
           if (paciente!=undefined){
-            newCita.title = paciente.nombres + " " + paciente.apellidos
-          } else {
-            newCita.title = 'Cita-'
-          }
-          if(cita.motivo){
-            newCita.title += "-" + cita.motivo
+            newCita.extendedProps.description = paciente.nombres + " " + paciente.apellidos
           }
         } 
+        newCita.extendedProps.cita = cita
         array.push(newCita)
       }
       
@@ -89,6 +90,9 @@ const Calendario = () => {
             pushDialog({ id: "CREATE_APPOINTMENT_VIEW", props: { mode: "CREATE" } })
         );
     }
+    const handleEditarCita = (appointmentData) => {
+      dispatch(pushDialog({ id: "EDIT_APPOINTMENT_VIEW", props: { mode: "EDIT", appointmentData} }));
+    };
 
     return (
         <div className="calendario-containter p-3">
@@ -111,16 +115,16 @@ const Calendario = () => {
                 events={events}
                 eventDidMount={(info) => {
                   return new bootstrap.Popover(info.el, {
-                    title: info.event.title.split("-")[0],
+                    title: info.event.title?info.event.title:'Cita',
                     placement: "auto",
                     trigger: "hover",
                     customClass: "popoverStyle",
-                    content:`<p>${info.event.start?'<strong>Inicio: </strong>'+info.event.start.toTimeString().split(' ')[0]: ''}
-                             <br\>${info.event.end?'<strong>Fin: </strong>'+info.event.end.toTimeString().split(' ')[0]: ''}
-                             <br\>${info.event.title.split("-")[1]? info.event.title.split("-")[1]: ''}</p>`,
+                    content:`<p>${info.event.start?info.event.start.toTimeString().split(' ')[0]: ''}${info.event.end?' - '+info.event.end.toTimeString().split(' ')[0]: ''}
+                             <br\>${info.event.extendedProps.description? info.event.extendedProps.description: ''}</p>`,
                     html:true
                   });
                 }}
+                eventClick={(info)=>{handleEditarCita(info.event._def.extendedProps.cita)}}
               />
             </div>
         </div>
