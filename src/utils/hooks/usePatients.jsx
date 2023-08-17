@@ -21,7 +21,7 @@ const usePatients = (searchQuery) => {
       console.err("[Pacientes] Error obteniendo los pacientes");
     }
     // eslint-disable-next-line
-  }, [searchQuery, patientRevision]);
+  }, [searchQuery, patientRevision, doctorId]);
 
   return patients;
 };
