@@ -6,7 +6,8 @@
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "test": "jest",
+    "test": "jest src/Pages/__tests__ && cypress run --spec 'cypress/integration/**/*.js'",
+    "test:cypress": "cypress",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write ."
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.22.5",
     "@babel/preset-react": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
@@ -43,7 +45,8 @@
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^4.0.0",
     "autoprefixer": "^10.4.14",
-    "babel-jest": "^29.5.0",
+    "babel-jest": "^29.6.2",
+    "babel-plugin-transform-import-meta": "^2.2.1",
     "cypress": "^12.17.3",
     "cypress-mochawesome-reporter": "^3.5.1",
     "eslint": "^8.38.0",

@@ -1,6 +1,7 @@
 import axios_core from "axios";
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3001/api";
 
+
 export const axiosConfig = {
   SERVER_NAME: API_URL,
   HEADERS: {
