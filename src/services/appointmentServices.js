@@ -18,8 +18,8 @@ export const updateAppointment = (doctorId, appointmentId, appointmentData) => {
       .then((res) => res.data);
 };
 
-export const deleteAppointment = (doctorId, appointmentId, appointmentData) => {
+export const deleteAppointment = (doctorId, appointmentId) => {
   return createRequest()
-    .delete(`appointments/${doctorId}/appointment/${appointmentId}`, { appointmentData })
+    .delete(`appointments/${doctorId}/appointment/${appointmentId}`)
     .then((res) => res.data);
 };

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import usePatients from "../utils/hooks/usePatients";
 import { useForm, Controller } from "react-hook-form";
 import useDebounceEffect from "../utils/hooks/useDebounceEffect";
-import { TextField, Typography } from "@mui/material";
+import { TextField, Typography, Icon, IconButton, Tooltip} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -14,7 +14,7 @@ import { popDialog } from "../slices/dialogSlice";
 
 import { incrementDataRevision } from "../slices/revisionSlice";
 //services
-import { createAppointment, updateAppointment } from "../services/appointmentServices";
+import { createAppointment, updateAppointment, deleteAppointment } from "../services/appointmentServices";
 
 //local
 import DtxTextField from "../Components/Form/DtxTextField";
@@ -131,14 +131,32 @@ const AppointmentInfo = ({ ...props }) => {
         }
     };
 
+    const handleDelete = async () => {
+
+        try {
+            setLoading(true)
+            //onProgress(true)
+            await deleteAppointment(doctorId, appointmentData["_id"])
+            dispatch(incrementDataRevision({ event: "appointmentRevision" }))
+            dispatch(popDialog())
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
+            //onProgress(false)
+        }
+    };
+
     return (<div className="appointment-container p-10">
         <div className="flex flex-col gap-5">
             <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="row">
                 <Controller
                     name="patient"
                     control={control}
                     render={({ field }) => (
                         <Autocomplete
+                            className="col-10"
                             options={patients}
                             value={field?.value}
                             key={option => option["_id"]}
@@ -159,6 +177,12 @@ const AppointmentInfo = ({ ...props }) => {
                         />
                     )}
                 />
+                <Tooltip title="ELIMINAR CITA" hidden={!isEditMode}>
+                <IconButton onClick={handleDelete} data-testid="delete-button" className="col-1 ml-auto justify-content-end sizeIcon">
+                    <Icon  color="error" >delete</Icon>
+                </IconButton>
+                </Tooltip>
+                </div>
                 <Typography variant="h6" fontWeight="bold" className="self-start">
                     Información paciente
                 </Typography>
