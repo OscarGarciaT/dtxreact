@@ -1,3 +1,4 @@
+import React from 'react'; 
 import { Autocomplete, TextField, FormHelperText } from "@mui/material";
 import useAllDiagnoses from '../../utils/hooks/useDiagnoses';
 import { useState, useEffect } from "react";
