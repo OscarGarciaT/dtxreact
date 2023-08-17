@@ -1,3 +1,4 @@
+import React from 'react'; 
 import {
   Alert,
   Box,
@@ -98,6 +99,7 @@ const LoginForm = () => {
           marginTop: "1rem",
         }}
         onClick={handleSubmit(handleLogin)}
+        data-testid="login-button"
       >
         {!login?.inProgress ? (
           <Typography variant="body2">Login in</Typography>
@@ -105,7 +107,7 @@ const LoginForm = () => {
           <CircularProgress size="1.25rem" sx={{ color: "white" }} />
         )}
       </Button>
-      <Link onClick={handleSignUpForm} className="self-start mt-2">
+      <Link onClick={handleSignUpForm} className="self-start mt-2" data-testid="signup-link">
         Registrar una nueva cuenta
       </Link>
       {!!login?.errors.length &&
