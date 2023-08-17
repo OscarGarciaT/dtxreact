@@ -1,4 +1,3 @@
-import React from 'react';
 import { useCallback, useState, useEffect } from "react";
 
 import TableCell from "@mui/material/TableCell";
@@ -75,8 +74,7 @@ const SimplifiedOralHigene = ({ control, watch, setValue }) => {
       piezas_dentales_r5,
       piezas_dentales_r6,
     ];
-    const newTotalDivision =
-      piezas_dentales_habilitadas.filter(Boolean).length;
+    const newTotalDivision = piezas_dentales_habilitadas.filter(Boolean).length;
     setTotalDivision(!newTotalDivision ? 1 : newTotalDivision);
   }, [
     piezas_dentales_r1,

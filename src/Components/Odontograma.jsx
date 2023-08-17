@@ -22,13 +22,18 @@ const brushSizes = [
 
 const symbolSizes = [
   { label: "Pequeño", value: 0.25 },
-  { label: "Mediano", value: 0.50 },
+  { label: "Mediano", value: 0.5 },
   { label: "Grande", value: 1.25 },
 ];
 
 const deleteMargin = 25;
 
 const simbolos = [
+  { label: "Grado 1", value: "grado_1.png" },
+  { label: "Grado 2", value: "grado_2.png" },
+  { label: "Grado 3", value: "grado_3.png" },
+  { label: "Grado 4", value: "grado_4.png" },
+  { label: "Sin grado", value: "sin_grado.png" },
   { label: "Sellante Necesario", value: "sellante_necesario.png" },
   { label: "Sellante Realizado", value: "sellante_realizado.png" },
   { label: "Caries", value: "caries.png" },
@@ -134,19 +139,13 @@ const OdontogramaCanvas = ({
   return <canvas ref={canvasRef} width={1200} height={600} {...props} />;
 };
 
-// TODO: En el Canvas agregar un recuadro que encierre los dientes circulares
-// TODO: En "Recesion" y "Movilidad" se escriben numeros (grados) del [1,4]
-// TODO: Permitir escoger el tamaño de los simbolos que se van a colocar
-// TODO: Modo de dibujo para anotaciones, con seleccion de color (opcional: tamaño de lapiz)
-// TODO: Guardar coordenadas de los elementos en el canvas
-
-// Vestibular, mesial, lingual, distal
-
-const Odontograma = ({}) => {
-  const renderCount = useRef(0);
-  const [placedSymbols, setPlacedSymbols] = useState([]);
-  const [drawings, setDrawings] = useState([]);
-
+const Odontograma = ({
+  placedSymbols,
+  setPlacedSymbols,
+  drawings,
+  setDrawings,
+  isEditDialog,
+}) => {
   const [selectedSymbol, setSelectedSymbol] = useState(simbolos[0]);
   const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [selectedBrushSize, setSelectedBrushSize] = useState(brushSizes[0]);
@@ -219,14 +218,14 @@ const Odontograma = ({}) => {
           symbolImg.onload = resolve;
         });
 
-        const symbolX = symbol.x - symbolImg.width / 2;
-        const symbolY = symbol.y - symbolImg.height / 2;
+        const symbolX = symbol.x - (symbolImg.width / 2) * symbol.size;
+        const symbolY = symbol.y - (symbolImg.height / 2) * symbol.size;
 
         if (
           clickX >= symbolX &&
-          clickX <= symbolX + symbolImg.width &&
+          clickX <= symbolX + symbolImg.width * symbol.size &&
           clickY >= symbolY &&
-          clickY <= symbolY + symbolImg.height
+          clickY <= symbolY + symbolImg.height * symbol.size
         ) {
           const newPlacedSymbols = placedSymbols.filter((s) => s !== symbol);
           setPlacedSymbols(newPlacedSymbols);
@@ -249,17 +248,15 @@ const Odontograma = ({}) => {
     ]);
   };
 
-  useEffect(() => {
-    renderCount.current += 1;
-  });
-
   const customEqualityTest = (option, currentOption) => {
     return option.value === currentOption.value;
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-row gap-x-2 my-2">
+    <div className="flex flex-col mt-3">
+      <div
+        className={`flex flex-row gap-x-2 my-2 ${isEditDialog ? "hidden" : ""}`}
+      >
         <Autocomplete
           className="w-1/3"
           value={selectedSymbol}
@@ -311,6 +308,7 @@ const Odontograma = ({}) => {
         <Autocomplete
           className="w-40"
           value={selectedSymbolSize}
+          disabled={editingMode !== "adding"}
           onChange={(event, newValue) => setSelectedSymbolSize(newValue)}
           options={symbolSizes}
           getOptionLabel={(option) => option.label}
@@ -374,7 +372,6 @@ const Odontograma = ({}) => {
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
       />
-      <p>Render count: {renderCount.current}</p>
     </div>
   );
 };

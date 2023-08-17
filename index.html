@@ -1,14 +1,147 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="manifest" href="/manifest.json">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DentelX</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE HTML><html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+    
+    header img {
+      width: 150px;
+      margin-left: 20px;
+    }
+    
+    .main-content {
+      padding: 20px;
+    }
+    
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+    
+    .social-icons {
+      margin-top: 10px;
+    }
+    
+    .social-icons a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    
+    .vert { margin-bottom: 10%; }
+    .photo { width: 30%;}
+    .hori{ margin-bottom: 0%; }
+      table {
+      width: 50%;
+      margin: auto;
+      border-collapse: collapse;
+      text-align: center;
+    }
+    
+    table, th, td {
+      border: 1px solid black;
+    }
+    
+    th {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <img src="data:image/png;base64,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" alt="Logo">
+  <h1>SISTEMAS EMBEBIDOS</h1>
+</header>
+  <div id="container">
+    <h2>Proyecto Grupo 3</h2>
+    <p>Sistema de seguridad IoT</p>
+    <button onclick="updateTable()">Simular boton</button>
+    <p>
+      <button onclick="rotatePhoto();">ROTATE</button>
+      <button onclick="capturePhoto();">CAPTURE PHOTO</button>
+      <button onclick="location.reload();">REFRESH PAGE</button>
+    </p>
+  </div>
+  <h1>Registro de actividad</h1>
+  <table id="data-table" >
+    <tr>
+      <th>ID</th>
+      <th>Fecha</th>
+      <th>Hora</th>
+      <th>Foto</th>
+    </tr>
+  </table>
+  <footer>
+  <div class="social-icons"></div>
+  <p>© 2023 Todos los derechos reservados</p>
+  </footer>
+  <script>
+  function capturePhoto() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', "/capture", true);
+    xhr.send();
+  };
+
+  function updateTable() {
+      var table = document.getElementById("data-table");
+      var xhttp = new XMLHttpRequest();
+      var datos;
+      xhttp.onreadystatechange = function(){
+          if (this.readyState == 4 && this.status == 200) {
+            datos = this.responseText;
+            // Crear una nueva fila y celda para los nuevos datos.
+            var newRow = table.insertRow(1); // Insertar en la segunda fila (después de los encabezados).
+            var cell = newRow.insertCell();
+            cell.innerHTML = "ID";
+            var cell2 = newRow.insertCell();
+            cell2.innerHTML = "Fecha";
+            var cell3 = newRow.insertCell(); 
+            cell3.innerHTML = String(datos);
+            
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function(){
+              if (this.readyState == 4 && this.status == 200) {
+                var cellImagen = newRow.insertCell();
+            
+                var img = document.createElement("img");
+                
+                img.src = "saved-photo";
+                img.id = "photo";
+                img.alt = ":C";
+                cellImagen.appendChild(img);
+              }
+            }
+            xhr.open('GET', "/capture", true);
+            xhr.send();
+            
+            // Si hay demasiadas filas, eliminar la última para mantener un límite.
+            if (table.rows.length > 11) { // Mantener 10 filas como máximo.
+              table.deleteRow(-1); // Eliminar la última fila.
+            }
+          }
+        }
+      xhttp.open('GET', '/getVariable', true);
+      xhttp.send();
+    }
+    
+  /*setInterval(updateTable, 4000);*/
+</script>
+</body>
 </html>
