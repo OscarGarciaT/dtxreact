@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useForm } from "react-hook-form";
 
 import Tabs from "@mui/material/Tabs";
@@ -18,6 +17,7 @@ import Button from "@mui/material/Button";
 import SOralHigiene from "../Components/Table/SimplifiedOralHigene";
 import CpoIndices from "../Components/Table/CpoIndices";
 import PatientDiagnostics from "../Components/Table/PatientDiagnostics";
+import Odontograma from "../Components/Odontograma";
 
 import DtxTextField from "../Components/Form/DtxTextField";
 import DtxSelect from "../Components/Form/DtxSelect";
@@ -25,11 +25,12 @@ import DtxRadioGroup from "../Components/Form/DtxRadioGroup";
 import DtxCheckbox from "../Components/Form/DtxCheckbox";
 import DtxButtonGroup from "../Components/Form/DtxButtonGroup";
 import PatientTreatments from "../Components/Table/PatientTreatments";
-import { useDispatch, useSelector } from "react-redux";
+
 import { createPatient, updatePatient } from "../services/patientServices";
+
+import { useDispatch, useSelector } from "react-redux";
 import { popDialog } from "../slices/dialogSlice";
 import { incrementDataRevision } from "../slices/revisionSlice";
-import { useEffect } from "react";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -66,6 +67,13 @@ const PatientInfo = ({ onProgress, ...props }) => {
   const [loading, setLoading] = useState(false);
   const [tabValue, setTabValue] = useState(0);
 
+  const [placedSymbols, setPlacedSymbols] = useState(
+    patientData?.odontograma?.simbolos ?? []
+  );
+  const [drawings, setDrawings] = useState(
+    patientData?.odontograma?.anotaciones ?? []
+  );
+
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -76,7 +84,6 @@ const PatientInfo = ({ onProgress, ...props }) => {
   });
 
   const handleSubmitPatient = async (model) => {
-
     try {
       setLoading(true);
       onProgress(true);
@@ -84,7 +91,10 @@ const PatientInfo = ({ onProgress, ...props }) => {
       if (isEditMode) {
         await updatePatient(doctorId, patientId, model);
       } else {
-        await createPatient(doctorId, model);
+        await createPatient(doctorId, {
+          ...model,
+          odontograma: { simbolos: placedSymbols, anotaciones: drawings },
+        });
       }
 
       dispatch(incrementDataRevision({ event: "patientRevision" }));
@@ -183,8 +193,9 @@ const PatientInfo = ({ onProgress, ...props }) => {
             </div>
 
             <div
-              className={`pt-5 ${isEditMode ? "pointer-events-none opacity-75" : ""
-                }`}
+              className={`pt-5 ${
+                isEditMode ? "pointer-events-none opacity-75" : ""
+              }`}
             >
               <DtxRadioGroup
                 control={control}
@@ -205,8 +216,9 @@ const PatientInfo = ({ onProgress, ...props }) => {
             </div>
 
             <div
-              className={`pb-4 ${isEditMode ? "pointer-events-none opacity-75" : ""
-                }`}
+              className={`pb-4 ${
+                isEditMode ? "pointer-events-none opacity-75" : ""
+              }`}
             >
               <Typography variant="h6" fontWeight="bold" className="self-start">
                 Estado de gestación
@@ -275,8 +287,9 @@ const PatientInfo = ({ onProgress, ...props }) => {
                   3. Antecedentes Familiares
                 </Typography>
                 <div
-                  className={`grid grid-cols-4 ${isEditMode ? "pointer-events-none opacity-75" : ""
-                    }`}
+                  className={`grid grid-cols-4 ${
+                    isEditMode ? "pointer-events-none opacity-75" : ""
+                  }`}
                 >
                   <DtxCheckbox
                     control={control}
@@ -397,8 +410,9 @@ const PatientInfo = ({ onProgress, ...props }) => {
                   5. Examen del Sistema Estomatognático
                 </Typography>
                 <div
-                  className={`grid grid-cols-4 mb-3 ${isEditMode ? "pointer-events-none opacity-75" : ""
-                    }`}
+                  className={`grid grid-cols-4 mb-3 ${
+                    isEditMode ? "pointer-events-none opacity-75" : ""
+                  }`}
                 >
                   <DtxCheckbox
                     control={control}
@@ -470,7 +484,12 @@ const PatientInfo = ({ onProgress, ...props }) => {
                   fullWidth
                 />
               </div>
-              <div id="odontogram">
+              <div
+                id="odontogram"
+                className={`${
+                  isEditMode ? "pointer-events-none opacity-90" : ""
+                }`}
+              >
                 <Typography
                   variant="h6"
                   fontWeight="bold"
@@ -478,6 +497,13 @@ const PatientInfo = ({ onProgress, ...props }) => {
                 >
                   6. Odontograma
                 </Typography>
+                <Odontograma
+                  placedSymbols={placedSymbols}
+                  setPlacedSymbols={setPlacedSymbols}
+                  drawings={drawings}
+                  setDrawings={setDrawings}
+                  isEditDialog={isEditMode}
+                />
               </div>
 
               <Typography variant="h6" fontWeight="bold" className="self-start">
@@ -485,8 +511,9 @@ const PatientInfo = ({ onProgress, ...props }) => {
               </Typography>
               <div
                 id="oralHealthIndicators"
-                className={`flex flex-row gap-4 ${isEditMode ? "pointer-events-none opacity-90" : ""
-                  }`}
+                className={`flex flex-row gap-4 ${
+                  isEditMode ? "pointer-events-none opacity-90" : ""
+                }`}
               >
                 <SOralHigiene
                   control={control}
@@ -546,8 +573,9 @@ const PatientInfo = ({ onProgress, ...props }) => {
                   8. Índices CPO-<sub>CBO</sub>
                 </Typography>
                 <div
-                  className={`${isEditMode ? "pointer-events-none opacity-90" : ""
-                    }`}
+                  className={`${
+                    isEditMode ? "pointer-events-none opacity-90" : ""
+                  }`}
                 >
                   <CpoIndices
                     setValue={setValue}
@@ -568,8 +596,9 @@ const PatientInfo = ({ onProgress, ...props }) => {
                 10. Planes de diagnóstico, terapéutico y educacional
               </Typography>
               <div
-                className={`${isEditMode ? "my-3 pointer-events-none opacity-90" : ""
-                  }`}
+                className={`${
+                  isEditMode ? "my-3 pointer-events-none opacity-90" : ""
+                }`}
               >
                 <DtxCheckbox
                   control={control}
@@ -668,4 +697,4 @@ const PatientInfo = ({ onProgress, ...props }) => {
   );
 };
 
-export default PatientInfo;
+export default memo(PatientInfo);
