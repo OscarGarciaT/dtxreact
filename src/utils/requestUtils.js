@@ -1,11 +1,5 @@
 import axios_core from "axios";
-let API_URL = "http://localhost:3001/api";
-
-if (process.env.NODE_ENV === "test") {
-  API_URL = "http://localhost:5173/api";
-} else if (window?.import?.meta?.env?.VITE_API_URL) {
-  API_URL = window.import.meta.env.VITE_API_URL;
-}
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3001/api";
 
 export const axiosConfig = {
   SERVER_NAME: API_URL,
