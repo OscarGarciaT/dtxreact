@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2023-08-17T21:08:12.277Z",
+    "end": "2023-08-17T21:08:49.780Z",
+    "duration": 37503,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "f219cd5e-d214-4c4f-aed2-7cc03dd0907a",
+      "title": "",
+      "fullFile": "cypress\\integration\\ficha.spec.js",
+      "file": "cypress\\integration\\ficha.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "4566eecf-3bee-427b-a0b1-4f3508134231",
+          "title": "Record creation (writing)",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Allows to create a record",
+              "fullTitle": "Record creation (writing) Allows to create a record",
+              "timedOut": null,
+              "duration": 37358,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": "{\n  \"title\": \"cypress-mochawesome-reporter-videos-passed\",\n  \"value\": \"cypress\\\\integration\\\\ficha.spec.js\"\n}",
+              "code": "cy.viewport(2000, 650);\ncy.visit('/login'); // Asegúrate de ajustar la ruta si es necesario\ncy.get('[name=\"email\"]').type('oscar@dentelx.com');\ncy.get('[name=\"password\"]').type('abc123');\ncy.get('.MuiButton-containedPrimary') // Selecciona el botón por la clase 'MuiButton-containedPrimary'\n.should('have.text', 'Login in') // Verifica el texto del botón si es necesario\n.click();\ncy.intercept('GET', 'https://dtxbackend.onrender.com/api/patients/649be3a8684dc54c7b7ba6db?searchQuery=', {\n  statusCode: 200,\n  body: {} // Respuesta simulada\n});\ncy.wait(15000);\ncy.contains('Pacientes'); // Verifica que se muestre el mensaje de éxito\ncy.intercept('GET', 'https://dtxbackend.onrender.com/api/patients/649be3a8684dc54c7b7ba6db', {\n  statusCode: 200,\n  body: {} // Respuesta simulada\n});\ncy.get('[data-testid=\"add-button\"]').click();\ncy.get('[name=\"info_general.num_historia_clinica\"]').type('999');\ncy.get('[name=\"info_general.nombres\"]').type('Oscar');\ncy.get('[name=\"info_general.apellidos\"]').type('Garcya Cypress');\ncy.get('[name=\"info_general.cedula\"]').type('0982378222');\ncy.get('[name=\"info_general.celular\"]').type('0988234933');\ncy.get('.PrivateSwitchBase-input[value=\"6\"]').click();\ncy.get('[name=\"motivo_consulta\"]').type('Limpieza general');\ncy.get('[name=\"enfermedad_problema_actual\"]').type('Ligero Sarro');\ncy.get('[name=\"antecedentes_familiares.alergia_antibiotico\"]').click();\ncy.get('[name=\"signos_vitales.presion_arterial\"]').type('112');\ncy.get('[name=\"signos_vitales.frecuencia_cardiaca\"]').type('14');\ncy.get('[name=\"signos_vitales.temperatura_centigrados\"]').type('32');\ncy.get('[name=\"signos_vitales.frec_respiratoria_min\"]').type('34');\ncy.get('[name=\"signos_vitales.anotaciones\"]').type('El paciente se niega a tomarse presion arterial actual');\ncy.get('[name=\"sistema_estomatognatico.maxilar_superior\"]').click();\ncy.contains('.MuiButton-root', '16').click();\ncy.contains('.MuiButton-root', '21').click();\ncy.contains('.MuiButton-root', '65').click();\ncy.contains('.MuiButton-root', '36').click();\ncy.contains('.MuiButton-root', '71').click();\ncy.contains('.MuiButton-root', '46').click();\ncy.get('[name=\"salud_bucal.tabla_higiene.placa.c1r1\"]').clear().type('3');\ncy.get('[name=\"salud_bucal.tabla_higiene.calculo.c2r1\"]').clear().type('2');\ncy.get('[name=\"salud_bucal.tabla_higiene.gingivitis.c3r1\"]').clear().type('1');\ncy.get('[name=\"indices_cpo_cbo.rowD.DC1\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowD.DP\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowD.DO\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowd.dc2\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowd.de\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowd.do\"]').type(\"1\");\ncy.contains('.MuiTab-root', 'Posterior').click();\ncy.get('[name=\"planes_varios.biometria\"]').click();\nconst patientData = {\n  nombres: \"Oscar\",\n  apellidos: \"Garcya Cypress\",\n  cedula: \"0982378222\",\n  celular: \"0988234933\",\n  doctor_id: \"649be3a8684dc54c7b7ba6db\",\n  sexo: 'masculino',\n  edad: 20,\n  enfermedad_problema_actual: \"Ligero Sarro\",\n  antecedentes_personales: \"Alergia antibiotico\",\n  motivo_consulta: \"Limpieza general\",\n  antecedentes_familiares: \"\",\n  indices_cpo_cbo: \"\",\n  info_general: \"\",\n  planes_varios: \"\",\n  salud_bucal: \"\",\n  signos_vitales: \"\",\n  sistema_estomatognatico: \"\",\n  diagnosticos: \"\",\n  tratamientos: \"\"\n  // Otros campos de información del paciente\n};\ncy.intercept('POST', 'https://dtxbackend.onrender.com/api/patients/649be3a8684dc54c7b7ba6db', {\n  statusCode: 200,\n  body: {\n    patientData\n  } // Respuesta simulada\n});\ncy.contains('.MuiButton-root', 'Enviar').click();\ncy.contains('Pacientes'); // Verifica que se muestre el mensaje de éxito\ncy.wait(1000);\naddContext(void 0, 'Report creation');",
+              "err": {},
+              "uuid": "e6e81b30-9e30-46d8-bbfd-ba86355a1fff",
+              "parentUUID": "4566eecf-3bee-427b-a0b1-4f3508134231",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "e6e81b30-9e30-46d8-bbfd-ba86355a1fff"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 37358,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress\\results\\.jsons",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}

@@ -37,10 +37,4 @@ describe('PatientInfo Component', () => {
     expect(screen.getByText('Información general')).toBeInTheDocument();
     // Add more assertions as needed
   });
-
- 
-
-  
-
-  
 });

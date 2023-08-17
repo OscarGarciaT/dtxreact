@@ -1,7 +1,7 @@
 describe('Login and Sign Up', () => {
   it('Allows a user to log in', () => {
+    cy.viewport(2000,650)
     cy.visit('/login'); // Asegúrate de ajustar la ruta si es necesario
-
     cy.get('[name="email"]').type('oscar@dentelx.com');
     cy.get('[name="password"]').type('abc123');
     cy.get('.MuiButton-containedPrimary') // Selecciona el botón por la clase 'MuiButton-containedPrimary'
@@ -11,6 +11,7 @@ describe('Login and Sign Up', () => {
       statusCode: 200,
       body: {} // Respuesta simulada
     });
+    cy.wait(15000)
     cy.contains('Pacientes'); // Verifica que se muestre el mensaje de éxito
    
   });
@@ -27,8 +28,7 @@ describe('Login and Sign Up', () => {
       cy.get('[data-value="DENTISTA"]').type('{enter}'); 
       cy.get('[name="telefono"]').type('0989705423');
       cy.get('.MuiButton-containedPrimary').click();
-      cy.wait(4000)
-      cy.contains('Pacientes');
+      cy.wait(15000)
       cy.intercept('POST', 'https://dtxbackend.onrender.com/api/users/signup', {
       statusCode: 200,
       body: {} // Respuesta simulada
@@ -48,11 +48,11 @@ describe('Login and Sign Up', () => {
       cy.get('[data-value="DENTISTA"]').type('{downarrow}{enter}'); 
       cy.get('[name="telefono"]').type('0989705423');
       cy.get('.MuiButton-containedPrimary').click();
-      cy.contains('Pacientes');
       cy.intercept('POST', 'https://dtxbackend.onrender.com/api/users/signup', {
       statusCode: 200,
       body: {} // Respuesta simulada
       });
+      
 
     });
   

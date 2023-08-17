@@ -1,0 +1,105 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 1,
+    "passes": 1,
+    "pending": 0,
+    "failures": 0,
+    "start": "2023-08-17T21:06:14.997Z",
+    "end": "2023-08-17T21:06:40.868Z",
+    "duration": 25871,
+    "testsRegistered": 1,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "746bedd6-c2d4-4b3f-be9f-84cf046c97af",
+      "title": "",
+      "fullFile": "cypress\\integration\\indi.spec.js",
+      "file": "cypress\\integration\\indi.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "8049bfe7-6bd6-445a-9611-aabf6e8192a5",
+          "title": "Indixes confirmation",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Formula of indixes are correct",
+              "fullTitle": "Indixes confirmation Formula of indixes are correct",
+              "timedOut": null,
+              "duration": 25709,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": "{\n  \"title\": \"cypress-mochawesome-reporter-videos-passed\",\n  \"value\": \"cypress\\\\integration\\\\indi.spec.js\"\n}",
+              "code": "cy.viewport(2000, 650);\ncy.visit('/login'); // Asegúrate de ajustar la ruta si es necesario\ncy.get('[name=\"email\"]').type('oscar@dentelx.com');\ncy.get('[name=\"password\"]').type('abc123');\ncy.get('.MuiButton-containedPrimary') // Selecciona el botón por la clase 'MuiButton-containedPrimary'\n.should('have.text', 'Login in') // Verifica el texto del botón si es necesario\n.click();\ncy.intercept('GET', 'https://dtxbackend.onrender.com/api/patients/649be3a8684dc54c7b7ba6db?searchQuery=', {\n  statusCode: 200,\n  body: {} // Respuesta simulada\n});\ncy.wait(15000);\ncy.contains('Pacientes'); // Verifica que se muestre el mensaje de éxito\ncy.intercept('GET', 'https://dtxbackend.onrender.com/api/patients/649be3a8684dc54c7b7ba6db', {\n  statusCode: 200,\n  body: {} // Respuesta simulada\n});\ncy.get('[data-testid=\"add-button\"]').click();\ncy.contains('.MuiButton-root', '16').click();\ncy.contains('.MuiButton-root', '21').click();\ncy.contains('.MuiButton-root', '65').click();\ncy.contains('.MuiButton-root', '36').click();\ncy.contains('.MuiButton-root', '71').click();\ncy.contains('.MuiButton-root', '46').click();\ncy.get('[name=\"salud_bucal.tabla_higiene.placa.c1r1\"]').clear().type('3');\ncy.get('[name=\"salud_bucal.tabla_higiene.placa.c1r2\"]').clear().type('2');\ncy.get('[name=\"salud_bucal.tabla_higiene.placa.total_placa\"]').should('have.attr', 'value', '0.83');\ncy.get('[name=\"indices_cpo_cbo.rowD.DC1\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowD.DP\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowD.DO\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowd.dc2\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowd.de\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.rowd.do\"]').type(\"1\");\ncy.get('[name=\"indices_cpo_cbo.total_rowD\"]').should('have.attr', 'value', '3');",
+              "err": {},
+              "uuid": "759b0f5f-2d16-40a1-94c8-710e50483d37",
+              "parentUUID": "8049bfe7-6bd6-445a-9611-aabf6e8192a5",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "759b0f5f-2d16-40a1-94c8-710e50483d37"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 25709,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress\\results\\.jsons",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "6.2.0"
+    }
+  }
+}
