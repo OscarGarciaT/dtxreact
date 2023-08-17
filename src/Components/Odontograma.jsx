@@ -6,8 +6,27 @@ import {
   IconButton,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+const colors = [
+  { label: "Negro", value: "black" },
+  { label: "Rojo", value: "red" },
+  { label: "Azul", value: "blue" },
+];
+
+const brushSizes = [
+  { label: "Pequeño", value: 1 },
+  { label: "Mediano", value: 2 },
+  { label: "Grande", value: 3 },
+];
+
+const symbolSizes = [
+  { label: "Pequeño", value: 0.25 },
+  { label: "Mediano", value: 0.50 },
+  { label: "Grande", value: 1.25 },
+];
+
+const deleteMargin = 25;
 
 const simbolos = [
   { label: "Sellante Necesario", value: "sellante_necesario.png" },
@@ -32,20 +51,6 @@ const simbolos = [
   { label: "Protesis", value: "protesis.png" },
 ];
 
-const colors = [
-  { label: "Negro", value: "black" },
-  { label: "Rojo", value: "red" },
-  { label: "Azul", value: "blue" },
-];
-
-const brushSizes = [
-  { label: "Pequeño", value: 1 },
-  { label: "Mediano", value: 2 },
-  { label: "Grande", value: 3 },
-];
-
-const deleteMargin = 25;
-
 const OdontogramaCanvas = ({
   placedSymbols,
   drawings,
@@ -56,22 +61,31 @@ const OdontogramaCanvas = ({
   const canvasRef = useRef(null);
   const backgroundImage = "/assets/img/odontograma_canvas.png";
 
+  const symbols = useRef({});
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const img = new Image();
     img.src = backgroundImage;
-    img.onload = () => {
+
+    const drawCanvas = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
       placedSymbols.forEach((symbol) => {
-        const symbolImg = new Image();
-        symbolImg.src = `/assets/img/simbolos/${symbol.src}`;
-        symbolImg.onload = () => {
-          const x = symbol.x - symbolImg.width / 2;
-          const y = symbol.y - symbolImg.height / 2;
-          ctx.drawImage(symbolImg, x, y);
-        };
+        const symbolImg = symbols.current[symbol.src];
+        if (symbolImg) {
+          const x = symbol.x - (symbolImg.width / 2) * symbol.size;
+          const y = symbol.y - (symbolImg.height / 2) * symbol.size;
+          ctx.drawImage(
+            symbolImg,
+            x,
+            y,
+            symbolImg.width * symbol.size,
+            symbolImg.height * symbol.size
+          );
+        }
       });
 
       drawings.forEach((drawing) => {
@@ -95,6 +109,26 @@ const OdontogramaCanvas = ({
         ctx.stroke();
       }
     };
+
+    img.onload = () => {
+      drawCanvas();
+    };
+
+    // Preload symbol images
+    placedSymbols.forEach((symbol) => {
+      const symbolImg = new Image();
+      symbolImg.src = `/assets/img/simbolos/${symbol.src}`;
+      symbolImg.onload = () => {
+        symbols.current[symbol.src] = symbolImg;
+        drawCanvas();
+      };
+    });
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      drawCanvas();
+    };
+    animate();
   }, [backgroundImage, placedSymbols, drawings, mousePosition, editingMode]);
 
   return <canvas ref={canvasRef} width={1200} height={600} {...props} />;
@@ -109,21 +143,14 @@ const OdontogramaCanvas = ({
 // Vestibular, mesial, lingual, distal
 
 const Odontograma = ({}) => {
+  const renderCount = useRef(0);
   const [placedSymbols, setPlacedSymbols] = useState([]);
   const [drawings, setDrawings] = useState([]);
 
-  const [selectedSymbol, setSelectedSymbol] = useState({
-    label: "Extraccion indicada",
-    value: "extraccion_indicada.png",
-  });
-  const [selectedColor, setSelectedColor] = useState({
-    label: "Negro",
-    value: "black",
-  });
-  const [selectedBrushSize, setSelectedBrushSize] = useState({
-    label: "Pequeño",
-    value: 1,
-  });
+  const [selectedSymbol, setSelectedSymbol] = useState(simbolos[0]);
+  const [selectedColor, setSelectedColor] = useState(colors[0]);
+  const [selectedBrushSize, setSelectedBrushSize] = useState(brushSizes[0]);
+  const [selectedSymbolSize, setSelectedSymbolSize] = useState(symbolSizes[0]);
 
   const [editingMode, setEditingMode] = useState("adding");
 
@@ -216,7 +243,18 @@ const Odontograma = ({}) => {
   };
 
   const addSymbol = (src, x, y) => {
-    setPlacedSymbols([...placedSymbols, { src, x, y }]);
+    setPlacedSymbols([
+      ...placedSymbols,
+      { src, x, y, size: selectedSymbolSize.value },
+    ]);
+  };
+
+  useEffect(() => {
+    renderCount.current += 1;
+  });
+
+  const customEqualityTest = (option, currentOption) => {
+    return option.value === currentOption.value;
   };
 
   return (
@@ -229,6 +267,7 @@ const Odontograma = ({}) => {
           onChange={(event, newValue) => setSelectedSymbol(newValue)}
           options={simbolos}
           getOptionLabel={(option) => option.label}
+          isOptionEqualToValue={customEqualityTest}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -269,6 +308,17 @@ const Odontograma = ({}) => {
             </li>
           )}
         />
+        <Autocomplete
+          className="w-40"
+          value={selectedSymbolSize}
+          onChange={(event, newValue) => setSelectedSymbolSize(newValue)}
+          options={symbolSizes}
+          getOptionLabel={(option) => option.label}
+          isOptionEqualToValue={customEqualityTest}
+          renderInput={(params) => (
+            <TextField {...params} label="Tamaño de símbolo" />
+          )}
+        />
         <Button
           className="mr-5"
           onClick={() => setEditingMode("adding")}
@@ -289,6 +339,7 @@ const Odontograma = ({}) => {
           onChange={(event, newValue) => setSelectedColor(newValue)}
           options={colors}
           getOptionLabel={(option) => option.label}
+          isOptionEqualToValue={customEqualityTest}
           renderInput={(params) => (
             <TextField {...params} label="Color del lapiz" />
           )}
@@ -300,6 +351,7 @@ const Odontograma = ({}) => {
           onChange={(event, newValue) => setSelectedBrushSize(newValue)}
           options={brushSizes}
           getOptionLabel={(option) => option.label}
+          isOptionEqualToValue={customEqualityTest}
           renderInput={(params) => (
             <TextField {...params} label="Tamaño de lapiz" />
           )}
@@ -322,8 +374,9 @@ const Odontograma = ({}) => {
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
       />
+      <p>Render count: {renderCount.current}</p>
     </div>
   );
 };
 
-export default Odontograma;
+export default React.memo(Odontograma);
