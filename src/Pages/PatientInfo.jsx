@@ -30,6 +30,7 @@ import { createPatient, updatePatient } from "../services/patientServices";
 import { popDialog } from "../slices/dialogSlice";
 import { incrementDataRevision } from "../slices/revisionSlice";
 import { useEffect } from "react";
+import Odontograma from "../Components/Odontograma";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -478,6 +479,7 @@ const PatientInfo = ({ onProgress, ...props }) => {
                 >
                   6. Odontograma
                 </Typography>
+                <Odontograma control={control} watch={watch} setValue={setValue}/>
               </div>
 
               <Typography variant="h6" fontWeight="bold" className="self-start">
