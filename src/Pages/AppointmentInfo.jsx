@@ -21,6 +21,7 @@ import { createAppointment, updateAppointment, deleteAppointment } from "../serv
 import DtxTextField from "../Components/Form/DtxTextField";
 import DtxSelect from "../Components/Form/DtxSelect";
 import DtxCheckbox from "../Components/Form/DtxCheckbox";
+import { showSnackbar } from '../slices/snackbarSlice';
 
 
 const AppointmentInfo = ({ ...props }) => {
@@ -126,8 +127,24 @@ const AppointmentInfo = ({ ...props }) => {
                 await createAppointment(doctorId, appointmentDataToSend)
             }
             dispatch(incrementDataRevision({ event: "appointmentRevision" }))
+            dispatch(
+                showSnackbar({
+                  message: isEditMode
+                    ? "Cambios guardados exitosamente"
+                    : "La cita ha sido registrada con éxito en el sistema",
+                  variant: "success",
+                })
+              );
             dispatch(popDialog())
         } catch (err) {
+            dispatch(
+                showSnackbar({
+                  message: `Ha ocurrido un error al momento de ${
+                    isEditMode ? "actualizar" : "crear"
+                  } la cita`,
+                  variant: "error",
+                })
+              );
             console.error(err)
         } finally {
             setLoading(false)

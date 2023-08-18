@@ -13,5 +13,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [import('tailwindcss-animated')],
 };

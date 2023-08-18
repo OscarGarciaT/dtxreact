@@ -11,6 +11,8 @@ import AppRouter from "./Components/AppRouter";
 import { Provider } from "react-redux";
 import DialogStack from "./dialog/DialogStack";
 import Auth from "./Components/Auth";
+import SnackbarStack from "./Components/snackbars/SnackbarStack";
+import { SnackbarProvider } from "notistack";
 
 const theme = createTheme({
   components: {
@@ -60,9 +62,14 @@ function App() {
         <StyledEngineProvider injectFirst>
           <Auth>
             <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <AppRouter />
-              <DialogStack />
+              <SnackbarProvider
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <CssBaseline />
+                <AppRouter />
+                <DialogStack />
+                <SnackbarStack />
+              </SnackbarProvider>
             </ThemeProvider>
           </Auth>
         </StyledEngineProvider>
