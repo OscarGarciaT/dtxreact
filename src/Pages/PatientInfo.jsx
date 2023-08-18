@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from "react";
 import { useState, memo } from "react";
 import { useForm } from "react-hook-form";
 
@@ -32,6 +32,7 @@ import { createPatient, updatePatient } from "../services/patientServices";
 import { useDispatch, useSelector } from "react-redux";
 import { popDialog } from "../slices/dialogSlice";
 import { incrementDataRevision } from "../slices/revisionSlice";
+import { showSnackbar } from "../slices/snackbarSlice";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -99,8 +100,24 @@ const PatientInfo = ({ onProgress, ...props }) => {
       }
 
       dispatch(incrementDataRevision({ event: "patientRevision" }));
+      dispatch(
+        showSnackbar({
+          message: isEditMode
+            ? "Cambios guardados exitosamente"
+            : "El paciente ha sido registrado con éxito en el sistema",
+          variant: "success",
+        })
+      );
       dispatch(popDialog());
     } catch (err) {
+      dispatch(
+        showSnackbar({
+          message: `Ha ocurrido un error al momento de ${
+            isEditMode ? "actualizar" : "crear"
+          } el paciente`,
+          variant: "error",
+        })
+      );
       console.error(err);
     } finally {
       setLoading(false);
