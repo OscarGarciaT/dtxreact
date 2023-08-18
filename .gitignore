@@ -27,3 +27,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Ignore Cypress generated files
+/cypress/videos/
+/cypress/screenshots/
+/cypress/reports/
+/cypress/results/
+
+# Ignore temporary files
+.cypress-*
